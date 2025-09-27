@@ -171,3 +171,23 @@ If you found this work useful, please consider citing:
 ## License
 
 This code is made available under a [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) license, as found in the [LICENSE](LICENSE) file. Some portions of the project are subject to separate license terms outlined in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
+
+
+## Working with Lambda 
+- git clone from branch lambda
+- set host name to 0.0.0.0 <"sudo hostname 0.0.0.0">
+- move the .sif file to current directory:
+    - scp from /share/j_sun/xy468/dts_agent/aira-dojo/superimage/superimage.root.2025-05-02v2.sif
+    - takes about 30 mins
+
+Ran a task but it doesnt work anymore? -> probably loading from checkpoint (comment out line 106 solver.load_checkpoint in main_run.py)
+things we changed: 
+- in line 21 (/home/ubuntu/aira-dojo/src/dojo/core/interpreters/jupyter/sand) changed the tmp_base_dir:
+  if [[ -z "$TMP_BASE_DIR" ]]; then
+    TMP_BASE_DIR="/home/ubuntu/slurm_tmpdir/$SLURM_JOBID/"
+  fi
+  mkdir -p $TMP_BASE_DIR
+- also in (/home/ubuntu/aira-dojo/src/dojo/configs/solver/client/litellm_4o.yaml) make:
+    base_url: ""
+    use_azure_client: False
+Hopefully it works! :) 
