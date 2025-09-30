@@ -1,3 +1,7 @@
+src/dojo/tasks/sciduc/
+src/dojo/configs/task/sciduc/
+src/dojo/config_dataclasses/task/sciduc.py
+
 logs/
 workspaces/
 

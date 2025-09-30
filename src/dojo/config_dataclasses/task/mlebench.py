@@ -4,8 +4,11 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
+# dataclasses is a built-in Python module for creating data classes
 from dataclasses import dataclass, field
 
+# omegaconf is a YAML configuration system for Python
+# SI = Structured Interpolation, MISSING = sentinel value for required fields
 from omegaconf import SI, MISSING
 
 from dojo.config_dataclasses.task.base import TaskConfig

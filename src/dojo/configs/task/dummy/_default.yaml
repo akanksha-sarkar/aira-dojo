@@ -1,0 +1,8 @@
+# @package task
+
+_target_: dojo.config_dataclasses.task.dummy.DummyTaskConfig
+name: dummy
+benchmark: dummy
+
+# ~~~ Evaluation and results ~~~
+submission_fname: submission.json
