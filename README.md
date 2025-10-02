@@ -171,3 +171,21 @@ If you found this work useful, please consider citing:
 ## License
 
 This code is made available under a [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) license, as found in the [LICENSE](LICENSE) file. Some portions of the project are subject to separate license terms outlined in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
+
+
+## Things to change
+1. `aira-dojo/src/dojo/core/solvers/utils/tree_export.py` Line 103: change `exp_name=cfg.id --> exp_name=cfg.exp_name`
+   Fix the bug for visualization output.
+3. change `aira-dojo/src/dojo/core/interpreters/jupyter/sand`
+Important:
+- don't do overlay in `apptainer instance run`;
+- Set
+  ```
+  APPTAINER_BIND=$(echo "$APPTAINER_BIND" | sed 's#:/root/data:ro#:/data:ro#g')
+  # Add DNS resolution for network connectivity
+  APPTAINER_BIND="${APPTAINER_BIND},/etc/resolv.conf:/etc/resolv.conf:ro"
+  export APPTAINER_BIND
+  ```
+  So that the execution workspace is the same as the data path.
+
+
