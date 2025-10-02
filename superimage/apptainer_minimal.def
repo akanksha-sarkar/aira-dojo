@@ -1,0 +1,78 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree.
+#
+# MINIMAL ROOTLESS VERSION - Uses pre-built image to avoid most %post operations
+
+Bootstrap: docker
+From: pytorch/pytorch:2.5.1-cuda12.4-cudnn9-devel
+
+%labels
+    Maintainer "Karen Hambardzumyan <mahnerak@meta.com>"
+    Description "A minimal rootless apptainer image for AI Agents"
+
+%environment
+    export TQDM_DISABLE=1
+    export PYTHONWARNINGS="ignore"
+    export SSH_DIR=$HOME/.ssh
+
+%files
+    entrypoint-minimal.sh /tmp/entrypoint-minimal.sh
+    pip.requirements.txt /tmp/pip.requirements.txt
+
+%post
+    # Absolutely minimal post section
+    apt-get update && apt-get install -y openssh-server wget git vim && apt-get clean
+    mkdir -p /inputs /outputs /workspace
+    chmod +x /tmp/entrypoint-minimal.sh
+
+%runscript
+    # All setup happens at runtime to avoid permission issues
+    
+    if [ ! -f "$HOME/.container_initialized" ]; then
+        echo "Performing first-time setup..."
+        
+        # Create directories
+        mkdir -p $HOME/.ssh
+        
+        # Install additional packages
+        pip install -U pip
+        pip install jupyter ipython jupyterlab matplotlib pandas scikit-learn seaborn transformers jupyter-kernel-gateway
+        
+        # Install requirements if available
+        if [ -f /tmp/pip.requirements.txt ]; then
+            pip install -r /tmp/pip.requirements.txt || echo "Some packages failed, continuing..."
+        fi
+        
+        # Setup SSH
+        if [ ! -f "$HOME/.ssh/id_rsa" ]; then
+            ssh-keygen -t rsa -N "" -f "$HOME/.ssh/id_rsa"
+            cat "$HOME/.ssh/id_rsa.pub" >> "$HOME/.ssh/authorized_keys"
+            chmod 600 "$HOME/.ssh/authorized_keys"
+        fi
+        
+        # Create minimal SSH config
+        cat > $HOME/.ssh/sshd_config << EOF
+Port 17022
+PidFile $HOME/.ssh/sshd.pid
+AuthorizedKeysFile .ssh/authorized_keys
+PasswordAuthentication no
+HostKey $HOME/.ssh/id_rsa
+PermitRootLogin no
+StrictModes no
+UsePrivilegeSeparation no
+EOF
+        
+        touch "$HOME/.container_initialized"
+        echo "Setup complete!"
+    fi
+    
+    # Start SSH daemon
+    if [ -n "$SSH_PUBLIC_KEY" ]; then
+        echo "$SSH_PUBLIC_KEY" >> $HOME/.ssh/authorized_keys
+    fi
+    
+    /usr/sbin/sshd -D -e -f $HOME/.ssh/sshd_config
+

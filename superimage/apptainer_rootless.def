@@ -1,0 +1,123 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree.
+#
+# ROOTLESS VERSION - Can be built without root privileges
+
+Bootstrap: docker
+From: condaforge/mambaforge:latest
+
+%labels
+    Maintainer "Karen Hambardzumyan <mahnerak@meta.com>"
+    Description "A rootless apptainer image for AI Agents"
+
+%environment
+    # Set any permanent environment variables here
+    export CONDAHOME=/opt/conda
+    export PATH=$CONDAHOME/bin:$PATH
+    export TQDM_DISABLE=1
+    export PYTHONWARNINGS="ignore"
+    # Use user-writable directories
+    export SSH_DIR=$HOME/.ssh
+    export OPENSSH_PREFIX=$HOME/opt/openssh
+
+%files
+    build-openssh-rootless.sh /tmp/build-openssh-rootless.sh
+    entrypoint-rootless.sh /tmp/entrypoint-rootless.sh
+    pip.requirements.txt /tmp/pip.requirements.txt
+
+%post
+    set -x  # Enable debugging output
+    
+    # Update conda/mamba
+    mamba update -n base -c defaults conda mamba -y
+    
+    # Install build tools via conda (no root required)
+    mamba install -c conda-forge -y \
+        make \
+        cmake \
+        cxx-compiler \
+        gcc \
+        gxx \
+        binutils \
+        pkg-config \
+        openssl \
+        zlib \
+        wget \
+        git \
+        vim \
+        tmux \
+        htop
+
+    # Install PyTorch + CUDA (12.4) plus common Python packages
+    mamba install -q -c pytorch -c nvidia -y \
+        pytorch \
+        pytorch-cuda=12.4 \
+        cuda-toolkit=12.4
+
+    mamba install -y xorg-libx11
+
+    mamba install -c pytorch -c nvidia -c conda-forge faiss-gpu -y
+    mamba install -c rapidsai -c conda-forge -c nvidia rapids=25.02 -y
+    mamba install -c conda-forge implicit implicit-proc=*=gpu -y
+
+    pip install -U pip && \
+    pip install \
+        jupyter \
+        ipython \
+        jupyterlab \
+        matplotlib \
+        pandas \
+        scikit-learn \
+        seaborn \
+        transformers \
+        jupyter-kernel-gateway
+
+    pip install -r /tmp/pip.requirements.txt
+
+    # Create necessary directories in user space
+    mkdir -p $HOME/.ssh
+    mkdir -p $HOME/opt
+    mkdir -p /inputs
+    mkdir -p /outputs
+    mkdir -p /workspace
+
+    # Build OpenSSH in user space (no root required)
+    cp /tmp/build-openssh-rootless.sh $HOME/build-openssh-rootless.sh
+    cp /tmp/entrypoint-rootless.sh $HOME/entrypoint-rootless.sh
+    chmod +x $HOME/build-openssh-rootless.sh
+    chmod +x $HOME/entrypoint-rootless.sh
+    
+    cd $HOME
+    bash $HOME/build-openssh-rootless.sh
+
+    # Generate SSH keys for user
+    ssh-keygen -t rsa -N "" -f "$HOME/.ssh/id_rsa" && \
+    cat "$HOME/.ssh/id_rsa.pub" >> "$HOME/.ssh/authorized_keys" && \
+    chmod 600 "$HOME/.ssh/authorized_keys"
+
+    # Create SSH config for user space
+    cat > $HOME/.ssh/sshd_config << EOF
+UsePrivilegeSeparation no
+Port 17022
+PidFile $HOME/.ssh/sshd.pid
+AuthorizedKeysFile .ssh/authorized_keys
+PasswordAuthentication no
+HostKey $HOME/.ssh/id_rsa
+PermitRootLogin no
+StrictModes no
+EOF
+
+    # Clean up temporary files
+    rm /tmp/build-openssh-rootless.sh /tmp/entrypoint-rootless.sh /tmp/pip.requirements.txt
+
+%runscript
+    # This is what runs when you do: apptainer run container.sif
+    exec /bin/bash $HOME/entrypoint-rootless.sh
+
+%startscript
+    # This is what runs when you do: apptainer start container.sif
+    exec /bin/bash $HOME/entrypoint-rootless.sh
+

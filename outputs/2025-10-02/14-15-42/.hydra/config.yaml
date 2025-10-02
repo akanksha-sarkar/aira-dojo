@@ -1,0 +1,345 @@
+metadata:
+  _target_: dojo.config_dataclasses.metadata.MetadataConfig
+  script_id: ''
+  git_issue_id: example
+  description: ''
+  seed: 42
+logger:
+  _target_: dojo.config_dataclasses.logger.LoggerConfig
+  use_console: true
+  use_wandb: false
+  use_json: true
+  wandb_project_name: aira
+  wandb_entity: aira-dojo
+  tags: []
+  detailed_logging: false
+  print_config: true
+  write_env_vars: true
+task:
+  _target_: dojo.config_dataclasses.task.mlebench.MLEBenchTaskConfig
+  name: random-acts-of-pizza
+  benchmark: mlebench
+  cache_dir: ${get_mlebench_data_dir:}
+  public_dir: ${task.cache_dir}/${task.name}/prepared/public
+  private_dir: ${task.cache_dir}/${task.name}/prepared/private
+  submission_fname: submission.csv
+solver:
+  memory:
+    _target_: dojo.config_dataclasses.operators.memory.MemoryOpConfig
+    memory_processor: simple_memory
+    memory_op_kwargs:
+      only_plans: false
+      include_buggy_nodes: false
+  debug_memory:
+    _target_: dojo.config_dataclasses.operators.memory.MemoryOpConfig
+    memory_processor: ancestral_memory
+  _target_: dojo.config_dataclasses.solver.greedy.GreedySolverConfig
+  export_search_results: true
+  improvement_steps: 5
+  step_limit: 5
+  data_preview: true
+  execution_timeout: 14400
+  time_limit_secs: 86400
+  max_debug_depth: 20
+  debug_prob: 1.0
+  num_drafts: 5
+  max_llm_call_retries: 3
+  use_test_score: false
+  use_complexity: false
+  available_packages:
+  - numpy
+  - pandas
+  - scikit-learn
+  - statsmodels
+  - xgboost
+  - lightgbm
+  - torch
+  - torchvision
+  - torch-geometric
+  - bayesian-optimization
+  - timm
+  operators:
+    debug:
+      llm:
+        client:
+          _target_: dojo.config_dataclasses.client.base.ClientConfig
+          api: litellm
+          model_id: gpt-4o
+          base_url: ''
+          use_azure_client: false
+          provider: openai
+        _target_: dojo.config_dataclasses.llm.generic_llm.GenericLLMConfig
+        generation_kwargs: {}
+      _target_: dojo.config_dataclasses.operators.base.OperatorConfig
+      system_message_prompt_template:
+        _target_: dojo.config_dataclasses.llm.jinjaprompt.JinjaPromptConfig
+        template: "# Introduction:\nYou are a Kaggle Grandmaster fixing code bugs\
+          \ in a high-stakes competition solution.\nCarefully review the previous\
+          \ debugging attempts, the buggy code and its terminal output in addition\
+          \ to the given task/data details, and available compute resources.\nYou\
+          \ must not change the core idea or methodology of the solution, but only\
+          \ fix the bugs in the code.\n\n# Task Description:\n````markdown\n{{task_desc}}\n\
+          ````\n\n{% if memory %}\n# Previous debugging attempts:\n````markdown\n\
+          {{memory}}\n````\n{% endif %}\n\n# Buggy Implementation:\n{{prev_buggy_code}}\n\
+          \n# Execution Output (Error):\n{{execution_output}}\n\n# Data Overview:\n\
+          ````\n{{data_overview}}\n````\n\n# Compute Environment:\n- GPU: 1 NVIDIA\
+          \ H200\n- CPUs: 24\n- Available Packages: {{packages}}\n- Additional libraries\
+          \ allowed as needed.\n\n# Instructions:\n- **Do NOT** alter the core method\
+          \ or underlying idea. Only correct existing bugs.\n- Outline your bug-fix\
+          \ plan clearly in 3-5 concise sentences.\n- Provide a single, complete Python\
+          \ code block wrapped in markdown (```python) that:\n  - Implements the fix\
+          \ fully.\n  - Calculates and clearly prints the evaluation metric using\
+          \ a validation set (use 5-FOLD CV if suitable).\n  - Generates a `submission.csv`\
+          \ file with test set predictions stored in the **current directory** (`./submission.csv`).\n\
+          \  - Is fully self-contained and executable as-is (The entire bug-free solution\
+          \ is given).\n\n- **Important Reminders:**\n  - Absolutely do **NOT** skip\
+          \ any part of the code.\n  - Always ensure predictions on the provided unlabeled\
+          \ test set are saved in `./submission.csv`. This is crucial for grading.\n\
+          \n# Other remarks\n- Huggingface is set to OFFLINE mode by default. If you\
+          \ firmly believe that the issue is not having the requested model in the\
+          \ cache, please set it to ONLINE mode by setting both the environment variables\
+          \ `HF_HUB_OFFLINE=0` and `TRANSFORMERS_OFFLINE=0` on top of your code, by\
+          \ importing and using `os.environ[...] = ...`.\n- Do not set/force Huggingface\
+          \ to OFFLINE mode as that will NOT fix any issue.\n- When a model cannot\
+          \ be found in the `timm` library, it might be useful to `print(timm.list_models())`.\n\
+          - If using `timm` models, remember not to prefix or suffix the model names\
+          \ with datasets such as `cifar` as this was deprecated.\n\nBrainstorm about\
+          \ possible ways to fix the bug and WHY THEY ARE LIKELY TO FIX THE BUG for\
+          \ the given implementation. Additionally, if any other bugs further down\
+          \ the line are observed, please fix them as well.\nGenerate a bug-fix plan\
+          \ that will structure and guide your step-by-step reasoning process. Reflect\
+          \ on it to make sure all the requirements are satisfied.\n\nFormat the proposed\
+          \ bug-fix plan and code as follows:\n# Bug Fix Plan\n<bug-fix plan>\n\n\
+          ```python\n<the fixed python code>\n```\n"
+        input_variables:
+        - task_desc
+        - prev_buggy_code
+        - execution_output
+        - execution_timeout
+        - data_overview
+        - memory
+        - packages
+    draft:
+      llm:
+        client:
+          _target_: dojo.config_dataclasses.client.base.ClientConfig
+          api: litellm
+          model_id: gpt-4o
+          base_url: ''
+          use_azure_client: false
+          provider: openai
+        _target_: dojo.config_dataclasses.llm.generic_llm.GenericLLMConfig
+        generation_kwargs: {}
+      _target_: dojo.config_dataclasses.operators.base.OperatorConfig
+      system_message_prompt_template:
+        _target_: dojo.config_dataclasses.llm.jinjaprompt.JinjaPromptConfig
+        template: "You are a Kaggle Grandmaster attending a high-stakes competition.\
+          \ \nCarefully consider the task description, the size and format of the\
+          \ available data, as well as the available compute resources.\nYour goal\
+          \ is to provide EXACTLY ONE IDEA AND ONE CODE IMPLEMENTATION of the idea,\
+          \ different from those previously explored, that leverages the available\
+          \ resources and is likely to lead to strong performance on the competition.\n\
+          Be specific about each step of the proposed approach, including data processing\
+          \ and feature engineering, the modeling and optimization method, as well\
+          \ as the evaluation (USE 5-FOLD CROSS-VALIDATION).\nYou MUST PROVIDE a solution\
+          \ IDEA/PLAN in natural language and CODE in python that DOES NOT INVOLVE\
+          \ any exploratory data analysis.    \n\n# TASK DESCRIPTION\n````\n{{task_desc}}\n\
+          ````\n\n# PREVIOUSLY EXPLORED IDEAS\n````markdown\n{{memory}}\n````\n\n\
+          # DATA OVERVIEW\n````\n{{data_overview}}\n````\n\n**CONSTRAINTS**:\n  -\
+          \ Be aware of the running time of the solution, it should complete within\
+          \ {{execution_timeout}}\n  - Prefer vectorized operations over Python loops\
+          \ when processing large datasets.  \n  - Use `torch.optim.AdamW` (the recommended\
+          \ optimizer) instead of the deprecated `AdamW` from `transformers`.  \n\
+          \  - Replace the deprecated `early_stopping_rounds` argument in `lightgbm.train()`\
+          \ with the `lightgbm.early_stopping(stopping_rounds=…)` callback.\n  - If\
+          \ using `timm` models, remember not to prefix or suffix the model names\
+          \ with datasets such as `cifar` as this was deprecated.\n  - As much as\
+          \ possible, keep the stdout clean.\n\n**DATA**: The data is already prepared\
+          \ and available in the read-only `./data` directory. You should not unzip\
+          \ any files.\n\n**COMPUTE**: You have access to a Python environemnt with\
+          \ 1 NVIDIA H200 GPU(s) and 24 CPUs available, and the following packages\
+          \ installed: {{packages}}. If you need to, feel free to use additional libraries\
+          \ that fit the problem. \n\nConsider the previously explored ideas, and\
+          \ make sure the idea you propose considers a DIFFERENT ASPECT OF THE SOLUTION,\
+          \ but keep the EVALUATION CONSISTENT. \nBrainstorm about possible approaches\
+          \ and WHY THEY ARE LIKELY TO BE EFFECTIVE AND INCREASE THE PERFORMANCE for\
+          \ the given task, and the available data and compute resources.\nRemember,\
+          \ and this is important, the first idea should be simple and easy to implement,\
+          \ while the last one should be more complex and sophisticated.\n{% if draft_complexity\
+          \ == 'simple' %}\nIn this iteration **focus on PROPOSING A SIMPLE IDEA:**\
+          \ one that can serve as a SIMPLE YET EFFECTIVE BASELINE for the task. For\
+          \ example, consider battle-tested methods or (potentially pre-trained) models\
+          \ that are known to work well for the task at hand.\n{% elif draft_complexity\
+          \ == 'normal' %}\nIn this iteration **focus on PROPOSING A MORE COMLPEX\
+          \ IDEA:** one that can beat the previous baselines at the cost of some complexity\
+          \ and compute. For example, consider leveraging more complex and/or larger\
+          \ (potentially pre-trained) models, specialized feature engineering, or\
+          \ basic ensambling and/or hyper-parameter optimization.\n{% elif draft_complexity\
+          \ == 'complex' %}\nIn this iteration **focus on PROPOSING AN ADVANCED IDEA:**\
+          \ one that can beat the previous baselines at the cost of some complexity\
+          \ and compute. For example, consider using specialized (potentially pre-trained)\
+          \ models, leveraging advanced feature engineering or data augmentiation\
+          \ strategies, advanced ensambling and/or hyper-parameter optimization.\n\
+          {% endif %}\n\n**RESPONSE FORMAT FOR IMPLEMENTATION**: \nProvide a **SINGLE**\
+          \ Markdown code block (wrapped in ```) for the implementation containing\
+          \ a **SELF-CONTAINED** Python script that:\n1. Implements the idea **END-TO-END**\n\
+          2. **PRINTS THE 5-FOLD CROSS-VALIDATION** score of the evaluation metric\n\
+          3. **SAVES THE TEST PREDICTIONS** in a `submission.csv` file in the current\
+          \ directory\n\nStart by making sure you understand the task, the data and\
+          \ compute resources and the idea. Then generate a detailed implementation\
+          \ plan that will structure and guide you step-by-step through the implementation\
+          \ process. Make sure to reflect on the plan to ensure that the implementation\
+          \ is efficient and faithful to the idea, and that all the requirements (e.g.,\
+          \ the evaluation score is printed, the submission file follows the correct\
+          \ format and is saved in the correct location, etc.) are satisfied.\nFor\
+          \ large datasets, avoid for loops and aim for efficient and fast data loading\
+          \ and feature engineering.\nFormat the proposed solution as follows:\n\n\
+          # Idea to implement\n<the proposed idea/plan>\n\n```python\n<the implementation\
+          \ of the proposed idea/plan>\n```"
+        input_variables:
+        - task_desc
+        - execution_timeout
+        - packages
+        - data_overview
+        - memory
+        - draft_complexity
+    improve:
+      llm:
+        client:
+          _target_: dojo.config_dataclasses.client.base.ClientConfig
+          api: litellm
+          model_id: gpt-4o
+          base_url: ''
+          use_azure_client: false
+          provider: openai
+        _target_: dojo.config_dataclasses.llm.generic_llm.GenericLLMConfig
+        generation_kwargs: {}
+      _target_: dojo.config_dataclasses.operators.base.OperatorConfig
+      system_message_prompt_template:
+        _target_: dojo.config_dataclasses.llm.jinjaprompt.JinjaPromptConfig
+        template: "# Introduction:\nYou are a Kaggle Grandmaster attending a high-stakes\
+          \ competition. \nCarefully consider the task description, the size and format\
+          \ of the available data, as well as the available compute resources.\nYour\
+          \ goal is to provide EXACTLY ONE IDEA AND ONE CODE IMPLEMENTATION of the\
+          \ idea, different from those previously explored, that improves upon an\
+          \ existing solution to the task.\nBe specific about each step of the proposed\
+          \ improvement, including data processing and feature engineering, the modeling\
+          \ and optimization method, as well as the evaluation (USE 5-FOLD CROSS-VALIDATION).\n\
+          You MUST PROVIDE an improvement IDEA/PLAN in natural language and CODE in\
+          \ python that DOES NOT INVOLVE any exploratory data analysis.    \n\n# TASK\
+          \ DESCRIPTION\n````\n{{task_desc}}\n````\n\n# PREVIOUS SOLUTION:\n## Code:\n\
+          {{prev_code}}\n## Terminal Output:\n{{prev_terminal_output}}\n\n# PREVIOUSLY\
+          \ EXPLORED IMPROVEMENT IDEAS\n````markdown\n{{memory}}\n````\n\n# DATA OVERVIEW\n\
+          ````\n{{data_overview}}\n````\n\n**CONSTRAINTS**:\n  - Be aware of the running\
+          \ time of the solution, it should complete within {{execution_timeout}}\n\
+          \  - Prefer vectorized operations over Python loops when processing large\
+          \ datasets.  \n  - Use `torch.optim.AdamW` (the recommended optimizer) instead\
+          \ of the deprecated `AdamW` from `transformers`.  \n  - Replace the deprecated\
+          \ `early_stopping_rounds` argument in `lightgbm.train()` with the `lightgbm.early_stopping(stopping_rounds=…)`\
+          \ callback.\n  - If using `timm` models, remember not to prefix or suffix\
+          \ the model names with datasets such as `cifar` as this was deprecated.\n\
+          \  - As much as possible, keep the stdout clean.\n\n**DATA**: The data is\
+          \ already prepared and available in the read-only `./data` directory. You\
+          \ should not unzip any files.\n\n**COMPUTE**: You have access to a Python\
+          \ environemnt with 1 NVIDIA H200 GPU(s) and 24 CPUs available, and the following\
+          \ packages installed: {{packages}}. If you need to, feel free to use additional\
+          \ libraries that fit the problem. \n\nConsider the previously explored ideas,\
+          \ and make sure the improvement idea you propose considers a DIFFERENT IMPROVEMENT\
+          \ OF THE SOLUTION, but keep the EVALUATION CONSISTENT. \nBrainstorm about\
+          \ possible improvements and WHY THEY ARE LIKELY TO BE EFFECTIVE AND INCREASE\
+          \ THE PERFORMANCE for the given task, and the available data and compute\
+          \ resources.\n{% if improve_complexity == 'simple' %}\nIn this iteration,\
+          \ suggest a *minimal, low-risk* tweak that keeps the current solution's\
+          \ core intact—no architecture overhauls or fundamental methodology changes.\
+          \  \nThink: a feature-engineering twist, a lightweight data-augmentation\
+          \ trick, or hyperparameter changes.  \nCheck the MEMORY section first and\
+          \ avoid duplicating earlier ideas. \n{% elif improve_complexity == 'normal'\
+          \ %}\nIn this iteration, propose a *moderate upgrade* that builds on the\
+          \ baseline without deviating dramatically.  \nOptions include (but not limited\
+          \ to) hyper-parameter tuning, a small ensemble of similar models, a sturdier\
+          \ preprocessing pipeline, feature engineering improvements, and data augmentation.\
+          \  \nCheck the MEMORY section first and avoid duplicating earlier ideas.\n\
+          {% elif improve_complexity == 'complex' %}\nIn this iteration, recommend\
+          \ a *substantial extension* that pushes the method's boundaries while preserving\
+          \ its core logic.  \nConsider advanced ensembling/stacking, fine-tuning\
+          \ specialized pre-trained models, or exhaustive hyper-parameter searches.\
+          \  \nCheck the MEMORY section first and avoid duplicating earlier ideas.\n\
+          {% endif %}\n\n**RESPONSE FORMAT FOR IMPLEMENTATION**: \nProvide a **SINGLE**\
+          \ Markdown code block (wrapped in ```) containing a **SELF-CONTAINED** Python\
+          \ script that:\n1. Implements the idea **END-TO-END**\n2. **PRINTS THE 5-FOLD\
+          \ CROSS-VALIDATION** score of the evaluation metric\n3. **SAVES THE TEST\
+          \ PREDICTIONS** in a `submission.csv` file in the current directory\n\n\
+          Start by making sure you understand the task, the data and compute resources\
+          \ and the idea. Then generate a detailed implementation plan that will structure\
+          \ and guide you step-by-step through the implementation process. Make sure\
+          \ to reflect on the plan to ensure that the implementation is efficient\
+          \ and faithful to the idea, and that all the requirements (e.g., the evaluation\
+          \ score is printed, the submission file follows the correct format and is\
+          \ saved in the correct location, etc.) are satisfied.\nFor large datasets,\
+          \ avoid for loops and aim for efficient and fast data loading and feature\
+          \ engineering.\nFormat the proposed solution as follows:\n\n# Improvement\
+          \ Idea to implement\n<the proposed improvement idea/plan>\n\n```python\n\
+          <the implementation of the proposed improvement>\n```\n"
+        input_variables:
+        - task_desc
+        - execution_timeout
+        - packages
+        - prev_code
+        - prev_terminal_output
+        - improve_complexity
+        - memory
+        - data_overview
+    analyze:
+      llm:
+        client:
+          _target_: dojo.config_dataclasses.client.base.ClientConfig
+          api: litellm
+          model_id: gpt-4o
+          base_url: ''
+          use_azure_client: false
+          provider: openai
+        _target_: dojo.config_dataclasses.llm.generic_llm.GenericLLMConfig
+        generation_kwargs:
+          temperature: 0.5
+      _target_: dojo.config_dataclasses.operators.base.OperatorConfig
+      system_message_prompt_template:
+        _target_: dojo.config_dataclasses.llm.jinjaprompt.JinjaPromptConfig
+        template: '# Introduction:
+
+          You are a Kaggle grandmaster attending a competition.
+
+          You have written code to solve this task and now need to evaluate the output
+          of the code execution.
+
+          You should determine if there were any bugs as well as report the empirical
+          findings.
+
+
+          # Task Description:
+
+          {{task_desc}}
+
+
+          # Implementation:
+
+          {{code}}
+
+
+          # Execution output:
+
+          {{execution_output}}
+
+          '
+        input_variables:
+        - task_desc
+        - code
+        - execution_output
+interpreter:
+  _target_: dojo.config_dataclasses.interpreter.jupyter.JupyterInterpreterConfig
+  superimage_directory: ${get_superimage_dir:}
+  superimage_version: 2025-05-02v2
+  read_only_overlays: []
+  env:
+    HF_HUB_OFFLINE: '0'
+    NLTK_DATA: /root/.nltk_data
+_target_: dojo.config_dataclasses.run.RunConfig

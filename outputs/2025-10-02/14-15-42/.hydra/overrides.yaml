@@ -1,0 +1,3 @@
+- +_exp=run_example
+- logger.use_wandb=False
+- task.name=random-acts-of-pizza
