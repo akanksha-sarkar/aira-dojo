@@ -150,29 +150,28 @@ if [ ! -f $TMP_BASE_DIR/superimage.root.$SUPERIMAGE_VERSION.sif ]; then
     mv $TMP_BASE_DIR/progress.superimage.root.$SUPERIMAGE_VERSION.sif $TMP_BASE_DIR/superimage.root.$SUPERIMAGE_VERSION.sif
 fi
 
-echo "base_overlays: $BASE_OVERLAYS" >&2
-echo "overlay_path: $OVERLAY_PATH" >&2
-echo "ssh_public_key: $SSH_PUBLIC_KEY" >&2
-echo "kg_ip: $KG_IP" >&2
-echo "pythonunbuffered: $PYTHONUNBUFFERED" >&2
-echo "wandb_disabled: $WANDB_DISABLED" >&2
-echo "tqdm_disable: $TQDM_DISABLE" >&2
-echo "http_proxy: $HTTP_PROXY" >&2
-echo "https_proxy: $HTTPS_PROXY" >&2
-echo "no_proxy: $NO_PROXY" >&2
-echo "hf_token: $HF_TOKEN" >&2
-echo "hf_hub_verbosity: $HF_HUB_VERBOSITY" >&2
-echo "hf_hub_offline: $HF_HUB_OFFLINE" >&2
-echo "transformers_offline: $TRANSFORMERS_OFFLINE" >&2
-echo "hf_hub_disable_progress_bars: $HF_HUB_DISABLE_PROGRESS_BARS" >&2
-echo "hf_hub_disable_telemetry: $HF_HUB_DISABLE_TELEMETRY" >&2
-echo "cuda_launch_blocking: $CUDA_LAUNCH_BLOCKING" >&2
-echo "nltk_data: $NLTK_DATA" >&2
-echo "tf_cpp_min_log_level: $TF_CPP_MIN_LOG_LEVEL" >&2
-echo "nv: $NV" >&2
-echo "tmp_base_dir: $TMP_BASE_DIR" >&2
-echo "instance_name: $INSTANCE_NAME" >&2
-echo "args: $@" >&2
+
+if [[ -z "$HF_CACHE_HOST" ]]; then
+  if [[ -d /shared && -w /shared ]]; then
+    HF_CACHE_HOST="/shared/hf-cache"
+  else
+    HF_CACHE_HOST="$TMP_BASE_DIR/hf-cache" 
+  fi
+fi
+mkdir -p "$HF_CACHE_HOST/hub" "$HF_CACHE_HOST/transformers"
+
+if [[ -z "$APPTAINER_BIND" ]]; then
+  APPTAINER_BIND="$HF_CACHE_HOST:/cache:rw"
+else
+  APPTAINER_BIND="$APPTAINER_BIND,$HF_CACHE_HOST:/cache:rw"
+fi
+export APPTAINER_BIND
+
+if [[ "$NO_PROXY" == *"huggingface.co"* ]] || [[ "$no_proxy" == *"huggingface.co"* ]]; then
+  echo "[WARN] NO_PROXY contains huggingface.co, which may cause issues with Hugging Face Hub" >&2
+fi
+# ---------------------------------------------------------------------------
+
 
 apptainer instance run \
     --containall \
@@ -197,6 +196,9 @@ apptainer instance run \
     --env NLTK_DATA=$RAD_NLTK_DATA \
     --env TF_CPP_MIN_LOG_LEVEL=3 \
     --env JUPYTER_RUNTIME_DIR=/tmp/jupyter_runtime \
+    --env HOME=/tmp \
+    --env HF_HOME=/cache/hub \
+    --env TRANSFORMERS_CACHE=/cache/transformers \
     --nv \
     $TMP_BASE_DIR/superimage.root.$SUPERIMAGE_VERSION.sif \
     "$INSTANCE_NAME" \

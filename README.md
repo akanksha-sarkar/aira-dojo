@@ -172,11 +172,11 @@ If you found this work useful, please consider citing:
 
 This code is made available under a [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) license, as found in the [LICENSE](LICENSE) file. Some portions of the project are subject to separate license terms outlined in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
 
-
+# Logs
 ## Things to change
 1. `aira-dojo/src/dojo/core/solvers/utils/tree_export.py` Line 103: change `exp_name=cfg.id --> exp_name=cfg.exp_name`
    Fix the bug for visualization output.
-3. change `aira-dojo/src/dojo/core/interpreters/jupyter/sand`
+2. change `aira-dojo/src/dojo/core/interpreters/jupyter/sand`
 Important:
 - don't do overlay in `apptainer instance run`;
 - Set
@@ -187,5 +187,16 @@ Important:
   export APPTAINER_BIND
   ```
   So that the execution workspace is the same as the data path.
+- Set Huggingface path to enable downloading huggingface models
 
+## Test
+- [x] Can read the data now
+- [x] Can download huggingface model now
+- [x] Can generate the visualization result now.
 
+## Test command
+```
+python -m dojo.main_run +_exp=run_example logger.use_wandb=False task.name=random-acts-of-pizza
+```
+Example results:
+`aira-dojo/result_sample` (remove env_variable.json due to api-key security concern.)
