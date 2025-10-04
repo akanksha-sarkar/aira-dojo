@@ -203,3 +203,4 @@ Example results:
 
 # Shifting to Gemini from GPT-4o
 main_run starts by looking at the config folder (under dojo). The experiment config is in '_exp' folder. To switch, change the solver.client to gdm (gdm config already provided in config/solver/client)
+- add GOOGLE_API_KEY="<<your api key>>" in the .env file
