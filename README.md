@@ -200,3 +200,6 @@ python -m dojo.main_run +_exp=run_example logger.use_wandb=False task.name=rando
 ```
 Example results:
 `aira-dojo/result_sample` (remove env_variable.json due to api-key security concern.)
+
+# Shifting to Gemini from GPT-4o
+main_run starts by looking at the config folder (under dojo). The experiment config is in '_exp' folder. To switch, change the solver.client to gdm (gdm config already provided in config/solver/client)
