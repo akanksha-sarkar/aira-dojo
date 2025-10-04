@@ -124,6 +124,10 @@ class ApptainerJupyterServer(JupyterConnectable):
 
             if "ERROR:" in line:
                 error_info = line.split("ERROR:")[1]
+                # Check if it's a cleanup error that we can ignore
+                if "container cleanup failed" in error_info and "no instance found" in error_info:
+                    log.warning(f"Ignoring cleanup error: {error_info}")
+                    continue
                 raise ValueError(f"Jupyter gateway server failed to start. {error_info}")
 
             match = re.search(r"is available at http://([^:]+):(\d+)", line)

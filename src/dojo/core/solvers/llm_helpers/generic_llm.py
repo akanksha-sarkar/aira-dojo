@@ -36,6 +36,7 @@ class GenericLLM:
         self.cfg = cfg
 
         # Initialize the LLM client using the provided client configuration
+        print("LLM CLIENT", self.cfg.llm.client)
         self.client = get_client(self.cfg.llm.client)
 
         # LLM Generation Arguments

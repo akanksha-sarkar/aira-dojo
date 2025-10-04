@@ -1,0 +1,14 @@
+
+_target_: dojo.config_dataclasses.task.wildfin.WildfinTaskConfig
+name: ???
+benchmark: wildfin
+
+# ~~~ Task data ~~~
+cache_dir: ${get_wildfin_data_dir:}
+
+# ~~~ Workspace preparation ~~~
+public_dir: ${task.cache_dir}/public
+private_dir: ${task.cache_dir}/private
+
+# ~~~ Evaluation and results ~~~
+submission_fname: submission.json
