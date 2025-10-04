@@ -173,6 +173,12 @@ If you found this work useful, please consider citing:
 This code is made available under a [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) license, as found in the [LICENSE](LICENSE) file. Some portions of the project are subject to separate license terms outlined in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
 
 # Logs
+
+## Installing Apptainer on Unicorn
+1. conda install -c conda-forge apptainer
+2. source /etc/profile.d/modules.sh
+3. module load apptainer-1.4.0
+4. apptainer --version (should be: apptainer version 1.4.0+105-g938b609b6)
 ## Things to change
 1. `aira-dojo/src/dojo/core/solvers/utils/tree_export.py` Line 103: change `exp_name=cfg.id --> exp_name=cfg.exp_name`
    Fix the bug for visualization output.

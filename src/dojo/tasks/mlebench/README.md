@@ -8,6 +8,7 @@
     ```
 
 2. Download additional files.
+Note: If git lfs is not installed: "conda install -c conda-forge git-lfs"
     ```
     git lfs fetch --all
     git lfs pull
