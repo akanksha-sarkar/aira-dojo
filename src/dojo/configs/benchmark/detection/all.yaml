@@ -3,6 +3,7 @@ _target_: dojo.config_dataclasses.benchmark.BenchmarkConfig
 name: detection
 tasks:
     - example-task
+    - wildfin
     # Add more Wildfin task names here as they become available
 
 # Overrides for all tasks

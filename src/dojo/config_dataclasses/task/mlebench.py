@@ -86,7 +86,7 @@ class MLEBenchTaskConfig(TaskConfig):
         },
     )
     cache_dir: str = field(
-        default=get_mlebench_data_dir(),
+        default_factory=get_mlebench_data_dir,
         metadata={
             "help": "The directory where the task data is cached.",
             "exclude_from_hash": True,
