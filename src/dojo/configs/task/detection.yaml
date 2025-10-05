@@ -1,8 +1,8 @@
 # @package task
 
 defaults:
-  - wildfin/_default
+  - detection/_default
 
-# This file allows you to use task=wildfin directly
+# This file allows you to use task=detection directly
 # The actual task name will be provided via command line override
 # or by creating specific task files in the wildfin/ directory

@@ -85,12 +85,12 @@ def get_mlebench_data_dir():
         raise ValueError(ENV_VAR_NOT_FOUND_ERR.format(env_var_name="MLE_BENCH_DATA_DIR"))
     return mlebench_data_dir
 
-def get_wildfin_data_dir():
-    """Get the Wildfin data directory, creating it if it doesn't exist."""
-    wildfin_data_dir = os.getenv("WILDFIN_DATA_DIR", "")
-    if not wildfin_data_dir:
-        raise ValueError(ENV_VAR_NOT_FOUND_ERR.format(env_var_name="WILDFIN_DATA_DIR"))
-    return wildfin_data_dir
+def get_detection_data_dir():
+    """Get the Detection data directory, creating it if it doesn't exist."""
+    detection_data_dir = os.getenv("DETECTION_DATA_DIR", "")
+    if not detection_data_dir:
+        raise ValueError(ENV_VAR_NOT_FOUND_ERR.format(env_var_name="DETECTION_DATA_DIR"))
+    return detection_data_dir
 
 
 def get_default_slurm_partition():

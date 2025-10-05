@@ -1,0 +1,16 @@
+
+# @package task
+
+_target_: dojo.config_dataclasses.task.detection.DetectionConfig
+name: ???
+benchmark: detection
+
+# ~~~ Task data ~~~
+cache_dir: ${get_detection_data_dir:}
+
+# ~~~ Workspace preparation ~~~
+public_dir: ${task.cache_dir}/${task.name}/public
+private_dir: ${task.cache_dir}/${task.name}/private
+
+# ~~~ Evaluation and results ~~~
+submission_fname: submission.json
