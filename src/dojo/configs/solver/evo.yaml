@@ -54,3 +54,5 @@ available_packages:
   - torch-geometric        # Graph neural network processing with PyTorch
   - bayesian-optimization  # Bayesian optimization tools
   - timm                   # PyTorch image models collection
+  - ultralytics             # Ultralytics object detection and segmentation library
+  - pycocotools             # COCO API for object detection and segmentation
