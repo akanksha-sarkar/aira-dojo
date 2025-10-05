@@ -5,9 +5,9 @@
 # LICENSE file in the root directory of this source tree.
 
 from dojo.tasks.mlebench.task import MLEBenchTask
-from dojo.tasks.wildfin.task import WildfinTask
+from dojo.tasks.detection.task import DetectionTask
 
 TASK_MAP = {
   "MLEBenchTaskConfig": MLEBenchTask,
-  "WildfinTaskConfig": WildfinTask
+  "DetectionConfig": DetectionTask
   }

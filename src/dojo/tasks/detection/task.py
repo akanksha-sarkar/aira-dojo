@@ -21,8 +21,8 @@ from dojo.core.tasks.constants import (
 )
 from dojo.utils.code_parsing import extract_code
 
-from dojo.config_dataclasses.task.wildfin import WildfinTaskConfig
-from dojo.tasks.wildfin.evaluate import evaluate_submission
+from dojo.config_dataclasses.task.detection import DetectionConfig
+from dojo.tasks.detection.evaluate import evaluate_submission
 
 
 
@@ -50,7 +50,7 @@ def parse_report(report: Dict[str, Any]):
     return parsed_report
 
 
-class WildfinTask(Task):
+class DetectionTask(Task):
     """
     Represents an Wildfin task.
 
@@ -66,7 +66,7 @@ class WildfinTask(Task):
     _solution_script = "solution.py"
     _submission_file_path = None
 
-    def __init__(self, cfg: WildfinTaskConfig) -> None:
+    def __init__(self, cfg: DetectionConfig) -> None:
         """
         Initialize the WildfinTask.
 

@@ -1,6 +1,6 @@
 # @package task
 
 defaults:
-  - wildfin/_default
+  - detection/_default
 
 name: example-task

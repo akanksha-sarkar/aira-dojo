@@ -9,9 +9,9 @@ from dataclasses import dataclass, field
 from omegaconf import SI, MISSING
 
 from dojo.config_dataclasses.task.base import TaskConfig
-from dojo.utils.environment import get_wildfin_data_dir
+from dojo.utils.environment import get_detection_data_dir
 
-wildfin_operator_prompts: dict[str, str] = {
+detection_operator_prompts: dict[str, str] = {
     "draft_intro": """TBD""",
     "improve_intro": """TBD""",
     "debug_intro": """TBD""",
@@ -52,9 +52,9 @@ wildfin_operator_prompts: dict[str, str] = {
 
 
 @dataclass
-class WildfinTaskConfig(TaskConfig):
+class DetectionConfig(TaskConfig):
     benchmark: str = field(
-        default="wildfin",
+        default="detection",
         metadata={
             "help": "Type of the task.",
         },
@@ -68,7 +68,7 @@ class WildfinTaskConfig(TaskConfig):
         },
     )
     cache_dir: str = field(
-        default=get_wildfin_data_dir(),
+        default=get_detection_data_dir(),
         metadata={
             "help": "The directory where the task data is cached.",
             "exclude_from_hash": True,

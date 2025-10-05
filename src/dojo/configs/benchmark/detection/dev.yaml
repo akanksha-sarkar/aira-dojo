@@ -1,6 +1,6 @@
 _target_: dojo.config_dataclasses.benchmark.BenchmarkConfig
 
-name: wildfin
+name: detection
 tasks:
     - example-task
 
