@@ -45,7 +45,7 @@ def _main(cfg: RunConfig):
         "Path to the directory in which the launch artefacts will be written must be specified."
     )
     log.debug(f"Output dir: {cfg.logger.output_dir}")
-    output_dir = Path(cfg.logger.output_dir)
+    output_dir = Path(cfg.logger.output_dir) # is this coming from .env? 
     output_dir.mkdir(parents=True, exist_ok=True)
     cfg.save()
 
@@ -148,7 +148,6 @@ def main(_cfg: DictConfig):
     # Pretty print the config
     if cfg.logger.print_config:
         rich_utils.print_config_tree(cfg_dict_config)
-
     _main(cfg)
 
 

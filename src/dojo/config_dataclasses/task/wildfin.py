@@ -89,7 +89,7 @@ class WildfinTaskConfig(TaskConfig):
         },
     )
     submission_fname: str = field(
-        default="submission.csv",
+        default="submission.json",
         metadata={
             "help": "The name of the submission file.",
             "exclude_from_hash": True,
