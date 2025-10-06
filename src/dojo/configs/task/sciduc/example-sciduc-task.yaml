@@ -1,0 +1,6 @@
+# @package task
+
+defaults:
+  - sciduc/_default
+
+name: example-sciduc-task
