@@ -1,0 +1,6 @@
+_target_: dojo.config_dataclasses.benchmark.BenchmarkConfig
+
+name: sciduc
+tasks:
+    - example-sciduc-task
+

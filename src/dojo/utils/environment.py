@@ -92,6 +92,12 @@ def get_detection_data_dir():
         raise ValueError(ENV_VAR_NOT_FOUND_ERR.format(env_var_name="DETECTION_DATA_DIR"))
     return detection_data_dir
 
+def get_sciduc_data_dir():
+    """Get the SciDUC data directory, creating it if it doesn't exist."""
+    sciduc_data_dir = os.getenv("SCIDUC_DATA_DIR", "")
+    if not sciduc_data_dir:
+        raise ValueError(ENV_VAR_NOT_FOUND_ERR.format(env_var_name="SCIDUC_DATA_DIR"))
+    return sciduc_data_dir
 
 def get_default_slurm_partition():
     """Get the default Slurm partition from the configuration."""
