@@ -117,3 +117,7 @@ wandb
 weave
 xgboost
 xlrd
+
+# Detection packages
+ultralytics
+pycocotools    

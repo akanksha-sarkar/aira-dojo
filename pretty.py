@@ -41,8 +41,8 @@ def infer_run_name(records, fallback: str):
 
 def main():
     ap = argparse.ArgumentParser(description="Extract steps into folders with code and metadata.")
-    ap.add_argument("--input", type=Path, help="Path to JSON/NDJSON file containing step records.", default="/home/eyl45/Sun/aira-dojo/shared/logs/aira-dojo/user_eyl45_issue_example/user_eyl45_issue_example_seed_42_id_3b44eb0ac55a45816cd4bc26335e4c6d4552fbd1a9ad7a7f7ccade7d/checkpoint/journal.jsonl")
-    ap.add_argument("-o", "--out-dir", type=Path, default="/home/eyl45/Sun/aira-dojo/shared/logs/aira-dojo/user_eyl45_issue_example/user_eyl45_issue_example_seed_42_id_3b44eb0ac55a45816cd4bc26335e4c6d4552fbd1a9ad7a7f7ccade7d", help="Base output directory.")
+    ap.add_argument("--input", type=Path, help="Path to JSON/NDJSON file containing step records.", default="/home/eyl45/Sun/aira-dojo/shared/logs/aira-dojo/user_eyl45_issue_example/user_eyl45_issue_example_seed_42_id_89b33b068ef2a0b880d5b30fdb51f02022854258de304a704b228059/checkpoint/journal.jsonl")
+    ap.add_argument("-o", "--out-dir", type=Path, default="/home/eyl45/Sun/aira-dojo/shared/logs/aira-dojo/user_eyl45_issue_example/user_eyl45_issue_example_seed_42_id_89b33b068ef2a0b880d5b30fdb51f02022854258de304a704b228059", help="Base output directory.")
     ap.add_argument("--run-name", type=str, default=None, help="Optional run name (folder under out-dir).")
     ap.add_argument("--code-filename", type=str, default="code.py", help="Filename for code file in each step dir.")
     args = ap.parse_args()

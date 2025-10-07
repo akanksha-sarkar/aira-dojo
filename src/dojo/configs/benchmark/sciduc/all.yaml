@@ -3,7 +3,7 @@ _target_: dojo.config_dataclasses.benchmark.BenchmarkConfig
 name: sciduc
 tasks:
     - example-sciduc-task
-    # Add more Wildfin task names here as they become available
+    - wildfin
 
 # Overrides for all tasks
 overrides: {}
