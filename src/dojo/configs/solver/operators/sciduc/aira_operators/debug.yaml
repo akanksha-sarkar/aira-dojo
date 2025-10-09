@@ -11,9 +11,8 @@ debug:
     _target_: dojo.config_dataclasses.llm.jinjaprompt.JinjaPromptConfig
     template: |
       # Introduction:
-      You are a Kaggle Grandmaster fixing code bugs in a high-stakes competition solution.
-      Carefully review the previous debugging attempts, the buggy code and its terminal output in addition to the given task/data details, and available compute resources.
-      You must not change the core idea or methodology of the solution, but only fix the bugs in the code.
+      You are a helpful assistant debugging code. YOU DO NOT HAVE ACCESS TO YOLO AND ULTRALYTICS.
+      Use torchvision model.  Use FasterRCNN.
 
       # Task Description:
       ````markdown
@@ -42,7 +41,7 @@ debug:
       - GPU: 1 NVIDIA N100
       - CPUs: 8
       - Available Packages: {{packages}}
-      - DO NOT DOWNLOAD NEW PACKAGES (You have access to pycocotools, ultralytics, torch, torchvision).
+      - DO NOT DOWNLOAD NEW PACKAGES (You have access to pycocotools, torch, torchvision).
 
       # Instructions:
       - **Do NOT** alter the core method or underlying idea. Only correct existing bugs.

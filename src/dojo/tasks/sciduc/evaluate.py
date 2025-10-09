@@ -13,7 +13,7 @@ def evaluate_submission(submission_path: Path, data_dir: Path, results_output_di
     submission_exists = submission_path.is_file() and submission_path.suffix.lower() == ".json"
 
     if submission_exists:
-        coco_gt = COCO(os.path.join(data_dir, "annotations.json")) # path to test annotations in the task folder
+        coco_gt = COCO(os.path.join(data_dir, "val_annotations.json")) # path to test annotations in the task folder
         coco_dt = coco_gt.loadRes(submission_path)
         score_dict = evaluate(coco_gt, coco_dt)
         logger.warning(
@@ -61,3 +61,6 @@ def evaluate(coco_gt, coco_dt, verbose=False):
         # print(f"{name:<15}: {value:.4f}")
         metrics[name] = value
     return {"AP@0.5": metrics["AP@0.5"]}
+
+
+#evaluate_submission("", "/share/j_sun/ethan/sciduc/wildfin/private", ".")

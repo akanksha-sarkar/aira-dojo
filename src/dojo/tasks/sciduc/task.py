@@ -143,7 +143,7 @@ class SciDucTask(Task):
         has_json_submission = self._submission_file_path.exists()
         eval_result[VALID_SOLUTION] = False
         if has_json_submission:
-            is_valid_submission, message = validate_submission(self._submission_file_path, self.cfg.name)
+            is_valid_submission, message = validate_submission(self._submission_file_path)
             eval_result[VALID_SOLUTION] = is_valid_submission
             eval_result[VALID_SOLUTION_FEEDBACK] = message
             self.logger.info(

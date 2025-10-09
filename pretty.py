@@ -41,8 +41,8 @@ def infer_run_name(records, fallback: str):
 
 def main():
     ap = argparse.ArgumentParser(description="Extract steps into folders with code and metadata.")
-    ap.add_argument("--input", type=Path, help="Path to JSON/NDJSON file containing step records.", default="/home/eyl45/Sun/aira-dojo/shared/logs/aira-dojo/user_eyl45_issue_example/4/checkpoint/journal.jsonl")
-    ap.add_argument("-o", "--out-dir", type=Path, default="/home/eyl45/Sun/aira-dojo/shared/logs/aira-dojo/user_eyl45_issue_example/4", help="Base output directory.")
+    ap.add_argument("--input", type=Path, help="Path to JSON/NDJSON file containing step records.", default="/home/as2637/dojo_debug/aira-dojo/shared/logs/aira-dojo/user_as2637_issue_example/user_as2637_issue_example_seed_42_id_9b/checkpoint/journal.jsonl")
+    ap.add_argument("-o", "--out-dir", type=Path, default="/home/as2637/dojo_debug/aira-dojo/shared/logs/aira-dojo/user_as2637_issue_example/user_as2637_issue_example_seed_42_id_9b", help="Base output directory.")
     ap.add_argument("--run-name", type=str, default=None, help="Optional run name (folder under out-dir).")
     ap.add_argument("--code-filename", type=str, default="code.py", help="Filename for code file in each step dir.")
     args = ap.parse_args()

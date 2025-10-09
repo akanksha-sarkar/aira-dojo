@@ -79,7 +79,7 @@ fi
 
 # set SUPERIMAGE_VERSION to default if not set
 if [ -z "$SUPERIMAGE_VERSION" ]; then
-    SUPERIMAGE_VERSION=2025-03-18
+    SUPERIMAGE_VERSION=2025-10-07
 fi
 
 # if not BASE_OVERLAYS is set, set it to empty
@@ -90,10 +90,10 @@ fi
 
 cache_to_tmp() {
     echo "Patching APPTAINER_BIND" >&2
-    BASE="/shared/cache/dojo/tasks/mlebench"
+    BASE="/shared/cache/dojo/tasks/sciduc"
     echo "Original: $APPTAINER_BIND" >&2
     # Grab the first bind entry that starts with BASE/
-    ORIG=$(echo $APPTAINER_BIND | grep -Eo "(^|,)/.*?/shared/cache/dojo/tasks/mlebench/.*?/prepared/public" || true)
+    ORIG=$(echo $APPTAINER_BIND | grep -Eo "(^|,)/.*?/shared/cache/dojo/tasks/sciduc/.*?/prepared/public" || true)
     echo "Original path: $ORIG" >&2
     [ -z "$ORIG" ] && return 0     # Nothing to patch—exit silently
     echo "Original path: $ORIG" >&2
@@ -191,7 +191,7 @@ if [[ "$NO_PROXY" == *"huggingface.co"* ]] || [[ "$no_proxy" == *"huggingface.co
   echo "[WARN] NO_PROXY contains huggingface.co, which may cause issues with Hugging Face Hub" >&2
 fi
 # ---------------------------------------------------------------------------
-
+echo "HF_CACHE_HOST = $HF_CACHE_HOST"
 
 apptainer instance run \
     --containall \
@@ -215,6 +215,8 @@ apptainer instance run \
     --env CUDA_LAUNCH_BLOCKING=1 \
     --env NLTK_DATA=$RAD_NLTK_DATA \
     --env TF_CPP_MIN_LOG_LEVEL=3 \
+    --env TORCH_HOME=/cache/torch \
+    --env XDG_CACHE_HOME=/cache/xdg \
     --env JUPYTER_RUNTIME_DIR=/tmp/jupyter_runtime \
     --env HOME=/tmp \
     --env HF_HOME=/cache/hub \
@@ -223,6 +225,9 @@ apptainer instance run \
     $TMP_BASE_DIR/superimage.root.$SUPERIMAGE_VERSION.sif \
     "$INSTANCE_NAME" \
     $@
+
+echo "[DEBUG] Listing files in ~/.cache:"
+ls -lah ~/.cache > output.txt
 
 echo "[DEBUG] Inspecting container filesystem layout..." >&2
 apptainer exec instance://$INSTANCE_NAME bash -c '

@@ -11,12 +11,8 @@ improve:
     _target_: dojo.config_dataclasses.llm.jinjaprompt.JinjaPromptConfig
     template: |
       # Introduction:
-      You are a Kaggle Grandmaster attending a high-stakes competition. 
-      Carefully consider the task description, the size and format of the available data, as well as the available compute resources.
-      Your goal is to provide EXACTLY ONE IDEA AND ONE CODE IMPLEMENTATION of the idea, different from those previously explored, that improves upon an existing solution to the task.
-      Be specific about each step of the proposed improvement, including data processing and feature engineering, the modeling and optimization method.
-      You MUST PROVIDE an improvement IDEA/PLAN in natural language and CODE in python that DOES NOT INVOLVE any exploratory data analysis.    
-
+      You are a helpful assistant improving code.  
+      Use torchvision model. Use FasterRCNN.
       # TASK DESCRIPTION
       ````
       {{task_desc}}
