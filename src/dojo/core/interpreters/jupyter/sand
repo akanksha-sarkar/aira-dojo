@@ -137,11 +137,31 @@ cache_to_tmp() {
     fi
 }
 
-cache_to_tmp
+# cache_to_tmp
 APPTAINER_BIND=$(echo "$APPTAINER_BIND" | sed 's#:/root/data:ro#:/data:ro#g')
 # Add DNS resolution for network connectivity
 APPTAINER_BIND="${APPTAINER_BIND},/etc/resolv.conf:/etc/resolv.conf:ro"
 export APPTAINER_BIND
+
+APPTAINER_BIND=$(echo "$APPTAINER_BIND" | sed 's#:/root/data:ro#:/data:ro#g')
+# Add DNS resolution for network connectivity
+APPTAINER_BIND="${APPTAINER_BIND},/etc/resolv.conf:/etc/resolv.conf:ro"
+export APPTAINER_BIND
+
+# --- DEBUG: Verify that the bind paths exist and point to the correct dataset ---
+echo "[DEBUG] Current APPTAINER_BIND: $APPTAINER_BIND" >&2
+HOST_PATH=$(echo "$APPTAINER_BIND" | cut -d':' -f1)
+echo "[DEBUG] Checking real host path: $HOST_PATH" >&2
+if [ -d "$HOST_PATH" ]; then
+    echo "[DEBUG] Host path exists. Realpath: $(realpath "$HOST_PATH")" >&2
+    echo "[DEBUG] Filesystem info:" >&2
+    df -hT "$HOST_PATH" >&2 | head -n 2
+    echo "[DEBUG] First few entries:" >&2
+    ls -lh "$HOST_PATH" | head >&2
+else
+    echo "[WARN] Host path $HOST_PATH does NOT exist or is not accessible!" >&2
+fi
+# -------------------------------------------------------------------------------
 
 if [ ! -f $TMP_BASE_DIR/superimage.root.$SUPERIMAGE_VERSION.sif ]; then
     echo "Copying image.sif from superimage to /tmp/progress.sif" >&2
@@ -204,7 +224,31 @@ apptainer instance run \
     "$INSTANCE_NAME" \
     $@
 
+echo "[DEBUG] Inspecting container filesystem layout..." >&2
+apptainer exec instance://$INSTANCE_NAME bash -c '
+    echo "[DEBUG - inside container] Current working directory:" && pwd
+    echo "[DEBUG - inside container] Top-level directories:" && ls -lh /
+    echo "[DEBUG - inside container] /data directory contents (if present):" && ls -lh /data || echo "No /data directory"
+    echo "[DEBUG - inside container] ./data directory contents (relative):" && ls -lh ./data || echo "No ./data directory"
+    echo "[DEBUG - inside container] Present working directory structure:" && ls -lh | head -n 20
+' >&2
 
+echo "[DEBUG] Checking dataset files and symlink integrity..." >&2
+apptainer exec instance://$INSTANCE_NAME bash -c '
+    echo "[DEBUG - inside container] train/images directory status:" && \
+    if [ -d "/data/train/images" ]; then
+        echo "[DEBUG] Found /data/train/images, listing 10 entries:" && \
+        ls -lh /data/train/images | head -n 10 && \
+        echo "[DEBUG] Counting total files and broken symlinks:" && \
+        echo "Total files:" $(find /data/train/images -type f | wc -l) && \
+        echo "Total symlinks:" $(find /data/train/images -type l | wc -l) && \
+        echo "Broken symlinks:" $(find /data/train/images -xtype l | wc -l) && \
+        echo "Example broken symlinks (if any):" && \
+        find /data/train/images -xtype l | head -n 10 || echo "[DEBUG] No broken symlinks detected."
+    else
+        echo "[ERROR] /data/train/images not found!"
+    fi
+' >&2
 echo "After starting"
 
 # to pipe the output of the instance

@@ -1,7 +1,7 @@
 # @package _global_
 defaults:
   - override /interpreter: jupyter
-  - override /solver: mlebench/greedy
+  - override /solver: sciduc/greedy
   - override /task: mlebench/aerial-cactus-identification
   - override /solver/client@solver.operators.analyze.llm.client: gdm
   - override /solver/client@solver.operators.debug.llm.client: gdm
@@ -12,4 +12,4 @@ metadata:
   git_issue_id: example # Ideally, this should be a number fetched from github issue when running an actual experiment.
 
 solver:
-  step_limit: 5
+  step_limit: 9
