@@ -14,9 +14,15 @@ import re
 import black
 import logging
 import json
-
+from pathlib import Path
 log = logging.getLogger(__name__)
 
+def write_code_to_file(code: str, path: Path):
+    """
+    Write code to a file.
+    """
+    with open(path, "w") as f:
+        f.write(code)
 
 def is_valid_python_script(script: str) -> bool:
     """
