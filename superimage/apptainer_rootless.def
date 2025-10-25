@@ -74,7 +74,6 @@ From: condaforge/mambaforge:latest
         seaborn \
         transformers \
         jupyter-kernel-gateway
-
     pip install -r /tmp/pip.requirements.txt
 
     # Create necessary directories in user space
