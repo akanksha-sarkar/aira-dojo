@@ -22,9 +22,6 @@ from dojo.core.tasks.constants import (
 from dojo.utils.code_parsing import extract_code
 
 from dojo.config_dataclasses.task.sciduc import SciDucConfig
-from dojo.tasks.sciduc.evaluate import evaluate_submission
-
-
 
 def validate_submission(submission: Path) -> tuple[bool, str]:
     """
@@ -185,24 +182,27 @@ class SciDucTask(Task):
         interpreter: Optional[Interpreter] = None,
         aux_info: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
-        if self._submission_file_path is None:
-            raise Exception("The path to the submission file must be set.")
-
-        exec_output = interpreter.run(solution, file_name=self._solution_script)
+        write_code_to_file(solution, self.program_path)
+        executable = format_code(self.eval_script)
+        interpreter = state["solver_interpreter"]
+        exec_output: ExecutionResult = interpreter.run(executable, file_name=self._solution_script)
         eval_result = {EXECUTION_OUTPUT: exec_output}
-
-        interpreter.fetch_file(self._submission_file_path)
-        has_json_submission = self._submission_file_path.exists()
-        assert has_json_submission, "The final solution is not valid!"
-
-        test_fitness, report = evaluate_submission(
-            submission_path=self._submission_file_path,
-            data_dir=Path(self.cfg.cache_dir),
-            results_output_dir=Path(self.cfg.results_output_dir),
-        )
-        eval_result[TEST_FITNESS] = test_fitness
-        eval_result[AUX_EVAL_INFO] = report
-
+        print("EXEC OUTPUT: ", exec_output)
+        write_code_to_file("", self.program_path)
+        if (not exec_output.exit_code == 0) or exec_output.timed_out:
+            self.logger.error(f"Execution failed - exit code: {exec_output.exit_code} - timed out: {exec_output.timed_out} - execution time: {exec_output.exec_time}")
+        else: 
+            self.logger.info(f"Execution successful.")      
+            metrics = extract_metrics(exec_output.term_out)
+            print("METRICS: ", metrics)
+            if metrics:
+                eval_result[VALID_SOLUTION] = True
+                eval_result[VALID_SOLUTION_FEEDBACK] = "Solution is valid"
+                eval_result[TEST_FITNESS] = metrics["AP@0.5"]
+                eval_result[AUX_EVAL_INFO] = metrics
+                eval_result[AUX_EVAL_INFO]["score"] = eval_result[TEST_FITNESS]
+            else:
+                eval_result[VALID_SOLUTION] = False
         return eval_result
 
     def close(self, state):

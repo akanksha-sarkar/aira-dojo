@@ -17,10 +17,33 @@ apptainer instance list -a -j >&2
 
 set -e
 
+# ------------------------------------------------------------------------------
+# TMP_BASE_DIR handling
+# ------------------------------------------------------------------------------
+
+# 1️⃣ Use user-defined TMP_BASE_DIR or fallback to system default
 if [[ -z "$TMP_BASE_DIR" ]]; then
-    TMP_BASE_DIR="/scratch/$SLURM_JOBID/"
+    TMP_BASE_DIR="/tmp/$USER/apptainer"
 fi
-mkdir -p $TMP_BASE_DIR
+
+# Optional: verify TMP_BASE_DIR too
+echo "[DEBUG] Contents of TMP_BASE_DIR ($TMP_BASE_DIR):"
+ls -lh "$TMP_BASE_DIR" || echo "[WARN] Could not list $TMP_BASE_DIR" >&2
+# 2️⃣ Determine a unique run ID (from job system or timestamp)
+if [[ -n "$SLURM_JOBID" ]]; then
+    RUN_ID="$SLURM_JOBID"
+elif [[ -n "$LSB_JOBID" ]]; then
+    RUN_ID="$LSB_JOBID"
+else
+    RUN_ID=$(date +%Y%m%d-%H%M%S)
+fi
+
+# 3️⃣ Construct the full path
+TMP_RUN_DIR="${TMP_BASE_DIR}/${RUN_ID}"
+
+# 4️⃣ Create it safely
+mkdir -p "$TMP_RUN_DIR"
+echo "[INFO] Using TMP_RUN_DIR=$TMP_RUN_DIR" >&2
 
 # for some crazy reason, slurm doesn't set/enforce max memory size
 # and doesn't kill the processes exceeding it
@@ -38,7 +61,7 @@ ulimit -v 100000000 # 100GBs
 
 # First, we make unique identifier and the temporary overlay image
 echo "Making tmp directory" >&2
-TMP_DIR=$(mktemp -d -p $TMP_BASE_DIR sandbox-XXXXXXXXXX)
+TMP_DIR=$(mktemp -d -p $TMP_RUN_DIR sandbox-XXXXXXXXXX)
 echo "Created temporary dir $TMP_DIR. As it's in /tmp, slurm will handle the cleanup properly" >&2
 INSTANCE_NAME=$(basename "$TMP_DIR")
 
@@ -79,8 +102,18 @@ fi
 
 # set SUPERIMAGE_VERSION to default if not set
 if [ -z "$SUPERIMAGE_VERSION" ]; then
-    SUPERIMAGE_VERSION=2025-10-07
+    SUPERIMAGE_VERSION=10-24-25
 fi
+
+echo "[DEBUG] Checking if SIF file already exists in TMP..."
+echo "TMP_BASE_DIR: $TMP_BASE_DIR"
+echo "SUPERIMAGE_VERSION: $SUPERIMAGE_VERSION"
+echo "[DEBUG] TMP SIF path:      $TMP_BASE_DIR/superimage.root.$SUPERIMAGE_VERSION.sif"
+echo "[DEBUG] Source SIF path:   $SUPERIMAGE_DIR/superimage.root.$SUPERIMAGE_VERSION.sif"
+
+# List files in superimage directory for visibility
+echo "[DEBUG] Contents of SUPERIMAGE_DIR ($SUPERIMAGE_DIR):"
+ls -lh "$SUPERIMAGE_DIR" || echo "[WARN] Could not list $SUPERIMAGE_DIR" >&2
 
 # if not BASE_OVERLAYS is set, set it to empty
 if [ -z "$BASE_OVERLAYS" ]; then
@@ -100,7 +133,7 @@ cache_to_tmp() {
     TASKNAME=$(basename $(realpath "$ORIG/../..")) # Get the task name
     echo "TASKNAME: $TASKNAME" >&2
 
-    NEW="$TMP_BASE_DIR/${ORIG}"              # Mirror path under /tmp
+    NEW="$TMP_RUN_DIR/${ORIG}"              # Mirror path under /tmp
     DONE_MARKER="$NEW/.completed"
 
     
@@ -161,24 +194,34 @@ if [ -d "$HOST_PATH" ]; then
 else
     echo "[WARN] Host path $HOST_PATH does NOT exist or is not accessible!" >&2
 fi
-# -------------------------------------------------------------------------------
+
+
+# --- Add custom work directory bind ---
+WORK_DIR="${BUCKTALES_TASK_DIR}"  # <-- replace with your absolute path
+if [ -d "$WORK_DIR" ]; then
+    echo "[DEBUG] Adding custom work bind: $WORK_DIR:/work" >&2
+    APPTAINER_BIND="${APPTAINER_BIND},${WORK_DIR}:/work:ro"
+else
+    echo "[WARN] WORK_DIR does not exist: $WORK_DIR" >&2
+fi
+export APPTAINER_BIND
 
 if [ ! -f $TMP_BASE_DIR/superimage.root.$SUPERIMAGE_VERSION.sif ]; then
     echo "Copying image.sif from superimage to /tmp/progress.sif" >&2
-    cp ${SUPERIMAGE_DIR}superimage.root.$SUPERIMAGE_VERSION.sif $TMP_BASE_DIR/progress.superimage.root.$SUPERIMAGE_VERSION.sif
+    cp ${SUPERIMAGE_DIR}/superimage.root.$SUPERIMAGE_VERSION.sif $TMP_BASE_DIR/progress.superimage.root.$SUPERIMAGE_VERSION.sif
     # to make sure it's not half-copied
     mv $TMP_BASE_DIR/progress.superimage.root.$SUPERIMAGE_VERSION.sif $TMP_BASE_DIR/superimage.root.$SUPERIMAGE_VERSION.sif
 fi
 
 
-if [[ -z "$HF_CACHE_HOST" ]]; then
-  if [[ -d /shared && -w /shared ]]; then
-    HF_CACHE_HOST="/shared/hf-cache"
-  else
-    HF_CACHE_HOST="$TMP_BASE_DIR/hf-cache" 
-  fi
-fi
-mkdir -p "$HF_CACHE_HOST/hub" "$HF_CACHE_HOST/transformers"
+# if [[ -z "$HF_CACHE_HOST" ]]; then
+#   if [[ -d /shared && -w /shared ]]; then
+#     HF_CACHE_HOST="/shared/hf-cache"
+#   else
+#     HF_CACHE_HOST="$TMP_RUN_DIR/hf-cache" 
+#   fi
+# fi
+# mkdir -p "$HF_CACHE_HOST/hub" "$HF_CACHE_HOST/transformers"
 
 if [[ -z "$APPTAINER_BIND" ]]; then
   APPTAINER_BIND="$HF_CACHE_HOST:/cache:rw"
@@ -197,7 +240,8 @@ apptainer instance run \
     --containall \
     --cleanenv \
     --no-home \
-    --writable-tmpfs \
+    $BASE_OVERLAYS \
+    --overlay "$OVERLAY_PATH" \
     --env SSH_PUBLIC_KEY="$SSH_PUBLIC_KEY" \
     --env KG_IP="$KG_IP" \
     --env PYTHONUNBUFFERED=1 \

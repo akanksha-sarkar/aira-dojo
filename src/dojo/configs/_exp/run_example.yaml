@@ -2,7 +2,7 @@
 defaults:
   - override /interpreter: jupyter
   - override /solver: sciduc/greedy
-  - override /task: mlebench/aerial-cactus-identification
+  - override /task: sciduc/bucktales
   - override /solver/client@solver.operators.analyze.llm.client: gdm
   - override /solver/client@solver.operators.debug.llm.client: gdm
   - override /solver/client@solver.operators.draft.llm.client: gdm

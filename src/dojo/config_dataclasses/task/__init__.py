@@ -6,13 +6,13 @@
 
 # Lazy imports to avoid circular import issues
 def _get_task_map():
-    from dojo.tasks.mlebench.task import MLEBenchTask
-    from dojo.tasks.detection.task import DetectionTask
+    # from dojo.tasks.mlebench.task import MLEBenchTask
+    # from dojo.tasks.detection.task import DetectionTask
     from dojo.tasks.sciduc.task import SciDucTask
     
     return {
-        "MLEBenchTaskConfig": MLEBenchTask,
-        "DetectionConfig": DetectionTask,
+        # "MLEBenchTaskConfig": MLEBenchTask,
+        # "DetectionConfig": DetectionTask,
         "SciDucConfig": SciDucTask
     }
 

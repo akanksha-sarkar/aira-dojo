@@ -4,6 +4,7 @@ name: sciduc
 tasks:
     - example-sciduc-task
     - wildfin
+    - bucktales
 
 # Overrides for all tasks
 overrides: {}

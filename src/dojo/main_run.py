@@ -68,9 +68,9 @@ def _main(cfg: RunConfig):
     import aira_core
 
     log.info(f"`aira_core` package source path: {inspect.getsourcefile(aira_core)}")
-    import mlebench
+    # import mlebench
 
-    log.info(f"`mlebench` package source path: {inspect.getsourcefile(mlebench)}")
+    # log.info(f"`mlebench` package source path: {inspect.getsourcefile(mlebench)}")
 
     # Create the output directory if it doesn't exist
     log.info(f"Saving experiment artifacts to: {cfg.logger.output_dir}")

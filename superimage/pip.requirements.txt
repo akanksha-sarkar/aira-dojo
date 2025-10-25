@@ -34,7 +34,6 @@ hyperopt
 igraph>=0.11.3
 imagecodecs
 imbalanced-learn
-imgaug
 implicit
 ipykernel
 ipython==8.31
