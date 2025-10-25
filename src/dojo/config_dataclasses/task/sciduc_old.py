@@ -59,15 +59,9 @@ class SciDucConfig(TaskConfig):
             "help": "Type of the task.",
         },
     )
-    task_dir: str = field(
-        default=SI("${task.cache_dir}/${task.name}"),
-        metadata={
-            "help": "The directory where the data is stored.",
-            "exclude_from_hash": True,
-        },
-    )
+
     data_dir: str = field(
-        default=SI("${task.cache_dir}/${task.name}/data"),
+        default=SI("${task.public_dir}"),
         metadata={
             "help": "The directory where the data is stored.",
             "exclude_from_hash": True,
@@ -77,6 +71,20 @@ class SciDucConfig(TaskConfig):
         default=get_sciduc_data_dir(),
         metadata={
             "help": "The directory where the task data is cached.",
+            "exclude_from_hash": True,
+        },
+    )
+    public_dir: str = field(
+        default=SI("${task.cache_dir}/${task.name}/prepared/public"),
+        metadata={
+            "help": "The directory where the public data is stored.",
+            "exclude_from_hash": True,
+        },
+    )
+    private_dir: str = field(
+        default=SI("${task.cache_dir}/${task.name}/prepared/private"),
+        metadata={
+            "help": "The directory where the private data is stored.",
             "exclude_from_hash": True,
         },
     )

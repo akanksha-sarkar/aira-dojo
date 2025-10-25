@@ -108,7 +108,7 @@ class SolverConfig(BaseConfig):
     )
 
     use_test_score: bool = field(
-        default=False,
+        default=True,
         metadata={
             "description": "Whether to use the test score for evaluation",
             "example": True,

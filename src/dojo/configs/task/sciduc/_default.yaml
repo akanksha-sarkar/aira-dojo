@@ -9,8 +9,7 @@ benchmark: sciduc
 cache_dir: ${get_sciduc_data_dir:}
 
 # ~~~ Workspace preparation ~~~
-public_dir: ${task.cache_dir}/${task.name}/public
-private_dir: ${task.cache_dir}/${task.name}/private
+task_dir: ${task.cache_dir}/${task.name}
 
 # ~~~ Evaluation and results ~~~
 submission_fname: submission.json

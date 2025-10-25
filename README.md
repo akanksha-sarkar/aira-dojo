@@ -210,3 +210,46 @@ Example results:
 # Shifting to Gemini from GPT-4o
 main_run starts by looking at the config folder (under dojo). The experiment config is in '_exp' folder. To switch, change the solver.client to gdm (gdm config already provided in config/solver/client)
 - add GOOGLE_API_KEY="<<your api key>>" in the .env file
+
+## Running environment on its own
+
+In one terminal
+- chmod +x src/dojo/core/interpreters/jupyter/sand
+- set -a
+- source .env
+- set +a
+- bash src/dojo/core/interpreters/jupyter/sand
+In other terminal
+- apptainer instance list
+- apptainer shell instance://{id}
+
+## SciDUC Task Setup
+
+Each task should have the following format:
+- data
+- src
+- description.md
+- evaluate.py
+- program.py
+
+### Data (folder)
+
+This section should contain all of the data, it must not be symlinked. 
+
+### Src (folder)
+
+This folder should contain any helpful functions that are used in the evaluate file and/or that you want to provide for the agent. This can sort of be viewed as 
+an API for program writing agents.
+
+### Description.md
+
+Detailed description of the task and what the agent is supposed to be doing. Should include a detailed description of data representation and any useful functions that the agent has access to. 
+
+### evaluate.py
+
+This file will be literally copied as text, reformatted, then fed into the interpreter.
+
+The calculated metric to be optimized should be printed at the end like the following: print("METRICS:", metric).
+
+
+
