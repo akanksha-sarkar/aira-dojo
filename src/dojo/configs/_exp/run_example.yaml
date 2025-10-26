@@ -12,4 +12,4 @@ metadata:
   git_issue_id: example # Ideally, this should be a number fetched from github issue when running an actual experiment.
 
 solver:
-  step_limit: 2
+  step_limit: 20

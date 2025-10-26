@@ -18,32 +18,59 @@ apptainer instance list -a -j >&2
 set -e
 
 # ------------------------------------------------------------------------------
-# TMP_BASE_DIR handling
+# TMP_BASE_DIR and TMP_RUN_DIR setup
 # ------------------------------------------------------------------------------
 
-# 1️⃣ Use user-defined TMP_BASE_DIR or fallback to system default
+# Default base dir if not already set
 if [[ -z "$TMP_BASE_DIR" ]]; then
-    TMP_BASE_DIR="/tmp/$USER/apptainer"
+    TMP_BASE_DIR="/tmp/${USER}/apptainer"
 fi
 
-# Optional: verify TMP_BASE_DIR too
-echo "[DEBUG] Contents of TMP_BASE_DIR ($TMP_BASE_DIR):"
-ls -lh "$TMP_BASE_DIR" || echo "[WARN] Could not list $TMP_BASE_DIR" >&2
-# 2️⃣ Determine a unique run ID (from job system or timestamp)
-if [[ -n "$SLURM_JOBID" ]]; then
-    RUN_ID="$SLURM_JOBID"
-elif [[ -n "$LSB_JOBID" ]]; then
-    RUN_ID="$LSB_JOBID"
-else
-    RUN_ID=$(date +%Y%m%d-%H%M%S)
+echo "[DEBUG] TMP_BASE_DIR: $TMP_BASE_DIR"
+
+# Only create TMP_RUN_DIR if not provided
+if [[ -z "$TMP_RUN_DIR" ]]; then
+    # Try to list contents for debugging
+    ls -lh "$TMP_BASE_DIR" 2>/dev/null || echo "[WARN] Could not list $TMP_BASE_DIR" >&2
+
+    # Determine unique run ID
+    if [[ -n "$SLURM_JOBID" ]]; then
+        RUN_ID="$SLURM_JOBID"
+    elif [[ -n "$LSB_JOBID" ]]; then
+        RUN_ID="$LSB_JOBID"
+    else
+        RUN_ID=$(date +%Y%m%d-%H%M%S)
+    fi
+
+    DATETIME=$(date +%Y%m%d-%H%M%S)
+
+    # Construct the run directory path
+    TMP_RUN_DIR="${TMP_BASE_DIR}/${RUN_ID}/${DATETIME}"
+    export TMP_RUN_DIR
 fi
 
-# 3️⃣ Construct the full path
-TMP_RUN_DIR="${TMP_BASE_DIR}/${RUN_ID}"
-
-# 4️⃣ Create it safely
+# Create it safely
 mkdir -p "$TMP_RUN_DIR"
 echo "[INFO] Using TMP_RUN_DIR=$TMP_RUN_DIR" >&2
+
+# ------------------------------------------------------------------------------
+# PROGRAM_DIR setup
+# ------------------------------------------------------------------------------
+
+if [[ -z "$PROGRAM_DIR" ]]; then
+    PROGRAM_DIR="${TMP_RUN_DIR}/program"
+    export PROGRAM_DIR
+fi
+
+mkdir -p "$PROGRAM_DIR"
+echo "[INFO] Created program subdirectory: $PROGRAM_DIR" >&2
+# --- Bind the per-run writable program directory into the container ---
+if [[ -d "$PROGRAM_DIR" ]]; then
+    echo "[DEBUG] Binding program directory: $PROGRAM_DIR -> /run_tmp (ro)" >&2
+    APPTAINER_BIND="${APPTAINER_BIND},${PROGRAM_DIR}:/run_tmp:ro"
+else
+    echo "[WARN] Program directory missing: $PROGRAM_DIR" >&2
+fi
 
 # for some crazy reason, slurm doesn't set/enforce max memory size
 # and doesn't kill the processes exceeding it
@@ -195,34 +222,6 @@ else
     echo "[WARN] Host path $HOST_PATH does NOT exist or is not accessible!" >&2
 fi
 
-# # -------------------------------------------------------------------------------
-# # Fix SSL for urllib (Ultralytics)
-# # -------------------------------------------------------------------------------
-# # Add host certifi path into container
-# if [ -f "/groups/branson/home/line2/conda/envs/aira-dojo/lib/python3.12/site-packages/certifi/cacert.pem" ]; then
-#     echo "[DEBUG] Mounting certifi CA bundle into container" >&2
-#     APPTAINER_BIND="${APPTAINER_BIND},/groups/branson/home/line2/conda/envs/aira-dojo/lib/python3.12/site-packages/certifi:/groups/branson/home/line2/conda/envs/aira-dojo/lib/python3.12/site-packages/certifi:ro"
-# else
-#     echo "[WARN] Host certifi path not found" >&2
-# fi
-# export APPTAINER_BIND
-# CERTIFI_PEM=$(python3 -c "import certifi; print(certifi.where())" 2>/dev/null || echo "/opt/conda/lib/python3.12/site-packages/certifi/cacert.pem")
-
-# if [ -f "$CERTIFI_PEM" ]; then
-#     echo "[DEBUG] Using certifi bundle: $CERTIFI_PEM" >&2
-#     SSL_ARGS="--env APPTAINERENV_SSL_CERT_FILE=$CERTIFI_PEM \
-#               --env APPTAINERENV_REQUESTS_CA_BUNDLE=$CERTIFI_PEM \
-#               --env SINGULARITYENV_SSL_CERT_FILE=$CERTIFI_PEM \
-#               --env SINGULARITYENV_REQUESTS_CA_BUNDLE=$CERTIFI_PEM"
-# else
-#     echo "[WARN] Could not find certifi bundle!" >&2
-#     SSL_ARGS=""
-# fi
-# # -------------------------------------------------------------------------------
-
-# echo "[DEBUG] Forcing SSL_CERT_FILE to $CERTIFI_PEM inside container" >&2
-# echo "[DEBUG] SSL_ARGS = $SSL_ARGS" >&2
-
 # -------------------------------------------------------------------
 # Clean SSL configuration
 # -------------------------------------------------------------------
@@ -231,10 +230,6 @@ CONTAINER_CERTS_DIR="/certs"
 
 # Bind only the certifi directory into container
 APPTAINER_BIND="${APPTAINER_BIND},${HOST_CERTIFI_DIR}:${CONTAINER_CERTS_DIR}:ro"
-
-# Inside the container, the CA bundle will be at /certs/cacert.pem
-export APPTAINERENV_SSL_CERT_FILE="${CONTAINER_CERTS_DIR}/cacert.pem"
-export REQUESTS_CA_BUNDLE="${CONTAINER_CERTS_DIR}/cacert.pem"
 
 # --- Add custom work directory bind ---
 WORK_DIR="${BUCKTALES_TASK_DIR}"  # <-- replace with your absolute path
@@ -278,6 +273,28 @@ fi
 # ---------------------------------------------------------------------------
 echo "HF_CACHE_HOST = $HF_CACHE_HOST"
 
+# ------------------------------------------------------------------------------
+# DEBUG: Print current environment and critical paths before launching
+# ------------------------------------------------------------------------------
+
+echo "[DEBUG] --- ENVIRONMENT CHECK BEFORE INSTANCE LAUNCH ---" >&2
+echo "[DEBUG] USER: $USER" >&2
+echo "[DEBUG] HOSTNAME: $(hostname)" >&2
+echo "[DEBUG] TMP_BASE_DIR=$TMP_BASE_DIR" >&2
+echo "[DEBUG] TMP_RUN_DIR=$TMP_RUN_DIR" >&2
+echo "[DEBUG] PROGRAM_DIR=$PROGRAM_DIR" >&2
+echo "[DEBUG] APPTAINER_BIND=$APPTAINER_BIND" >&2
+echo "[DEBUG] APPTAINERENV_PROGRAM_PATH=$APPTAINERENV_PROGRAM_PATH" >&2
+echo "[DEBUG] APPTAINERENV_TMP_RUN_DIR=$APPTAINERENV_TMP_RUN_DIR" >&2
+echo "[DEBUG] APPTAINERENV_PROGRAM_DIR=$APPTAINERENV_PROGRAM_DIR" >&2
+
+# Save environment snapshot for debugging (optional)
+env | grep -E "TMP_|PROGRAM_|APPTAINER" > "$TMP_RUN_DIR/env_snapshot.txt" 2>/dev/null
+
+echo "[DEBUG] Environment snapshot written to: $TMP_RUN_DIR/env_snapshot.txt" >&2
+echo "[DEBUG] ---------------------------------------------------------------" >&2
+
+
 apptainer instance run \
     --containall \
     --cleanenv \
@@ -307,7 +324,8 @@ apptainer instance run \
     --env HOME=/tmp \
     --env HF_HOME=/cache/hub \
     --env TRANSFORMERS_CACHE=/cache/transformers \
-    --env SSL_CERT_FILE=/certs/cacert.pem \
+    --env PROGRAM_PATH="/run_tmp/program.py" \
+    --env SSL_CERT_FILE="/certs/cacert.pem" \
     --nv \
     $TMP_BASE_DIR/superimage.root.$SUPERIMAGE_VERSION.sif \
     "$INSTANCE_NAME" \
@@ -321,6 +339,7 @@ echo "[DEBUG] Forcing SSL_CERT_FILE inside instance..." >&2
 apptainer exec instance://$INSTANCE_NAME bash -c '
   echo "export SSL_CERT_FILE=/certs/cacert.pem" >> /environment
   echo "export REQUESTS_CA_BUNDLE=/certs/cacert.pem" >> /environment
+  echo "export PROGRAM_PATH=/run_tmp/program.py" >> /environment
 '
 
 echo "[DEBUG] Listing files in ~/.cache:"

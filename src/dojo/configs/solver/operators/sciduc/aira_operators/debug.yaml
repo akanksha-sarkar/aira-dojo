@@ -42,7 +42,7 @@ debug:
       - GPU: 1 NVIDIA ADA6000
       - CPUs: 8
       - Available Packages: {{packages}}
-      - DO NOT DOWNLOAD NEW PACKAGES (You have access to pycocotools, torch, torchvision).
+      - DO NOT DOWNLOAD NEW PACKAGES (You have access to pycocotools, torch, torchvision, ultralytics, etc.).
 
       # Instructions:
       - **Do NOT** alter the core method or underlying idea. Only correct existing bugs.

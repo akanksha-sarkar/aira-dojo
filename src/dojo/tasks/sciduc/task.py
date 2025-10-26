@@ -22,6 +22,7 @@ from dojo.core.tasks.constants import (
 from dojo.utils.code_parsing import extract_code, format_code, write_code_to_file
 from dojo.utils.output_parsing import extract_metrics
 from dojo.config_dataclasses.task.sciduc import SciDucConfig
+from dojo.tasks.sciduc.utils.environment import set_system_path_code
 
 def validate_submission(submission: Path) -> tuple[bool, str]:
     """
@@ -59,7 +60,7 @@ class SciDucTask(Task):
       - task_description: The task description.
     """
 
-    _solution_script = "solution.py"
+    _program_path = os.environ.get("PROGRAM_PATH")
     _submission_file_path = None
 
     def __init__(self, cfg: SciDucConfig) -> None:
@@ -90,8 +91,6 @@ class SciDucTask(Task):
     def prepare(self, **task_args):
         state = task_args
         state["init_obs"] = {}
-        self._submission_file_path = Path(task_args["solver_interpreter"].working_dir) / self.cfg.submission_fname  
-
         task_info = {
             TASK_DESCRIPTION: self.task_description,
             "lower_is_better": False,
@@ -119,10 +118,13 @@ class SciDucTask(Task):
             exec_output = ExecutionResult.get_empty()
             exec_output.term_out[0] = f"Invalid solution: {e}"
             return state, {EXECUTION_OUTPUT: exec_output, VALIDATION_FITNESS: None, VALID_SOLUTION: False}
-        # write_code_to_file(solution, self.program_path)
+        self.logger.info(self._program_path)
+        write_code_to_file(solution, os.environ["PROGRAM_PATH"])
         executable = format_code(self.eval_script)
         interpreter = state["solver_interpreter"]
-        exec_output: ExecutionResult = interpreter.run(executable, file_name=self._solution_script)
+        # Set system path to include /work
+        sys_path_output = interpreter.run(set_system_path_code(), execute_code=True, reset_session=False)
+        exec_output: ExecutionResult = interpreter.run(executable)
         eval_result = {EXECUTION_OUTPUT: exec_output}
         self.logger.info(f"Evaluation Results: {eval_result}")
         # write_code_to_file("", self.program_path)
@@ -135,7 +137,7 @@ class SciDucTask(Task):
             if metrics:
                 eval_result[VALID_SOLUTION] = True
                 eval_result[VALID_SOLUTION_FEEDBACK] = "Solution is valid"
-                eval_result[TEST_FITNESS] = metrics["AP@0.5"]
+                eval_result[TEST_FITNESS] =  metrics["fitness"]
                 eval_result[AUX_EVAL_INFO] = metrics
                 eval_result[AUX_EVAL_INFO]["score"] = eval_result[TEST_FITNESS]
             else:
@@ -166,7 +168,7 @@ class SciDucTask(Task):
             if metrics:
                 eval_result[VALID_SOLUTION] = True
                 eval_result[VALID_SOLUTION_FEEDBACK] = "Solution is valid"
-                eval_result[TEST_FITNESS] = metrics["AP@0.5"]
+                eval_result[TEST_FITNESS] = metrics["fitness"]
                 eval_result[AUX_EVAL_INFO] = metrics
                 eval_result[AUX_EVAL_INFO]["score"] = eval_result[TEST_FITNESS]
             else:

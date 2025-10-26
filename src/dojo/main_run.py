@@ -18,7 +18,7 @@ from dojo.utils import rich_utils
 from dojo.utils.logger import config_logger, LogEvent
 from omegaconf import OmegaConf
 from dojo.config_dataclasses.omegaconf.resolvers import register_new_resolvers
-
+from datetime import datetime
 from dojo.config_dataclasses.run import RunConfig
 from dojo.config_dataclasses.task import TASK_MAP
 from dojo.config_dataclasses.solver import SOLVER_MAP
@@ -56,6 +56,26 @@ def _main(cfg: RunConfig):
     os.environ["TIME_LIMIT_SECS"] = str(cfg.solver.time_limit_secs)
     os.environ["TIME_LIMIT"] = format_time(int(os.environ["TIME_LIMIT_SECS"]))
     os.environ["STEP_LIMIT"] = str(cfg.solver.step_limit)
+
+    # --------------------------------------------------------------------------
+    # 4️⃣ TMP + Program dir creation
+    # --------------------------------------------------------------------------
+    base_tmp = os.getenv("TMP_BASE_DIR", f"/tmp/{os.getenv('USER', 'user')}/apptainer")
+    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+
+    slurm_id = get_slurm_id() or "nojob"
+    tmp_run_dir = Path(base_tmp) / f"{slurm_id}_{timestamp}"
+    tmp_run_dir.mkdir(parents=True, exist_ok=True)
+
+    program_dir = tmp_run_dir / "program"
+    program_dir.mkdir(parents=True, exist_ok=True)
+
+    os.environ["TMP_RUN_DIR"] = str(tmp_run_dir)
+    os.environ["PROGRAM_DIR"] = str(program_dir)
+    os.environ["PROGRAM_PATH"] = str(program_dir / "program.py")
+
+    log.info(f"[INIT] TMP_RUN_DIR={tmp_run_dir}")
+    log.info(f"[INIT] PROGRAM_DIR={program_dir}")
 
     # Store the slurm job ID
     cfg.metadata.slurm_id = get_slurm_id()
