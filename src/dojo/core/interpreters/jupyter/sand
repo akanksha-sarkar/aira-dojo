@@ -102,7 +102,7 @@ fi
 
 # set SUPERIMAGE_VERSION to default if not set
 if [ -z "$SUPERIMAGE_VERSION" ]; then
-    SUPERIMAGE_VERSION=10-24-25
+    SUPERIMAGE_VERSION=10-25-25
 fi
 
 echo "[DEBUG] Checking if SIF file already exists in TMP..."
@@ -195,6 +195,46 @@ else
     echo "[WARN] Host path $HOST_PATH does NOT exist or is not accessible!" >&2
 fi
 
+# # -------------------------------------------------------------------------------
+# # Fix SSL for urllib (Ultralytics)
+# # -------------------------------------------------------------------------------
+# # Add host certifi path into container
+# if [ -f "/groups/branson/home/line2/conda/envs/aira-dojo/lib/python3.12/site-packages/certifi/cacert.pem" ]; then
+#     echo "[DEBUG] Mounting certifi CA bundle into container" >&2
+#     APPTAINER_BIND="${APPTAINER_BIND},/groups/branson/home/line2/conda/envs/aira-dojo/lib/python3.12/site-packages/certifi:/groups/branson/home/line2/conda/envs/aira-dojo/lib/python3.12/site-packages/certifi:ro"
+# else
+#     echo "[WARN] Host certifi path not found" >&2
+# fi
+# export APPTAINER_BIND
+# CERTIFI_PEM=$(python3 -c "import certifi; print(certifi.where())" 2>/dev/null || echo "/opt/conda/lib/python3.12/site-packages/certifi/cacert.pem")
+
+# if [ -f "$CERTIFI_PEM" ]; then
+#     echo "[DEBUG] Using certifi bundle: $CERTIFI_PEM" >&2
+#     SSL_ARGS="--env APPTAINERENV_SSL_CERT_FILE=$CERTIFI_PEM \
+#               --env APPTAINERENV_REQUESTS_CA_BUNDLE=$CERTIFI_PEM \
+#               --env SINGULARITYENV_SSL_CERT_FILE=$CERTIFI_PEM \
+#               --env SINGULARITYENV_REQUESTS_CA_BUNDLE=$CERTIFI_PEM"
+# else
+#     echo "[WARN] Could not find certifi bundle!" >&2
+#     SSL_ARGS=""
+# fi
+# # -------------------------------------------------------------------------------
+
+# echo "[DEBUG] Forcing SSL_CERT_FILE to $CERTIFI_PEM inside container" >&2
+# echo "[DEBUG] SSL_ARGS = $SSL_ARGS" >&2
+
+# -------------------------------------------------------------------
+# Clean SSL configuration
+# -------------------------------------------------------------------
+HOST_CERTIFI_DIR="/groups/branson/home/line2/conda/envs/aira-dojo/lib/python3.12/site-packages/certifi"
+CONTAINER_CERTS_DIR="/certs"
+
+# Bind only the certifi directory into container
+APPTAINER_BIND="${APPTAINER_BIND},${HOST_CERTIFI_DIR}:${CONTAINER_CERTS_DIR}:ro"
+
+# Inside the container, the CA bundle will be at /certs/cacert.pem
+export APPTAINERENV_SSL_CERT_FILE="${CONTAINER_CERTS_DIR}/cacert.pem"
+export REQUESTS_CA_BUNDLE="${CONTAINER_CERTS_DIR}/cacert.pem"
 
 # --- Add custom work directory bind ---
 WORK_DIR="${BUCKTALES_TASK_DIR}"  # <-- replace with your absolute path
@@ -206,6 +246,7 @@ else
 fi
 export APPTAINER_BIND
 
+
 if [ ! -f $TMP_BASE_DIR/superimage.root.$SUPERIMAGE_VERSION.sif ]; then
     echo "$SUPERIMAGE_DIR/superimage.root.$SUPERIMAGE_VERSION.sif" >&2
     echo "Copying image.sif from superimage to /tmp/progress.sif" >&2
@@ -215,14 +256,14 @@ if [ ! -f $TMP_BASE_DIR/superimage.root.$SUPERIMAGE_VERSION.sif ]; then
 fi
 
 
-# if [[ -z "$HF_CACHE_HOST" ]]; then
-#   if [[ -d /shared && -w /shared ]]; then
-#     HF_CACHE_HOST="/shared/hf-cache"
-#   else
-#     HF_CACHE_HOST="$TMP_RUN_DIR/hf-cache" 
-#   fi
-# fi
-# mkdir -p "$HF_CACHE_HOST/hub" "$HF_CACHE_HOST/transformers"
+if [[ -z "$HF_CACHE_HOST" ]]; then
+  if [[ -d /shared && -w /shared ]]; then
+    HF_CACHE_HOST="/shared/hf-cache"
+  else
+    HF_CACHE_HOST="$TMP_RUN_DIR/hf-cache" 
+  fi
+fi
+mkdir -p "$HF_CACHE_HOST/hub" "$HF_CACHE_HOST/transformers"
 
 if [[ -z "$APPTAINER_BIND" ]]; then
   APPTAINER_BIND="$HF_CACHE_HOST:/cache:rw"
@@ -266,10 +307,21 @@ apptainer instance run \
     --env HOME=/tmp \
     --env HF_HOME=/cache/hub \
     --env TRANSFORMERS_CACHE=/cache/transformers \
+    --env SSL_CERT_FILE=/certs/cacert.pem \
     --nv \
     $TMP_BASE_DIR/superimage.root.$SUPERIMAGE_VERSION.sif \
     "$INSTANCE_NAME" \
     $@
+
+# Wait a moment for the instance to start properly
+sleep 2
+
+# Manually set SSL environment variables inside the running instance
+echo "[DEBUG] Forcing SSL_CERT_FILE inside instance..." >&2
+apptainer exec instance://$INSTANCE_NAME bash -c '
+  echo "export SSL_CERT_FILE=/certs/cacert.pem" >> /environment
+  echo "export REQUESTS_CA_BUNDLE=/certs/cacert.pem" >> /environment
+'
 
 echo "[DEBUG] Listing files in ~/.cache:"
 ls -lah ~/.cache > output.txt
