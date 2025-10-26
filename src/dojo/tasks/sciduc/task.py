@@ -20,7 +20,7 @@ from dojo.core.tasks.constants import (
     VALID_SOLUTION,
 )
 from dojo.utils.code_parsing import extract_code, format_code, write_code_to_file
-import ast
+from dojo.utils.output_parsing import extract_metrics
 from dojo.config_dataclasses.task.sciduc import SciDucConfig
 
 def validate_submission(submission: Path) -> tuple[bool, str]:
@@ -45,32 +45,6 @@ def parse_report(report: Dict[str, Any]):
         else:
             parsed_report[key] = value
     return parsed_report
-
-
-
-def extract_metrics(output: str):
-    """
-    Extracts the final metrics dictionary from a long output string efficiently.
-    Assumes the last line starting with 'METRICS:' contains the dictionary.
-    """
-    try:
-        # Find the last occurrence of 'METRICS:'
-        idx = output.rfind("METRICS:")
-        if idx == -1:
-            return None
-        
-        # Slice only from that point to the end
-        metrics_str = output[idx + len("METRICS:"):].strip()
-
-        # Safely evaluate the dictionary using ast.literal_eval
-        metrics = ast.literal_eval(metrics_str)
-        return metrics
-
-    except Exception as e:
-        print(f"Error parsing metrics: {e}")
-        return None
-
-
 
 class SciDucTask(Task):
     """
@@ -150,14 +124,14 @@ class SciDucTask(Task):
         interpreter = state["solver_interpreter"]
         exec_output: ExecutionResult = interpreter.run(executable, file_name=self._solution_script)
         eval_result = {EXECUTION_OUTPUT: exec_output}
-        print("EXEC OUTPUT: ", exec_output)
+        self.logger.info(f"Evaluation Results: {eval_result}")
         # write_code_to_file("", self.program_path)
         if (not exec_output.exit_code == 0) or exec_output.timed_out:
             self.logger.error(f"Execution failed - exit code: {exec_output.exit_code} - timed out: {exec_output.timed_out} - execution time: {exec_output.exec_time}")
         else: 
             self.logger.info(f"Execution successful.")      
             metrics = extract_metrics(exec_output.term_out)
-            print("METRICS: ", metrics)
+            self.logger.info(f"Extracted Metrics: {metrics}")
             if metrics:
                 eval_result[VALID_SOLUTION] = True
                 eval_result[VALID_SOLUTION_FEEDBACK] = "Solution is valid"
