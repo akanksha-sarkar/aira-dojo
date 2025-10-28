@@ -37,9 +37,9 @@ draft:
         - If using `timm` models, remember not to prefix or suffix the model names with datasets such as `cifar` as this was deprecated.
         - As much as possible, keep the stdout clean.
       
-      **DATA**: The training data is already prepared and available in the read-only `./data` directory. You should not unzip any files.
+      **DATA**: The training and validation data is already prepared and available in the read-only `./work/data` directory. You should not unzip any files.
       
-      **COMPUTE**: You have access to a Python environemnt with 1 NVIDIA ADA6000 GPU(s) and 8 CPUs available, and the following packages installed: {{packages}}. DO NOT DOWNLOAD NEW PACKAGES.
+      **COMPUTE**: You have access to a Python environemnt with 1 NVIDIA A100 GPU(s) and 8 CPUs available, and the following packages installed: {{packages}}. DO NOT DOWNLOAD NEW PACKAGES.
 
       Consider the previously explored ideas, and make sure the idea you propose considers a DIFFERENT ASPECT OF THE SOLUTION. 
       Brainstorm about possible approaches and WHY THEY ARE LIKELY TO BE EFFECTIVE AND INCREASE THE PERFORMANCE for the given task, and the available data and compute resources.
@@ -56,7 +56,9 @@ draft:
       Provide a **SINGLE** Markdown code block (wrapped in ```) for the implementation containing a **SELF-CONTAINED** Python script that:
       1. Implements the idea **END-TO-END**.
       
-      Start by making sure you understand the task, the data and compute resources and the idea. Then generate a detailed implementation plan that will structure and guide you step-by-step through the implementation process. Make sure to reflect on the plan to ensure that the implementation is efficient and faithful to the idea, and that all the requirements (e.g., the evaluation score is printed, the submission file follows the correct format and is saved in the correct location, etc.) are satisfied.
+      Start by making sure you understand the task, the data and compute resources and the idea. Then generate a detailed
+      implementation plan that will structure and guide you step-by-step through the implementation process. Make sure to reflect on the plan to ensure that the implementation 
+      is efficient and faithful to the idea, and that all the requirements (e.g., the evaluation score is printed) are satisfied.
       For large datasets, avoid for loops and aim for efficient and fast data loading and feature engineering.
       Format the proposed solution as follows:
       

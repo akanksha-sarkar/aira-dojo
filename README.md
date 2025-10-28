@@ -225,31 +225,35 @@ In other terminal
 
 ## SciDUC Task Setup
 
-Each task should have the following format:
-- data
-- src
-- description.md
-- evaluate.py
-- program.py
+Because we are testing data-effiency on different domains, the benchmark format will have two main components. The first is the **Domains/Datasets**: e.g. WildFin, Bucktales, Cell Tracking, ChimpACT. Each domain will then have sub-tasks that involve testing performance of agents on varied amounts of manual annotations. The structure will look like the following: 
+## SciDUC File Structure
+- SciDUC
+  - WildFin
+    - data // Raw data w/ no annotations
+    - k1 (1% of data)
+      - annotations // folder that contains annotations
+      - src // folder that contains API functions / dataset setup functions
+      - evaluate.py // evaluation function
+      - description.md // Task Description
+    - k2 (2% of data)
+    - k5 (5% of data)
+    - k10 (10% of data)
+    - k20 (20% of data)
+    - k100 (100% of data)
+  - Bucktales
+  - Cell_Tracking
+  - ChimpACT
 
-### Data (folder)
+### What the Agent Sees (Apptainer Environment)
 
-This section should contain all of the data, it must not be symlinked. 
-
-### Src (folder)
-
-This folder should contain any helpful functions that are used in the evaluate file and/or that you want to provide for the agent. This can sort of be viewed as 
-an API for program writing agents.
-
-### Description.md
-
-Detailed description of the task and what the agent is supposed to be doing. Should include a detailed description of data representation and any useful functions that the agent has access to. 
-
-### evaluate.py
-
-This file will be literally copied as text, reformatted, then fed into the interpreter.
-
-The calculated metric to be optimized should be printed at the end like the following: print("METRICS:", metric).
+root_dir
+  - work // read only
+    - data // all data is present 
+    - annotations // only necessary annotations (train)
+    - src
+    - evaluate.py
+    - description.md
+  - tmp // writeable
 
 
 

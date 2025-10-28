@@ -39,7 +39,7 @@ debug:
       ````
 
       # Compute Environment:
-      - GPU: 1 NVIDIA ADA6000
+      - GPU: 1 NVIDIA A100
       - CPUs: 8
       - Available Packages: {{packages}}
       - DO NOT DOWNLOAD NEW PACKAGES (You have access to pycocotools, torch, torchvision, ultralytics, etc.).

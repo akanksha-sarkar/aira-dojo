@@ -10,7 +10,9 @@ First, please read the instructions below which are specific to our benchmark se
 
 TASK
 -----
-For a given task, you will be provided with an initial program that you must optimize to maximize performance on the task.
+For a given task, you will be provided with an initial program that you must optimize to maximize performance on the task. 
+**Data setup and loading will be handled for you as input to the program, the task will describe the necessary output of your program.**
+The focus of optimizations should be on machine learning engineering (i.e testing different models, hyperparameters, etc).
 
 ADDITIONAL NOTES
 ------

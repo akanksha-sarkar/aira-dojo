@@ -83,7 +83,7 @@ class SciDucTask(Task):
         self.task_description = self.instructions + "\n" + task_description_path.read_text()
         self.program_path = Path(self.cfg.task_dir).resolve() / "program.py"
         eval_script_path = Path(self.cfg.task_dir).resolve() / "evaluate.py"
-        self.eval_script = eval_script_path.read_text()
+        self.eval_script = set_system_path_code() + "\n" + eval_script_path.read_text()
         print("EVAL SCRIPT: ", self.eval_script)
         # Resolve paths
         self.task_dir = Path(self.cfg.task_dir).resolve()
@@ -122,8 +122,6 @@ class SciDucTask(Task):
         write_code_to_file(solution, os.environ["PROGRAM_PATH"])
         executable = format_code(self.eval_script)
         interpreter = state["solver_interpreter"]
-        # Set system path to include /work
-        sys_path_output = interpreter.run(set_system_path_code(), execute_code=True, reset_session=False)
         exec_output: ExecutionResult = interpreter.run(executable)
         eval_result = {EXECUTION_OUTPUT: exec_output}
         self.logger.info(f"Evaluation Results: {eval_result}")

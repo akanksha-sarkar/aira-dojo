@@ -1,0 +1,8 @@
+total 0
+drwx------ 2 line2 branson 4.0K Oct 27 01:16 .
+drwxr-xr-x 2 line2 branson 4.0K Oct 27 16:00 ..
+drwxr-xr-x 2 line2 branson 4.0K Oct 24 14:48 conda
+drwxr-xr-x 2 line2 branson 4.0K Oct 25 13:25 matplotlib
+drwxr-xr-x 2 line2 branson 4.0K Oct 24 11:04 Microsoft
+drwxr-xr-x 2 line2 branson 4.0K Oct 24 14:58 pip
+drwxr-xr-x 2 line2 branson 4.0K Oct 27 01:16 wandb
