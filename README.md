@@ -255,5 +255,25 @@ root_dir
     - description.md
   - tmp // writeable
 
+### Evaluate.py
 
+The evaluate.py file should perform the following:
 
+1. Take in a program_path as input (This is the program path the agent is optimizing).
+  - This path (in Apptainer environment) will be available as an environment variable PROGRAM_PATH.
+2. Evaluate this function on the specific dataset. 
+3. Return a dictionary with the value that the agent uses to optimize denoted as the "fitness" key. 
+
+In general, you should print out any relevant information because the agent can see the logs. Also, I'm not 100% sure if this is necessary, but I've been adding this snippet of code at the top of evaluate.py file.  
+# import sys
+# # Add the Apptainer bind mount path to Python's module search
+# sys.path.insert(0, "/work")
+
+# print("✅ Added /work to sys.path")
+# print("Working dir:", os.getcwd())
+In order to ensure that the src files can be accessed using "src."
+
+### Description.md
+
+This file is really important, it describes what the task is and any relevant information.
+I've been putting in debugging hints here, but I've noticed that most of the bugs have to do with issues with using libraries like ultralytics or torchvision and messing up formatting. Probably ideal to have a tool instructions.txt section to make the setup cleaner as a whole.

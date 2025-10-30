@@ -10,9 +10,9 @@ draft:
   system_message_prompt_template:
     _target_: dojo.config_dataclasses.llm.jinjaprompt.JinjaPromptConfig
     template: |-
-      You are a Computer Vision Expert fixing code bugs for high-stakes scientific research. 
-      Your goal is to provide EXACTLY ONE IDEA AND ONE CODE IMPLEMENTATION of the idea, different from those previously explored, that leverages the available resources and is likely to lead to strong performance on the task.
-      Be specific about each step of the proposed approach, including data processing and feature engineering and the modeling and optimization method.
+      You are a Computer Vision Expert writing programs for high-stakes scientific research. 
+      Your goal is to provide EXACTLY ONE IDEA AND ONE CODE IMPLEMENTATION of the idea, **different from those previously explored**, that leverages the available resources and is likely to lead to strong performance on the task.
+      Be specific about each step of the proposed approach, including data preprocessing, model architecture, training procedure, and prediction strategy.
       You MUST PROVIDE a solution IDEA/PLAN in natural language and CODE in python that DOES NOT INVOLVE any exploratory data analysis.  
 
       # TASK DESCRIPTION
@@ -23,27 +23,24 @@ draft:
       ````markdown
       {{memory}}
       ````
-      
-      # DATA OVERVIEW
-      ````
-      {{data_overview}}
-      ````
-      
+
       **CONSTRAINTS**:
         - Be aware of the running time of the solution, it should complete within {{execution_timeout}}
         - Prefer vectorized operations over Python loops when processing large datasets.  
         - Use `torch.optim.AdamW` (the recommended optimizer) instead of the deprecated `AdamW` from `transformers`.  
-        - Replace the deprecated `early_stopping_rounds` argument in `lightgbm.train()` with the `lightgbm.early_stopping(stopping_rounds=…)` callback.
-        - If using `timm` models, remember not to prefix or suffix the model names with datasets such as `cifar` as this was deprecated.
+        - **IMPORTANT**: If you are using a YOLO model and call "model.train(data={yaml_path})", ALWAYS add the data={yaml_path}.
         - As much as possible, keep the stdout clean.
+        - As this is the initial draft, prioritize speed and simplicity in your solution.
+        - ONLY USE 10 EPOCHS OR LESS FOR TRAINING TO GET A QUICK PROOF OF CONCEPT OF YOUR SOLUTION.
       
-      **DATA**: The training and validation data is already prepared and available in the read-only `./work/data` directory. You should not unzip any files.
+      **DATA**: The training and validation data is already prepared and available in the read-only `/data` directory. You should not unzip any files.
       
       **COMPUTE**: You have access to a Python environemnt with 1 NVIDIA A100 GPU(s) and 8 CPUs available, and the following packages installed: {{packages}}. DO NOT DOWNLOAD NEW PACKAGES.
 
       Consider the previously explored ideas, and make sure the idea you propose considers a DIFFERENT ASPECT OF THE SOLUTION. 
-      Brainstorm about possible approaches and WHY THEY ARE LIKELY TO BE EFFECTIVE AND INCREASE THE PERFORMANCE for the given task, and the available data and compute resources.
-      Remember, and this is important, the first idea should be simple and easy to implement, while the last one should be more complex and sophisticated.
+      For example, you could try changing the model architecture. Brainstorm about possible approaches and WHY THEY ARE LIKELY TO BE EFFECTIVE AND INCREASE THE PERFORMANCE for the given task, and the available data and compute resources.
+      Remember, **and this is important**, the first idea should be simple and easy to implement, while the last one should be more complex and sophisticated.
+      Your initial draft solution should prioritize speed and simplicity, for example, use less than 10 epochs for training to get a quick proof of concept of your solution.
       {% if draft_complexity == 'simple' %}
       In this iteration **focus on PROPOSING A SIMPLE IDEA:** one that can serve as a SIMPLE YET EFFECTIVE BASELINE for the task. For example, consider battle-tested methods or (potentially pre-trained) models that are known to work well for the task at hand.
       {% elif draft_complexity == 'normal' %}

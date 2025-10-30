@@ -4,12 +4,12 @@
 _target_: dojo.config_dataclasses.task.sciduc.SciDucConfig
 name: ???
 benchmark: sciduc
-
+subset: ???
 # ~~~ Task data ~~~
 cache_dir: ${get_sciduc_data_dir:}
 
 # ~~~ Workspace preparation ~~~
-task_dir: ${task.cache_dir}/${task.name}
+domain_dir: ${task.cache_dir}/${task.name}
 
 # ~~~ Evaluation and results ~~~
 submission_fname: submission.json

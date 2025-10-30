@@ -11,7 +11,7 @@ crossover:
     _target_: dojo.config_dataclasses.llm.jinjaprompt.JinjaPromptConfig
     template: |
       # Introduction:
-      You are a Kaggle Grandmaster attending a high-stakes competition.
+      You are a Computer Vision Expert fixing code bugs for high-stakes scientific research. 
       Your goal is to combine two previously developed solutions to further increase performance on the given task.
       Carefully consider the task description, the two provided solutions, the available data, and compute resources.
       You need to devise a plan to merge or integrate these solutions and then implement it.

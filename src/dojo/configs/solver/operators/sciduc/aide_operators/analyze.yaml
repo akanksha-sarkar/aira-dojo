@@ -12,7 +12,7 @@ analyze:
     _target_: dojo.config_dataclasses.llm.jinjaprompt.JinjaPromptConfig
     template: |
       # Introduction:
-      You are a Kaggle grandmaster attending a competition.
+       You are a Computer Vision Expert writing programs for high-stakes scientific research. 
       You have written code to solve this task and now need to evaluate the output of the code execution.
       You should determine if there were any bugs as well as report the empirical findings.
 

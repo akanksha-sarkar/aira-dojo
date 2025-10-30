@@ -10,7 +10,7 @@
 # to stderr
 nvidia-smi >&2
 
-df -hT >&2
+# df -hT >&2
 hostname -f >&2
 hostname -I >&2
 apptainer instance list -a -j >&2
@@ -30,8 +30,8 @@ echo "[DEBUG] TMP_BASE_DIR: $TMP_BASE_DIR"
 
 # Only create TMP_RUN_DIR if not provided
 if [[ -z "$TMP_RUN_DIR" ]]; then
-    # Try to list contents for debugging
-    ls -lh "$TMP_BASE_DIR" 2>/dev/null || echo "[WARN] Could not list $TMP_BASE_DIR" >&2
+    # # Try to list contents for debugging
+    # ls -lh "$TMP_BASE_DIR" 2>/dev/null || echo "[WARN] Could not list $TMP_BASE_DIR" >&2
 
     # Determine unique run ID
     if [[ -n "$SLURM_JOBID" ]]; then
@@ -64,13 +64,6 @@ fi
 
 mkdir -p "$PROGRAM_DIR"
 echo "[INFO] Created program subdirectory: $PROGRAM_DIR" >&2
-# --- Bind the per-run writable program directory into the container ---
-if [[ -d "$PROGRAM_DIR" ]]; then
-    echo "[DEBUG] Binding program directory: $PROGRAM_DIR -> /run_tmp (ro)" >&2
-    APPTAINER_BIND="${APPTAINER_BIND},${PROGRAM_DIR}:/run_tmp:ro"
-else
-    echo "[WARN] Program directory missing: $PROGRAM_DIR" >&2
-fi
 
 # for some crazy reason, slurm doesn't set/enforce max memory size
 # and doesn't kill the processes exceeding it
@@ -87,9 +80,9 @@ MEMORY_LIMIT_IN_BYTES=$((MEMORY_LIMIT_IN_MB * 1024))
 ulimit -v 100000000 # 100GBs
 
 # First, we make unique identifier and the temporary overlay image
-echo "Making tmp directory" >&2
+echo "[INFO] Making tmp directory" >&2
 TMP_DIR=$(mktemp -d -p $TMP_RUN_DIR sandbox-XXXXXXXXXX)
-echo "Created temporary dir $TMP_DIR. As it's in /tmp, slurm will handle the cleanup properly" >&2
+echo "[INFO] Created temporary dir $TMP_DIR. As it's in /tmp, slurm will handle the cleanup properly" >&2
 INSTANCE_NAME=$(basename "$TMP_DIR")
 
 
@@ -113,7 +106,6 @@ cleanup() {
     fi
     exit 0
 }
-
 trap 'cleanup SIGINT'  SIGINT
 trap 'cleanup SIGTERM' SIGTERM
 trap 'cleanup EXIT'    EXIT
@@ -133,8 +125,8 @@ if [ -z "$SUPERIMAGE_VERSION" ]; then
 fi
 
 echo "[DEBUG] Checking if SIF file already exists in TMP..."
-echo "TMP_BASE_DIR: $TMP_BASE_DIR"
-echo "SUPERIMAGE_VERSION: $SUPERIMAGE_VERSION"
+echo "[DEBUG] TMP_BASE_DIR: $TMP_BASE_DIR"
+echo "[DEBUG] SUPERIMAGE_VERSION: $SUPERIMAGE_VERSION"
 echo "[DEBUG] TMP SIF path:      $TMP_BASE_DIR/superimage.root.$SUPERIMAGE_VERSION.sif"
 echo "[DEBUG] Source SIF path:   $SUPERIMAGE_DIR/superimage.root.$SUPERIMAGE_VERSION.sif"
 
@@ -147,100 +139,10 @@ if [ -z "$BASE_OVERLAYS" ]; then
     BASE_OVERLAYS=""
 fi
 
-
-cache_to_tmp() {
-    echo "Patching APPTAINER_BIND" >&2
-    BASE="/shared/cache/dojo/tasks/sciduc"
-    echo "Original: $APPTAINER_BIND" >&2
-    # Grab the first bind entry that starts with BASE/
-    ORIG=$(echo $APPTAINER_BIND | grep -Eo "(^|,)/.*?/shared/cache/dojo/tasks/sciduc/.*?/prepared/public" || true)
-    echo "Original path: $ORIG" >&2
-    [ -z "$ORIG" ] && return 0     # Nothing to patch—exit silently
-    echo "Original path: $ORIG" >&2
-    TASKNAME=$(basename $(realpath "$ORIG/../..")) # Get the task name
-    echo "TASKNAME: $TASKNAME" >&2
-
-    NEW="$TMP_RUN_DIR/${ORIG}"              # Mirror path under /tmp
-    DONE_MARKER="$NEW/.completed"
-
-    
-    # Rewrite every occurrence in APPTAINER_BIND
-    APPTAINER_BIND="${APPTAINER_BIND//$ORIG/$NEW}"
-    export APPTAINER_BIND
-    echo "Rewrote APPTAINER_BIND to $APPTAINER_BIND" >&2
-
-
-
-    # First call only: make dir, copy once, plant the flag
-    if [ ! -f "$DONE_MARKER" ]; then
-        TARBALL_PATH=$(realpath "$ORIG/../public.tar")
-        # now check if the tarball exists then extract it to the new location
-        # otherwise copy the original
-
-        if [ -f "$TARBALL_PATH" ]; then
-            echo "Extracting $TARBALL_PATH to $NEW" >&2
-            mkdir -p "$NEW"
-            # Extract the tarball to the new location
-            tar -xf "$TARBALL_PATH" -C "$NEW/.."
-            touch "$DONE_MARKER"
-        else
-            echo "Tarball not found, copying directory" >&2
-            if [ -n "$ORIG" ]; then
-                echo "Copying $ORIG to $NEW" >&2
-                mkdir -p "$NEW"
-                # Plain old copy, preserving attrs (-a). Trailing dots keep cp happy.
-                cp -a "$ORIG"/. "$NEW"/
-            fi
-            : > "$DONE_MARKER"
-        fi
-
-    fi
-}
-
-# cache_to_tmp
 APPTAINER_BIND=$(echo "$APPTAINER_BIND" | sed 's#:/root/data:ro#:/data:ro#g')
 # Add DNS resolution for network connectivity
 APPTAINER_BIND="${APPTAINER_BIND},/etc/resolv.conf:/etc/resolv.conf:ro"
 export APPTAINER_BIND
-
-APPTAINER_BIND=$(echo "$APPTAINER_BIND" | sed 's#:/root/data:ro#:/data:ro#g')
-# Add DNS resolution for network connectivity
-APPTAINER_BIND="${APPTAINER_BIND},/etc/resolv.conf:/etc/resolv.conf:ro"
-export APPTAINER_BIND
-
-# --- DEBUG: Verify that the bind paths exist and point to the correct dataset ---
-echo "[DEBUG] Current APPTAINER_BIND: $APPTAINER_BIND" >&2
-HOST_PATH=$(echo "$APPTAINER_BIND" | cut -d':' -f1)
-echo "[DEBUG] Checking real host path: $HOST_PATH" >&2
-if [ -d "$HOST_PATH" ]; then
-    echo "[DEBUG] Host path exists. Realpath: $(realpath "$HOST_PATH")" >&2
-    echo "[DEBUG] Filesystem info:" >&2
-    df -hT "$HOST_PATH" >&2 | head -n 2
-    echo "[DEBUG] First few entries:" >&2
-    ls -lh "$HOST_PATH" | head >&2
-else
-    echo "[WARN] Host path $HOST_PATH does NOT exist or is not accessible!" >&2
-fi
-
-# -------------------------------------------------------------------
-# Clean SSL configuration
-# -------------------------------------------------------------------
-HOST_CERTIFI_DIR="/groups/branson/home/line2/conda/envs/aira-dojo/lib/python3.12/site-packages/certifi"
-CONTAINER_CERTS_DIR="/certs"
-
-# Bind only the certifi directory into container
-APPTAINER_BIND="${APPTAINER_BIND},${HOST_CERTIFI_DIR}:${CONTAINER_CERTS_DIR}:ro"
-
-# --- Add custom work directory bind ---
-WORK_DIR="${BUCKTALES_TASK_DIR}"  # <-- replace with your absolute path
-if [ -d "$WORK_DIR" ]; then
-    echo "[DEBUG] Adding custom work bind: $WORK_DIR:/work" >&2
-    APPTAINER_BIND="${APPTAINER_BIND},${WORK_DIR}:/work:ro"
-else
-    echo "[WARN] WORK_DIR does not exist: $WORK_DIR" >&2
-fi
-export APPTAINER_BIND
-
 
 if [ ! -f $TMP_BASE_DIR/superimage.root.$SUPERIMAGE_VERSION.sif ]; then
     echo "$SUPERIMAGE_DIR/superimage.root.$SUPERIMAGE_VERSION.sif" >&2
@@ -273,26 +175,11 @@ fi
 # ---------------------------------------------------------------------------
 echo "HF_CACHE_HOST = $HF_CACHE_HOST"
 
-# ------------------------------------------------------------------------------
-# DEBUG: Print current environment and critical paths before launching
-# ------------------------------------------------------------------------------
+# # Save environment snapshot for debugging (optional)
+# env | grep -E "TMP_|PROGRAM_|APPTAINER" > "$TMP_RUN_DIR/env_snapshot.txt" 2>/dev/null
 
-echo "[DEBUG] --- ENVIRONMENT CHECK BEFORE INSTANCE LAUNCH ---" >&2
-echo "[DEBUG] USER: $USER" >&2
-echo "[DEBUG] HOSTNAME: $(hostname)" >&2
-echo "[DEBUG] TMP_BASE_DIR=$TMP_BASE_DIR" >&2
-echo "[DEBUG] TMP_RUN_DIR=$TMP_RUN_DIR" >&2
-echo "[DEBUG] PROGRAM_DIR=$PROGRAM_DIR" >&2
-echo "[DEBUG] APPTAINER_BIND=$APPTAINER_BIND" >&2
-echo "[DEBUG] APPTAINERENV_PROGRAM_PATH=$APPTAINERENV_PROGRAM_PATH" >&2
-echo "[DEBUG] APPTAINERENV_TMP_RUN_DIR=$APPTAINERENV_TMP_RUN_DIR" >&2
-echo "[DEBUG] APPTAINERENV_PROGRAM_DIR=$APPTAINERENV_PROGRAM_DIR" >&2
-
-# Save environment snapshot for debugging (optional)
-env | grep -E "TMP_|PROGRAM_|APPTAINER" > "$TMP_RUN_DIR/env_snapshot.txt" 2>/dev/null
-
-echo "[DEBUG] Environment snapshot written to: $TMP_RUN_DIR/env_snapshot.txt" >&2
-echo "[DEBUG] ---------------------------------------------------------------" >&2
+# echo "[DEBUG] Environment snapshot written to: $TMP_RUN_DIR/env_snapshot.txt" >&2
+# echo "[DEBUG] ---------------------------------------------------------------" >&2
 
 
 apptainer instance run \
@@ -341,18 +228,6 @@ apptainer exec instance://$INSTANCE_NAME bash -c '
   echo "export REQUESTS_CA_BUNDLE=/certs/cacert.pem" >> /environment
   echo "export PROGRAM_PATH=/run_tmp/program.py" >> /environment
 '
-
-echo "[DEBUG] Listing files in ~/.cache:"
-ls -lah ~/.cache > output.txt
-
-echo "[DEBUG] Inspecting container filesystem layout..." >&2
-apptainer exec instance://$INSTANCE_NAME bash -c '
-    echo "[DEBUG - inside container] Current working directory:" && pwd
-    echo "[DEBUG - inside container] Top-level directories:" && ls -lh /
-    echo "[DEBUG - inside container] /data directory contents (if present):" && ls -lh /data || echo "No /data directory"
-    echo "[DEBUG - inside container] ./data directory contents (relative):" && ls -lh ./data || echo "No ./data directory"
-    echo "[DEBUG - inside container] Present working directory structure:" && ls -lh | head -n 20
-' >&2
 
 # to pipe the output of the instance
 tail -f "$HOME/.apptainer/instances/logs/$(hostname)/$USER/$INSTANCE_NAME.err" >&2

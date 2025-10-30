@@ -33,11 +33,6 @@ debug:
       # Execution Output (Error):
       {{execution_output}}
 
-      # Data Overview:
-      ````
-      {{data_overview}}
-      ````
-
       # Compute Environment:
       - GPU: 1 NVIDIA A100
       - CPUs: 8
@@ -53,6 +48,7 @@ debug:
 
       - **Important Reminders:**
         - Absolutely do **NOT** skip any part of the code.
+        - 20 - 50 epochs is usually sufficient for training unless otherwise specified.
 
       Brainstorm about possible ways to fix the bug and WHY THEY ARE LIKELY TO FIX THE BUG for the given implementation. Additionally, if any other bugs further down the line are observed, please fix them as well.
       Generate a bug-fix plan that will structure and guide your step-by-step reasoning process. Reflect on it to make sure all the requirements are satisfied.

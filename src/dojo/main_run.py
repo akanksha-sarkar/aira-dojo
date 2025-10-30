@@ -13,7 +13,7 @@ from dojo.utils.helpers import write_env_variables_to_json
 import hydra
 from dotenv import load_dotenv
 from omegaconf import DictConfig
-
+import time
 from dojo.utils import rich_utils
 from dojo.utils.logger import config_logger, LogEvent
 from omegaconf import OmegaConf
@@ -109,9 +109,28 @@ def _main(cfg: RunConfig):
 
     log.info("Instantiating the task...")
     task = build(cfg.task, TASK_MAP)
+    cfg.interpreter.read_only_binds = {
+        # Certs for SSL verification
+        "/groups/branson/home/line2/conda/envs/aira-dojo/lib/python3.12/site-packages/certifi": "/certs",
+        # Main working directory
+        f"{cfg.task.domain_dir}/{cfg.task.subset}": "/work",
+        # Program directory
+        os.environ["PROGRAM_DIR"]: "/run_tmp",
+    }
+
 
     # Allocate resources for the agent's workspace and instantiate an object that lets you reference and use them
     solver_interpreter = build(cfg.interpreter, INTERPRETER_MAP, data_dir=cfg.task.data_dir)
+    # solver_interpreter.instance.create_process()
+    # print("✅ Apptainer environment initialized.")
+    # try:
+    #     import time
+    #     while True:
+    #         time.sleep(60)
+    # except KeyboardInterrupt:
+    #     log.info("Stopping instance...")
+    #     solver_interpreter.close()
+    # return
 
     eval_interpreter = None
 
@@ -122,7 +141,7 @@ def _main(cfg: RunConfig):
     solver = build(cfg.solver, SOLVER_MAP, task_info=task_info)
 
     # Load checkpoint state if it exists
-    log.info("Loading checkpoints, if any...")
+    # log.info("Loading checkpoints, if any...")
     # solver.load_checkpoint()
 
     log.info("Starting the solver...")

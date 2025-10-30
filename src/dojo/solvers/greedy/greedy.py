@@ -88,6 +88,7 @@ class Greedy(Solver):
         super().load_checkpoint()
 
         journal_path = Path(self.cfg.checkpoint_path) / "journal.jsonl"
+        # journal_path = Path("/groups/branson/home/line2/aira-dojo/shared/logs/aira-dojo/user_line2_issue_example/2025-10-29_01-14-36/checkpoint/journal.jsonl")
         if not journal_path.exists():
             assert self.state.current_step == 0, (
                 f"No journal found at {journal_path}, but the state was found. This is unexpected."

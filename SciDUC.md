@@ -35,8 +35,8 @@ SciDUC/
 Inside the container, the file system visible to the agent is organized as follows:
 ```
 root_dir/
+├── data/ # All dataset files, read only
 ├── work/ # Read-only
-│ ├── data/ # All dataset files
 │ ├── annotations/ # Task-specific training annotations
 │ ├── src/ # Source files accessible as "src.*"
 │ ├── evaluate.py # Evaluation script

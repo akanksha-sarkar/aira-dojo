@@ -77,16 +77,16 @@ class SciDucTask(Task):
         self.instructions_path = self.task_src_path / "instructions.txt"
         self.instructions = self.instructions_path.read_text()
         self.instructions = os.path.expandvars(self.instructions)
-
+        self.domain_dir = Path(self.cfg.domain_dir).resolve()
+        self.subset = self.cfg.subset
+        self.task_dir = self.domain_dir / self.subset
         # Read task description.
-        task_description_path = Path(self.cfg.task_dir).resolve() / "description.md"
+        task_description_path = Path(self.task_dir).resolve() / "description.md"
         self.task_description = self.instructions + "\n" + task_description_path.read_text()
-        self.program_path = Path(self.cfg.task_dir).resolve() / "program.py"
-        eval_script_path = Path(self.cfg.task_dir).resolve() / "evaluate.py"
+        self.program_path = Path(self.task_dir).resolve() / "program.py"
+        eval_script_path = Path(self.task_dir).resolve() / "evaluate.py"
         self.eval_script = set_system_path_code() + "\n" + eval_script_path.read_text()
         print("EVAL SCRIPT: ", self.eval_script)
-        # Resolve paths
-        self.task_dir = Path(self.cfg.task_dir).resolve()
 
     def prepare(self, **task_args):
         state = task_args

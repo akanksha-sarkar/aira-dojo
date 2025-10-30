@@ -4,3 +4,4 @@ defaults:
   - sciduc/_default
 
 name: wildfin
+subset: k100

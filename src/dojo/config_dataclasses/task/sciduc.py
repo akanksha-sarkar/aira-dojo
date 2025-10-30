@@ -59,10 +59,16 @@ class SciDucConfig(TaskConfig):
             "help": "Type of the task.",
         },
     )
-    task_dir: str = field(
+    subset: str = field(
+        default="k100",
+        metadata={
+            "help": "Subset of the SciDuc benchmark to use.",
+        },
+    )
+    domain_dir: str = field(
         default=SI("${task.cache_dir}/${task.name}"),
         metadata={
-            "help": "The directory where the data is stored.",
+            "help": "The directory where the domain is located.",
             "exclude_from_hash": True,
         },
     )
