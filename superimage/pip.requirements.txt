@@ -123,4 +123,8 @@ psutil
 ultralytics-thop
 opencv-python-headless
 # Other
-pycocotools    
+pycocotools 
+
+# Cell segmentation packages 
+tifffile
+py-ctcmetrics
