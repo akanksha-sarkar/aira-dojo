@@ -88,7 +88,7 @@ if __name__ == "__main__":
     ultralytics.utils.LOGGER.setLevel("ERROR")  # only errors will print
     root_dir = os.environ.get("ROOT_DIR", "/work")
     program_path = os.environ.get("PROGRAM_PATH", os.path.join(root_dir, "program.py"))
-    data_dir = "/data"
+    data_dir = os.environ.get("DATA_DIR", os.path.join(root_dir, "/data"))
     ann_dir = os.environ.get("ANN_DIR", os.path.join(root_dir, "annotations"))
 
     logging.info(f"ROOT_DIR={root_dir}")
@@ -97,4 +97,4 @@ if __name__ == "__main__":
 
     metrics = evaluate(program_path, data_dir, ann_dir)
     metrics["fitness"] = metrics.get("AP@0.5", 0.0)
-    print("METRICS:", metrics)
+    print("METRICS:", json.dumps(metrics, indent=2))
