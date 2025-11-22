@@ -4,4 +4,4 @@ defaults:
   - sciduc/_default
 
 name: wildfin
-subset: k5seed42
+subset: k10seed42
