@@ -34,4 +34,4 @@ export EXPERIMENT_DIR
 echo "✅ Running job: $LSB_JOBNAME (ID: $LSB_JOBID)"
 echo "Logging to: $JOB_OUT"
 
-python -m dojo.main_run +_exp=run_example task=sciduc/wildfin logger.use_wandb=False
+python -m dojo.main_run +_exp=run_example task=sciduc/bucktales logger.use_wandb=False

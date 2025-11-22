@@ -2,11 +2,11 @@
 
 ## Dataset Description
 
-Understanding animal behaviour is central to predicting, understanding, and mitigating impacts of natural and anthropogenic changes on animal populations and ecosystems. However, the challenges of acquiring and processing long-term, ecologically relevant data in wild settings have constrained the scope of behavioural research. The increasing availability of Unmanned Aerial Vehicles (UAVs), coupled with advances in machine learning, has opened new opportunities for wildlife monitoring using aerial tracking. However, limited availability of datasets with wild animals in natural habitats has hindered progress in automated computer vision solutions for long-term animal tracking. This dataset is the detection subset of a larger dataset called BuckTales that contains annoatated detections of blackbuck antelopes in the wild. **It contains 218 images with corresponding bounding box and class annotations.** The images are really large ~(3000 x 5000 pixels). Because the images are taken by drones, the antelopes are very very small. There are six classes to detect (with the focus being on antelopes): Drones, birds, unkown, shadow, bbfemale, and bbmale. The data is in COCO object detection format.  
+Understanding animal behaviour is central to predicting, understanding, and mitigating impacts of natural and anthropogenic changes on animal populations and ecosystems. However, the challenges of acquiring and processing long-term, ecologically relevant data in wild settings have constrained the scope of behavioural research. The increasing availability of Unmanned Aerial Vehicles (UAVs), coupled with advances in machine learning, has opened new opportunities for wildlife monitoring using aerial tracking. However, limited availability of datasets with wild animals in natural habitats has hindered progress in automated computer vision solutions for long-term animal tracking. This dataset is the detection subset of a larger dataset called BuckTales that contains annoatated detections of blackbuck antelopes in the wild. **This subset (used for evaluating data-efficient solutions) is extremely small and contains *only 21 images* with corresponding bounding box and class annotations.** The images are really large ~(3000 x 5000 pixels). Because the images are taken by drones, the antelopes are very very small. There are six classes to detect (with the focus being on antelopes): Drones, birds, unkown, shadow, bbfemale, and bbmale. The data is in COCO object detection format.  
 
 ## Task Description
 
-In this task, you must implement a function to detect antelope from aerial drone footage. 
+In this task, you must implement a function to detect fish in coral reef environments. 
 You have access to an ObjectDetectionDataset for training with corresponding annotations. You must produce predictions on a validation ObjectDetectionDataset which you will be evaluated on. The dataset can be accessed using src.dataset. No need to reinstantiate it.
 
 The ObjectDetectionDataset class is provided below: 
@@ -85,7 +85,7 @@ def collate_fn(batch):
 
 ## Solution Format
 
-You should implement the following skeleton of code with an optimal solution for antelope-detection. 
+You should implement the following skeleton of code with an optimal solution for fish-detection. 
 
 ```python
 from src.dataset import collate_fn
