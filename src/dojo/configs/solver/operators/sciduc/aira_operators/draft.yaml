@@ -37,6 +37,12 @@ draft:
       
       **COMPUTE**: You have access to a Python environemnt with 1 NVIDIA A100 GPU(s) and 8 CPUs available, and the following packages installed: {{packages}}. DO NOT DOWNLOAD NEW PACKAGES.
 
+      **MODEL SELECTION**: Consider which model architecture and framework would work best for this iteration. Different detection approaches may perform better depending on the dataset characteristics:
+        - torchvision provides various detection models (e.g., Faster R-CNN, RetinaNet, FCOS)
+        - timm offers a collection of image models with various backbones
+        - ultralytics provides YOLO-based models (including newer versions like YOLO11, YOLO12) as well as RT-DETR
+      Across iterations, explore different frameworks rather than always defaulting to the same one.
+
       Consider the previously explored ideas, and make sure the idea you propose considers a DIFFERENT ASPECT OF THE SOLUTION. 
       For example, you could try changing the model architecture. Brainstorm about possible approaches and WHY THEY ARE LIKELY TO BE EFFECTIVE AND INCREASE THE PERFORMANCE for the given task, and the available data and compute resources.
       Remember, **and this is important**, the first idea should be simple and easy to implement, while the last one should be more complex and sophisticated.

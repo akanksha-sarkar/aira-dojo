@@ -1,8 +1,8 @@
-# WildFin
+# Bucktales
 
 ## Dataset Description
 
-The study of in-situ marine organism behavior is crucial for ecology, biology, and conversation, which has led to substantial video data collection via field-deployable cameras and divers. However, the lack of such large-scale, publicly available, expert-annotated video datasets capturing these natural behaviors severely limits progress in development of automated solutions. This dataset is the detection subset of a larger dataset on fish behavior / tracking in the wild. It contains 625 images of fish in an in-situ coral reef environment with corresponding bounding box and class annotations. The images are 1920 x 1080 pixels. There are four classes of fish to detect: fish, bi-color-damselfish, bluehead-wrasse, and brown-chromis. The data is provided in COCO object detection format.  
+Understanding animal behaviour is central to predicting, understanding, and mitigating impacts of natural and anthropogenic changes on animal populations and ecosystems. However, the challenges of acquiring and processing long-term, ecologically relevant data in wild settings have constrained the scope of behavioural research. The increasing availability of Unmanned Aerial Vehicles (UAVs), coupled with advances in machine learning, has opened new opportunities for wildlife monitoring using aerial tracking. However, limited availability of datasets with wild animals in natural habitats has hindered progress in automated computer vision solutions for long-term animal tracking. This dataset is the detection subset of a larger dataset called BuckTales that contains annoatated detections of blackbuck antelopes in the wild. It contains 218 images with corresponding bounding box and class annotations. The images are really large ~(3000 x 5000 pixels). Because the images are taken by drones, the antelopes are very very small. There are six classes to detect (with the focus being on antelopes): Drones, birds, unkown, shadow, bbfemale, and bbmale. The data is in COCO object detection format.  
 
 ## Task Description
 

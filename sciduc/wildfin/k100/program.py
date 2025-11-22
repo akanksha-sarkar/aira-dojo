@@ -37,25 +37,50 @@ def finetune(train_dataset, val_dataset):
 
     # 2. Train the model
     model.train(
-        data=train_dataset.get_yolo_dataset(), epochs=5, imgsz=1920
+        data=train_dataset.get_yolo_dataset(), epochs=10, imgsz=1920
     )  # Increase epochs and imgsz, reduce batch if necessary
+    # Create a mapping from the model's 0-indexed class IDs
+    # back to the original COCO category IDs for correct evaluation.
+    train_coco = train_dataset.coco
+    cat_ids = sorted(train_coco.getCatIds())
+    yolo_to_coco_cat_id = {i: cat_id for i, cat_id in enumerate(cat_ids)}
     coco_results = []
-    for _, _, img_ids in val_dataloader:
-        img_paths = []
-        for img_id in img_ids:
-            info = val_dataset.coco.loadImgs(img_id)[0]
-            img_paths.append(os.path.join(val_dataset.data_dir, info['file_name']))
-        results = model.predict(source=img_paths, augment=True, imgsz=1920)
-        for res, img_id in zip(results, img_ids):
-            boxes = res.boxes.xyxy.cpu().numpy()
-            scores = res.boxes.conf.cpu().numpy()
-            classes = res.boxes.cls.cpu().numpy().astype(int)
-            for box, score, cls in zip(boxes, scores, classes):
-                x1, y1, x2, y2 = box.tolist()
-                coco_results.append({
-                    "image_id": img_id,
-                    "category_id": int(cls),
-                    "bbox": [x1, y1, x2 - x1, y2 - y1],
-                    "score": float(score)
-                })
+    for img_id in val_dataset.img_ids:
+        img_info = val_dataset.coco.loadImgs(img_id)[0]
+        img_path = os.path.join(val_dataset.data_dir, img_info["file_name"])
+
+        # Perform inference at the same high resolution used for training.
+        results = model.predict(img_path, imgsz=1920, verbose=False, device=0)
+
+        result = results[0]  # Get results for the single image
+        boxes = result.boxes
+
+        # Process each detection
+        for box in boxes:
+            # Extract bounding box in xyxy format
+            coords = box.xyxy[0].cpu().numpy()
+            x1, y1, x2, y2 = coords
+
+            # Convert to COCO's required xywh format
+            bbox = [x1, y1, x2 - x1, y2 - y1]
+
+            # Get class ID and confidence score
+            yolo_class_id = int(box.cls[0].cpu().numpy())
+            conf = float(box.conf[0].cpu().numpy())
+
+            # Map the YOLO class ID back to the original COCO category ID
+            if yolo_class_id in yolo_to_coco_cat_id:
+                coco_cat_id = yolo_to_coco_cat_id[yolo_class_id]
+
+                # Append the formatted result
+                coco_results.append(
+                    {
+                        "image_id": img_id,
+                        "category_id": coco_cat_id,
+                        "bbox": [round(c, 2) for c in bbox],
+                        "score": round(conf, 4),
+                    }
+                )
+
+    print(f"Generated {len(coco_results)} detections.")
     return coco_results
