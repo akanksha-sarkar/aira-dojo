@@ -182,6 +182,15 @@ def main(_cfg: DictConfig):
     # 3) Convert back to dataclass and validate
     cfg: RunConfig = OmegaConf.to_object(cfg_dict_config)
 
+    # Inject dynamic job output directory from environment
+    experiment_dir = os.environ.get("EXPERIMENT_DIR", None)
+    if experiment_dir:
+        print(f"🔧 Overriding logger.output_dir with EXPERIMENT_DIR={experiment_dir}")
+        cfg.logger.output_dir = experiment_dir
+        # If you use Hydra’s working directory mechanism, also set that:
+        if hasattr(cfg, "hydra"):
+            cfg.hydra.run.dir = experiment_dir
+
     cfg.validate()
 
     # Pretty print the config

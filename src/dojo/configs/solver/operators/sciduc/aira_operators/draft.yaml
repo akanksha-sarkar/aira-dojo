@@ -31,7 +31,7 @@ draft:
         - **IMPORTANT**: If you are using a YOLO model and call "model.train(data={yaml_path})", ALWAYS add the data={yaml_path}.
         - As much as possible, keep the stdout clean.
         - As this is the initial draft, prioritize speed and simplicity in your solution.
-        - ONLY USE 10 EPOCHS OR LESS FOR TRAINING TO GET A QUICK PROOF OF CONCEPT OF YOUR SOLUTION.
+        - ONLY USE 2 EPOCHS OR LESS FOR TRAINING TO GET A QUICK PROOF OF CONCEPT OF YOUR SOLUTION.
       
       **DATA**: The training and validation data is already prepared and available in the read-only `/data` directory. You should not unzip any files.
       

@@ -255,4 +255,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    log_to_tree(Path("shared/logs/aira-dojo/user_line2_issue_example/2025-10-29_23-09-07"))

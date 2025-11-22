@@ -88,8 +88,9 @@ if __name__ == "__main__":
     # Default paths are Apptainer-friendly
     root_dir = os.environ.get("ROOT_DIR", "/work")
     program_path = os.environ.get("PROGRAM_PATH", os.path.join(root_dir, "program.py"))
-    program_path = os.path.join(root_dir, "program.py")
-    data_dir = os.environ.get("DATA_DIR", os.path.join(root_dir, "data"))
+    # program_path = os.path.join(root_dir, "program.py")
+    # data_dir = os.environ.get("DATA_DIR", os.path.join(root_dir, "data"))
+    data_dir = "/data"
     ann_dir = os.environ.get("ANN_DIR", os.path.join(root_dir, "annotations", "k100"))
 
     logging.info(f"ROOT_DIR={root_dir}")

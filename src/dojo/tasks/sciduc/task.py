@@ -155,14 +155,14 @@ class SciDucTask(Task):
         interpreter = state["solver_interpreter"]
         exec_output: ExecutionResult = interpreter.run(executable, file_name=self._solution_script)
         eval_result = {EXECUTION_OUTPUT: exec_output}
-        print("EXEC OUTPUT: ", exec_output)
+        self.logger.info("EXEC OUTPUT: ", exec_output)
         write_code_to_file("", self.program_path)
         if (not exec_output.exit_code == 0) or exec_output.timed_out:
             self.logger.error(f"Execution failed - exit code: {exec_output.exit_code} - timed out: {exec_output.timed_out} - execution time: {exec_output.exec_time}")
         else: 
             self.logger.info(f"Execution successful.")      
             metrics = extract_metrics(exec_output.term_out)
-            print("METRICS: ", metrics)
+            self.logger.info("METRICS: ", metrics)
             if metrics:
                 eval_result[VALID_SOLUTION] = True
                 eval_result[VALID_SOLUTION_FEEDBACK] = "Solution is valid"

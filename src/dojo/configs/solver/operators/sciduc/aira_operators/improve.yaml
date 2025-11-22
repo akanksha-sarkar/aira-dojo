@@ -39,7 +39,7 @@ improve:
         - Use `torch.optim.AdamW` (the recommended optimizer) instead of the deprecated `AdamW` from `transformers`.  
         - **IMPORTANT**: If you are using a YOLO model and call "model.train(data={yaml_path})", ALWAYS add the data={yaml_path}.
         - As much as possible, keep the stdout clean.
-        - Try to keep epochs in the range of 20 - 50 unless there is a strong reason to go outside this range.
+        - ONLY USE 10 EPOCHS OR LESS FOR TRAINING TO GET A QUICK PROOF OF CONCEPT OF YOUR SOLUTION.
       
       **COMPUTE**: You have access to a Python environemnt with 1 NVIDIA A100 GPU(s) and 8 CPUs available, and the following packages installed: {{packages}}. DO NOT DOWNLOAD NEW PACKAGES.
 
