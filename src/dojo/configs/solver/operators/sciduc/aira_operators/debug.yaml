@@ -34,7 +34,7 @@ debug:
       {{execution_output}}
 
       # Compute Environment:
-      - GPU: 1 NVIDIA A100
+      - GPU: 1 NVIDIA H200
       - CPUs: 8
       - Available Packages: {{packages}}
       - DO NOT DOWNLOAD NEW PACKAGES (You have access to pycocotools, torch, torchvision, ultralytics, etc.).

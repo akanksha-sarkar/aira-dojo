@@ -4,4 +4,4 @@ defaults:
   - sciduc/_default
 
 name: bucktales
-subset: k5seed42
+subset: k100

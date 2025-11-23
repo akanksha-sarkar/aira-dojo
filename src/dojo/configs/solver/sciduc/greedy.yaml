@@ -1,9 +1,9 @@
 defaults:
   - greedy
   - /solver/operators/sciduc@operators:
-    - aira_operators/debug    # Enables debugging mode for operator prompts
-    - aira_operators/draft    # Enables draft mode for generating initial outputs
-    - aira_operators/improve  # Enables improvement mode for refining outputs
+    - aide_operators/debug    # Enables debugging mode for operator prompts
+    - aide_operators/draft    # Enables draft mode for generating initial outputs
+    - aide_operators/improve  # Enables improvement mode for refining outputs
     - aide_operators/analyze  # Enables evaluation mode for assessing outputs
   - override memory: simple_memory
   - override memory@debug_memory: debug_memory # Enables Debug Memory operator

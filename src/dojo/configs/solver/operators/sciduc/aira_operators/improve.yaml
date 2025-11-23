@@ -41,7 +41,7 @@ improve:
         - As much as possible, keep the stdout clean.
         - ONLY USE 10 EPOCHS OR LESS FOR TRAINING TO GET A QUICK PROOF OF CONCEPT OF YOUR SOLUTION.
       
-      **COMPUTE**: You have access to a Python environemnt with 1 NVIDIA A100 GPU(s) and 8 CPUs available, and the following packages installed: {{packages}}. DO NOT DOWNLOAD NEW PACKAGES.
+      **COMPUTE**: You have access to a Python environemnt with 1 NVIDIA H200 GPU(s) and 8 CPUs available, and the following packages installed: {{packages}}. DO NOT DOWNLOAD NEW PACKAGES.
 
       Consider the previously explored ideas, and make sure the improvement idea you propose considers a DIFFERENT IMPROVEMENT OF THE SOLUTION. 
       Brainstorm about possible improvements and WHY THEY ARE LIKELY TO BE EFFECTIVE AND INCREASE THE PERFORMANCE for the given task, and the available data and compute resources.

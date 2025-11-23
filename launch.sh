@@ -1,15 +1,15 @@
 #!/bin/bash
 #BSUB -J run_1
-#BSUB -q gpu_h100
+#BSUB -q gpu_h200
 #BSUB -gpu "num=1"
 #BSUB -n 8
-#BSUB -W 25:00
+#BSUB -W 16:00
 #BSUB -o /groups/branson/home/line2/aira-dojo/shared/logs/%J.out
 #BSUB -cwd /groups/branson/home/line2/aira-dojo
-DOMAIN="bucktales" # bucktales or wildfin
-K_SEED=k5seed42 # k5seed42, k10seed42, k20seed42, k100
-AGENT="aira" # aira or aide
-EXP_NUM="1" # Experiment number
+DOMAIN="wildfin" # bucktales or wildfin
+K_SEED="k5seed42" # k5seed42, k10seed42, k20seed42, k100
+AGENT="aide" # aira or aide
+EXP_NUM="5" # Experiment number
 source ~/.bashrc
 conda activate aira-dojo || { echo "❌ Failed to activate conda env"; exit 1; }
 TERM_OUT="/groups/branson/home/line2/aira-dojo/shared/logs/${LSB_JOBID}.out"

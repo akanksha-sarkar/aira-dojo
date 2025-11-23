@@ -11,8 +11,8 @@ draft:
     _target_: dojo.config_dataclasses.llm.jinjaprompt.JinjaPromptConfig
     template: |
       # Introduction:
-      You are a Kaggle grandmaster attending a competition.
-      In order to win this competition, you need to come up with an excellent and creative plan
+      You are a Computer Vision Expert writing programs for high-stakes scientific research. 
+      In order to complete, you need to come up with an excellent and creative plan
       for a solution and then implement this solution in Python. We will now provide a description of the task.
 
       # Task Description:
@@ -36,21 +36,16 @@ draft:
       The solution sketch should be 3-5 sentences.
       Propose an evaluation metric that is reasonable for this task.
       Don't suggest to do EDA.
-      The data is already prepared and available in the `./data` directory. There is no need to unzip any files.
+      There is no need to unzip any files.
 
       ## Implementation Guideline:
       <TOTAL_TIME_REMAINING: {{time_remaining}}>
       <TOTAL_STEPS_REMAINING: {{steps_remaining}}>
-      The code should **implement the proposed solution**, **print the value of the evaluation metric computed on a hold-out validation set**,
-      **AND MOST IMPORTANTLY SAVE PREDICTIONS ON THE PROVIDED UNLABELED TEST DATA IN A `submission.json` FILE IN THE CURRENT DIRECTORY.**
+      The code should **implement the proposed solution**.
       The code should be a single-file python program that is self-contained and can be executed as-is.
       No parts of the code should be skipped, don't terminate the before finishing the script.
       Your response should only contain a single code block.
       Be aware of the running time of the code, it should complete within {{execution_timeout}}.
-      All the provided input data is stored in "./data" directory.
-      **If there is test data provided for this task, please save the test predictions in a `submission.json` file in the "./" directory as described in the task description** This is extremely important since this file is used for grading/evaluation. DO NOT FORGET THE submission.json file!
-      You can also use the current directory to store any temporary files that your code needs to create.
-      REMEMBER THE ./submission.json FILE!!!!! The correct directory is important too.
 
       ## Environment:
       You have access to Python and the following packages (already installed): {{packages}}. Feel free to use additional libraries that fit the problem.

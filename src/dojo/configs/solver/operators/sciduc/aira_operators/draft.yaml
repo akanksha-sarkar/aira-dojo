@@ -35,7 +35,7 @@ draft:
       
       **DATA**: The training and validation data is already prepared and available in the read-only `/data` directory. You should not unzip any files.
       
-      **COMPUTE**: You have access to a Python environemnt with 1 NVIDIA A100 GPU(s) and 8 CPUs available, and the following packages installed: {{packages}}. DO NOT DOWNLOAD NEW PACKAGES.
+      **COMPUTE**: You have access to a Python environemnt with 1 NVIDIA H200 GPU(s) and 8 CPUs available, and the following packages installed: {{packages}}. DO NOT DOWNLOAD NEW PACKAGES.
 
       **MODEL SELECTION**: Consider which model architecture and framework would work best for this iteration. Different detection approaches may perform better depending on the dataset characteristics:
         - torchvision provides various detection models (e.g., Faster R-CNN, RetinaNet, FCOS)
