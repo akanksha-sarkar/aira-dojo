@@ -30,13 +30,14 @@ headless = false
 
 # Configure server for better performance
 port = 8501
+address = "0.0.0.0"  # Allow connections from any network interface
 baseUrlPath = ""
 # Create a static folder at /Users/edantoledo/Desktop/aira-dojo/dojo/ui/static or disable static serving
 enableStaticServing = false
 
 [browser]
 # Server settings
-serverAddress = "localhost"
+serverAddress = "0.0.0.0"  # Changed from "localhost" to allow remote access
 gatherUsageStats = false
 
 # Improve user experience

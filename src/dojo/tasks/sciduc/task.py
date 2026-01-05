@@ -124,7 +124,17 @@ class SciDucTask(Task):
         interpreter = state["solver_interpreter"]
         exec_output: ExecutionResult = interpreter.run(executable)
         eval_result = {EXECUTION_OUTPUT: exec_output}
-        self.logger.info(f"Evaluation Results: {eval_result}")
+        
+        # Log the full execution output (stdout/stderr) for debugging
+        self.logger.info("=" * 80)
+        self.logger.info("Evaluation Script Output:")
+        self.logger.info("=" * 80)
+        for i, line in enumerate(exec_output.term_out):
+            self.logger.info(f"[{i:03d}] {line}")
+        self.logger.info("=" * 80)
+        self.logger.info(f"Exit code: {exec_output.exit_code}, Time: {exec_output.exec_time:.2f}s")
+        
+        eval_result = {EXECUTION_OUTPUT: exec_output}
         # write_code_to_file("", self.program_path)
         if (not exec_output.exit_code == 0) or exec_output.timed_out:
             self.logger.error(f"Execution failed - exit code: {exec_output.exit_code} - timed out: {exec_output.timed_out} - execution time: {exec_output.exec_time}")

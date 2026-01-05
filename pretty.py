@@ -41,8 +41,8 @@ def infer_run_name(records, fallback: str):
 
 def main():
     ap = argparse.ArgumentParser(description="Extract steps into folders with code and metadata.")
-    ap.add_argument("--input", type=Path, help="Path to JSON/NDJSON file containing step records.", default="/home/eyl45/Sun/aira-dojo/shared/logs/aira-dojo/user_eyl45_issue_example/10/checkpoint/journal.jsonl")
-    ap.add_argument("-o", "--out-dir", type=Path, default="/home/eyl45/Sun/aira-dojo/shared/logs/aira-dojo/user_eyl45_issue_example/10", help="Base output directory.")
+    ap.add_argument("--input", type=Path, help="Path to JSON/NDJSON file containing step records.", default="/home/as2637/sciduc/aira-dojo/shared/logs/aira-dojo/user_as2637_issue_example/2025-11-21_13-23-27/json/JOURNAL.jsonl")
+    ap.add_argument("-o", "--out-dir", type=Path, default="/home/as2637/sciduc/aira-dojo/shared/logs/aira-dojo/user_as2637_issue_example/2025-11-21_13-23-27/json", help="Base output directory.")
     ap.add_argument("--run-name", type=str, default=None, help="Optional run name (folder under out-dir).")
     ap.add_argument("--code-filename", type=str, default="code.py", help="Filename for code file in each step dir.")
     args = ap.parse_args()
@@ -60,38 +60,33 @@ def main():
     index = []
 
     for rec in records:
-        step = rec.get("step")
-        # Ensure step is usable as a folder suffix
+        payload = rec.get("data", rec)   # use nested data if present
+
+        step = payload.get("step", rec.get("step"))
         step_str = f"{int(step):04d}" if isinstance(step, int) else safe_name(str(step or "unknown"))
         step_dir = run_dir / f"step_{step_str}"
         step_dir.mkdir(parents=True, exist_ok=True)
 
-        # Write raw record for traceability
         (step_dir / "raw.json").write_text(json.dumps(rec, ensure_ascii=False), encoding="utf-8")
 
-        # Split code from metadata
-        code_text = rec.get("code") or ""
-        meta = dict(rec)
-        if "code" in meta:
-            del meta["code"]
+        code_text = payload.get("code") or ""
+        meta = dict(payload)
+        meta.pop("code", None)
 
-        # Write code (even if empty, create a file)
-        # Add header if empty to make it import-safe
         if code_text.strip() == "":
             code_text = "# (empty) — no code provided for this step\n"
         (step_dir / args.code_filename).write_text(code_text, encoding="utf-8")
 
-        # Pretty metadata
         (step_dir / "metadata.json").write_text(
             json.dumps(meta, indent=2, sort_keys=True, ensure_ascii=False),
             encoding="utf-8",
         )
 
         index.append({
-            "step": rec.get("step"),
-            "id": rec.get("id"),
+            "step": step,
+            "id": payload.get("id"),
             "path": str(step_dir),
-            "has_code": bool(rec.get("code")),
+            "has_code": bool(payload.get("code")),
         })
 
     # Write a simple run index
