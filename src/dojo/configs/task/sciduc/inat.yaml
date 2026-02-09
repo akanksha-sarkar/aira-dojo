@@ -1,0 +1,7 @@
+# @package task
+
+defaults:
+  - sciduc/_default
+
+name: inat
+subset: k10
