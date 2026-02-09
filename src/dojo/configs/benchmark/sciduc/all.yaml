@@ -5,6 +5,7 @@ tasks:
     - example-sciduc-task
     - wildfin
     - bucktales
+    - cell-seg
 
 # Overrides for all tasks
 overrides: {}

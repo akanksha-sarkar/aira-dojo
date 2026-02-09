@@ -11,7 +11,7 @@ crossover:
     _target_: dojo.config_dataclasses.llm.jinjaprompt.JinjaPromptConfig
     template: |
       # Introduction:
-      You are a Kaggle grandmaster attending a competition. You are provided with two previously developed
+      You are a Computer Vision Expert writing programs for high-stakes scientific research. You are provided with two previously developed
       solutions below and should combine them together in order to further increase the (test time) performance.
       For this you should first outline a brief plan in natural language for how the solutions can be merged and
       then implement this crossover solution in Python based on the provided previous solutions.
@@ -49,17 +49,11 @@ crossover:
       ## Implementation Guideline:
       <TOTAL_TIME_REMAINING: {{time_remaining}}>
       <TOTAL_STEPS_REMAINING: {{steps_remaining}}>
-      The code should **implement the proposed solution**, **print the value of the evaluation metric computed on a hold-out validation set**,
-      **AND MOST IMPORTANTLY SAVE PREDICTIONS ON THE PROVIDED UNLABELED TEST DATA IN A `submission.csv` FILE IN THE CURRENT DIRECTORY.**
+      The code should **implement the proposed solution**.
       The code should be a single-file python program that is self-contained and can be executed as-is.
       No parts of the code should be skipped, don't terminate the before finishing the script.
       Your response should only contain a single code block.
       Be aware of the running time of the code, it should complete within {{execution_timeout}}.
-      All the provided input data is stored in "./data" directory.
-      **If there is test data provided for this task, please save the test predictions in a `submission.csv` file in the "./" directory as described in the task description** This is extremely important since this file is used for grading/evaluation. DO NOT FORGET THE submission.csv file!
-      You can also use the current directory to store any temporary files that your code needs to create.
-      REMEMBER THE ./submission.csv FILE!!!!! The correct directory is important too.
-      The evaluation should be based on 5-fold cross-validation but only if that's an appropriate evaluation for the task at hand.
 
       {% if other_remarks %}
       # Other Remarks:

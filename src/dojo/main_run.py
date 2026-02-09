@@ -109,14 +109,29 @@ def _main(cfg: RunConfig):
 
     log.info("Instantiating the task...")
     task = build(cfg.task, TASK_MAP)
-    cfg.interpreter.read_only_binds = {
-        # Certs for SSL verification
-        "/groups/branson/home/line2/conda/envs/aira-dojo/lib/python3.12/site-packages/certifi": "/certs",
+    
+    # Dynamically find certifi path for SSL certificates
+    try:
+        import certifi
+        certifi_path = Path(certifi.__file__).parent.resolve()
+    except ImportError:
+        log.warning("certifi not found, SSL verification may fail")
+        certifi_path = None
+    
+    read_only_binds = {
         # Main working directory
         f"{cfg.task.domain_dir}/{cfg.task.subset}": "/work",
         # Program directory
         os.environ["PROGRAM_DIR"]: "/run_tmp",
     }
+    
+    # Only add certifi bind if it exists
+    if certifi_path and certifi_path.exists():
+        read_only_binds[str(certifi_path)] = "/certs"
+    else:
+        log.warning(f"certifi path not found: {certifi_path}, skipping SSL cert bind mount")
+    
+    cfg.interpreter.read_only_binds = read_only_binds
 
 
     # Allocate resources for the agent's workspace and instantiate an object that lets you reference and use them
@@ -181,6 +196,15 @@ def main(_cfg: DictConfig):
     OmegaConf.resolve(cfg_dict_config)
     # 3) Convert back to dataclass and validate
     cfg: RunConfig = OmegaConf.to_object(cfg_dict_config)
+
+    # Inject dynamic job output directory from environment
+    experiment_dir = os.environ.get("EXPERIMENT_DIR", None)
+    if experiment_dir:
+        print(f"🔧 Overriding logger.output_dir with EXPERIMENT_DIR={experiment_dir}")
+        cfg.logger.output_dir = experiment_dir
+        # If you use Hydra’s working directory mechanism, also set that:
+        if hasattr(cfg, "hydra"):
+            cfg.hydra.run.dir = experiment_dir
 
     cfg.validate()
 

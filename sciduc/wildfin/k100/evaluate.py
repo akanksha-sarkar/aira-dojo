@@ -9,8 +9,6 @@ import os
 # print("✅ Added /work to sys.path")
 # print("Working dir:", os.getcwd())
 
-import os
-import sys
 import time
 import json
 import logging
@@ -19,6 +17,7 @@ from pycocotools.coco import COCO
 from src.eval import evaluate as evaluate_coco
 from src.dataset import ObjectDetectionDataset
 import traceback
+import ultralytics
 
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 
@@ -70,7 +69,7 @@ def evaluate(program_path, data_dir, ann_dir, seed=42):
         return {"error": "No detection results returned by finetune()."}
 
     # Load COCO ground truth and detection results
-    ann_file = os.path.join(ann_dir, "val.json")
+    ann_file = os.path.join(ann_dir, "val", "annotations.json")
     coco_gt = COCO(ann_file)
     coco_dt = coco_gt.loadRes(coco_results)
 
@@ -86,15 +85,16 @@ def evaluate(program_path, data_dir, ann_dir, seed=42):
 
 if __name__ == "__main__":
     # Default paths are Apptainer-friendly
+    ultralytics.utils.LOGGER.setLevel("ERROR")  # only errors will print
     root_dir = os.environ.get("ROOT_DIR", "/work")
     program_path = os.environ.get("PROGRAM_PATH", os.path.join(root_dir, "program.py"))
-    program_path = os.path.join(root_dir, "program.py")
-    data_dir = os.environ.get("DATA_DIR", os.path.join(root_dir, "data"))
-    ann_dir = os.environ.get("ANN_DIR", os.path.join(root_dir, "annotations", "k100"))
+    data_dir = "/data"
+    ann_dir = os.environ.get("ANN_DIR", os.path.join(root_dir, "annotations"))
 
     logging.info(f"ROOT_DIR={root_dir}")
     logging.info(f"DATA_DIR={data_dir}")
     logging.info(f"ANN_DIR={ann_dir}")
 
     metrics = evaluate(program_path, data_dir, ann_dir)
-    print("METRICS:", json.dumps(metrics, indent=2))
+    metrics["fitness"] = metrics.get("AP@0.5", 0.0)
+    print("METRICS:", metrics)

@@ -11,8 +11,7 @@ debug:
     _target_: dojo.config_dataclasses.llm.jinjaprompt.JinjaPromptConfig
     template: |
       # Introduction:
-      You are a Kaggle grandmaster attending a competition.
-      Your previous solution had a bug and/or did not produce a submission.json, so based on the information below, you should revise it in order to fix this.
+      You are a Computer Vision Expert writing programs for high-stakes scientific research. 
       Your response should be an implementation outline in natural language, followed by a single markdown code block which implements the bugfix/solution.
 
       # Task Description:
@@ -42,16 +41,11 @@ debug:
       ## Implementation Guideline:
       <TOTAL_TIME_REMAINING: {{time_remaining}}>
       <TOTAL_STEPS_REMAINING: {{steps_remaining}}>
-      The code should **implement the proposed solution**, **print the value of the evaluation metric computed on a hold-out validation set**,
-      **AND MOST IMPORTANTLY SAVE PREDICTIONS ON THE PROVIDED UNLABELED TEST DATA IN A `submission.json` FILE IN THE CURRENT DIRECTORY.**
+      The code should **implement the proposed solution**.
       The code should be a single-file python program that is self-contained and can be executed as-is.
       No parts of the code should be skipped, don't terminate the before finishing the script.
       Your response should only contain a single code block.
       Be aware of the running time of the code, it should complete within {{execution_timeout}}.
-      All the provided input data is stored in "./data" directory.
-      **If there is test data provided for this task, please save the test predictions in a `submission.json` file in the "./" directory as described in the task description** This is extremely important since this file is used for grading/evaluation. DO NOT FORGET THE submission.json file!
-      You can also use the current directory to store any temporary files that your code needs to create.
-      REMEMBER THE ./submission.json FILE!!!!! The correct directory is important too.
 
       # Data Overview:
       {{data_overview}}

@@ -34,7 +34,7 @@ debug:
       {{execution_output}}
 
       # Compute Environment:
-      - GPU: 1 NVIDIA A100
+      - GPU: 1 NVIDIA H200
       - CPUs: 8
       - Available Packages: {{packages}}
       - DO NOT DOWNLOAD NEW PACKAGES (You have access to pycocotools, torch, torchvision, ultralytics, etc.).
@@ -48,7 +48,7 @@ debug:
 
       - **Important Reminders:**
         - Absolutely do **NOT** skip any part of the code.
-        - 20 - 50 epochs is usually sufficient for training unless otherwise specified.
+        - ONLY USE 2 EPOCHS OR LESS FOR TRAINING TO GET A QUICK PROOF OF CONCEPT OF YOUR SOLUTION TO THE BUG.
 
       Brainstorm about possible ways to fix the bug and WHY THEY ARE LIKELY TO FIX THE BUG for the given implementation. Additionally, if any other bugs further down the line are observed, please fix them as well.
       Generate a bug-fix plan that will structure and guide your step-by-step reasoning process. Reflect on it to make sure all the requirements are satisfied.
