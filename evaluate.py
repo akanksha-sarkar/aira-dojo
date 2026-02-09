@@ -3,21 +3,13 @@ Evaluator for object detection programs using the new ObjectDetectionDataset.
 """
 import sys
 import os
-# Add the Apptainer bind mount path to Python's module search
-# sys.path.insert(0, "/work")
-
-# print("✅ Added /work to sys.path")
-# print("Working dir:", os.getcwd())
-
-import os
-import sys
 import time
 import json
 import logging
 import importlib.util
 from pycocotools.coco import COCO
-from src.eval import evaluate as evaluate_coco
-from src.dataset import ObjectDetectionDataset
+from sciduc.wildfin.k100.src.eval import evaluate as evaluate_coco
+from sciduc.wildfin.k100.src.dataset import ObjectDetectionDataset
 import traceback
 
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
