@@ -1,15 +1,10 @@
-from src.dataset import collate_fn, ObjectDetectionDataset
-from torch.utils.data import DataLoader
-import cv2
-import ultralytics
 import torchvision
+import cv2
 import torch
-import os
-from pathlib import Path
-import json
-from pycocotools.coco import COCO
-import torchvision.transforms.functional as F
-
+from torch.utils.data import DataLoader
+from wildfin.src.dataset import collate_fn
+from torchvision.ops import batched_nms
+from ultralytics import YOLO
 
 def finetune(train_dataset, val_dataset):
     """

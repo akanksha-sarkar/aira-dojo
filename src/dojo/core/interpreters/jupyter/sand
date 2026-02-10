@@ -219,6 +219,7 @@ apptainer instance run \
     --env XDG_CACHE_HOME=/cache/xdg \
     --env JUPYTER_RUNTIME_DIR=/tmp/jupyter_runtime \
     --env HOME=/tmp \
+    --env PROGRAM_PATH="/run_tmp/program.py" \
     --env HF_HOME=/cache/hub \
     --env TRANSFORMERS_CACHE=/cache/transformers \
     --nv \

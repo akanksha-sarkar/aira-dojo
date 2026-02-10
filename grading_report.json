@@ -1,3 +1,0 @@
-{
-  "error": "Error evaluating submission: list index out of range\nTraceback (most recent call last):\n  File \"/home/eyl45/Sun/aira-dojo/src/dojo/tasks/sciduc/evaluate.py\", line 47, in evaluate_submission\n    coco_dt = coco_gt.loadRes(str(submission_path))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/eyl45/.conda/envs/aira-dojo/lib/python3.12/site-packages/pycocotools/coco.py\", line 330, in loadRes\n    if 'caption' in anns[0]:\n                    ~~~~^^^\nIndexError: list index out of range\n"
-}

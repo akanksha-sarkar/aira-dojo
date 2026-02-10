@@ -4,10 +4,10 @@ Evaluator for object detection programs using the new ObjectDetectionDataset.
 import sys
 import os
 # Add the Apptainer bind mount path to Python's module search
-sys.path.insert(0, "/work")
+# sys.path.insert(0, "/work")
 
-print("✅ Added /work to sys.path")
-print("Working dir:", os.getcwd())
+# print("✅ Added /work to sys.path")
+# print("Working dir:", os.getcwd())
 
 import time
 import json
