@@ -1,6 +1,0 @@
-_target_: dojo.config_dataclasses.benchmark.BenchmarkConfig
-
-name: detection
-tasks:
-    - example-task
-
