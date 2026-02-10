@@ -202,6 +202,8 @@ def main(_cfg: DictConfig):
     if experiment_dir:
         print(f"🔧 Overriding logger.output_dir with EXPERIMENT_DIR={experiment_dir}")
         cfg.logger.output_dir = experiment_dir
+        cfg.solver.checkpoint_path = os.path.join(experiment_dir, "checkpoint")
+        cfg.interpreter.working_dir = os.path.join(experiment_dir, "workspace_agent")
         # If you use Hydra’s working directory mechanism, also set that:
         if hasattr(cfg, "hydra"):
             cfg.hydra.run.dir = experiment_dir

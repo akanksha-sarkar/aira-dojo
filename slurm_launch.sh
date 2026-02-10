@@ -47,7 +47,7 @@ fi
 DOMAIN="inat"
 K_SEED="k10seed42"
 AGENT="aide"
-EXP_NUM="3"
+EXP_NUM="2"
 DATA_DIR="/share/j_sun/as2637/inat"
 CACHE_DIR="/share/j_sun/as2637"
 SUBSET="k10"

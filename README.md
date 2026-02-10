@@ -195,18 +195,6 @@ Important:
   So that the execution workspace is the same as the data path.
 - Set Huggingface path to enable downloading huggingface models
 
-## Test
-- [x] Can read the data now
-- [x] Can download huggingface model now
-- [x] Can generate the visualization result now.
-
-## Test command
-```
-python -m dojo.main_run +_exp=run_example logger.use_wandb=False task.name=random-acts-of-pizza
-```
-Example results:
-`aira-dojo/result_sample` (remove env_variable.json due to api-key security concern.)
-
 # Shifting to Gemini from GPT-4o
 main_run starts by looking at the config folder (under dojo). The experiment config is in '_exp' folder. To switch, change the solver.client to gdm (gdm config already provided in config/solver/client)
 - add GOOGLE_API_KEY="<<your api key>>" in the .env file
