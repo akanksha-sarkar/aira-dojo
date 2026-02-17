@@ -70,9 +70,13 @@ def _main(cfg: RunConfig):
     program_dir = tmp_run_dir / "program"
     program_dir.mkdir(parents=True, exist_ok=True)
 
+    pseudolabel_dir = tmp_run_dir / "pseudolabels"
+    pseudolabel_dir.mkdir(parents=True, exist_ok=True)
+
     os.environ["TMP_RUN_DIR"] = str(tmp_run_dir)
     os.environ["PROGRAM_DIR"] = str(program_dir)
     os.environ["PROGRAM_PATH"] = str(program_dir / "program.py")
+    os.environ["PSEUDOLABEL_DIR"] = str(pseudolabel_dir)
 
     log.info(f"[INIT] TMP_RUN_DIR={tmp_run_dir}")
     log.info(f"[INIT] PROGRAM_DIR={program_dir}")
@@ -124,7 +128,9 @@ def _main(cfg: RunConfig):
         # Program directory
         os.environ["PROGRAM_DIR"]: "/run_tmp",
     }
-    
+    read_write_binds = {
+        os.environ["PSEUDOLABEL_DIR"]: "/pseudolabels",
+    }
     # Only add certifi bind if it exists
     if certifi_path and certifi_path.exists():
         read_only_binds[str(certifi_path)] = "/certs"
@@ -132,20 +138,20 @@ def _main(cfg: RunConfig):
         log.warning(f"certifi path not found: {certifi_path}, skipping SSL cert bind mount")
     
     cfg.interpreter.read_only_binds = read_only_binds
-
+    cfg.interpreter.read_write_binds = read_write_binds
 
     # Allocate resources for the agent's workspace and instantiate an object that lets you reference and use them
     solver_interpreter = build(cfg.interpreter, INTERPRETER_MAP, data_dir=cfg.task.data_dir)
-    # solver_interpreter.instance.create_process()
-    # print("✅ Apptainer environment initialized.")
-    # try:
-    #     import time
-    #     while True:
-    #         time.sleep(60)
-    # except KeyboardInterrupt:
-    #     log.info("Stopping instance...")
-    #     solver_interpreter.close()
-    # return
+    solver_interpreter.instance.create_process()
+    print("✅ Apptainer environment initialized.")
+    try:
+        import time
+        while True:
+            time.sleep(60)
+    except KeyboardInterrupt:
+        log.info("Stopping instance...")
+        solver_interpreter.close()
+    return
 
     eval_interpreter = None
 

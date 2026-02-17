@@ -40,6 +40,7 @@ class ApptainerJupyterServer(JupyterConnectable):
         superimage_version: str = None,
         read_only_overlays: List[str] = None,
         read_only_binds: Dict[str, str] = None,
+        read_write_binds: Dict[str, str] = None,
         env: Dict[str, str] = None,
     ):
         self.read_only_overlays = read_only_overlays or []
@@ -47,6 +48,10 @@ class ApptainerJupyterServer(JupyterConnectable):
 
         self.read_only_binds = read_only_binds or {}
         self.read_only_binds = {Path(k).resolve(): Path("/root") / Path(v) for k, v in self.read_only_binds.items()}
+
+        # Read-write binds are passed through as-is; we expect absolute host paths
+        # and container paths (e.g. {'/host/path': '/root/workspace'}).
+        self.read_write_binds = read_write_binds or {}
 
         self.env = env or {}
 
@@ -84,6 +89,9 @@ class ApptainerJupyterServer(JupyterConnectable):
         for k, v in self.read_only_binds.items():
             k = os.path.abspath(k)
             bind_configs.append(f"{k}:{v}:ro")
+        for k, v in self.read_write_binds.items():
+            k = os.path.abspath(k)
+            bind_configs.append(f"{k}:{v}:rw")
         if bind_configs:
             env["APPTAINER_BIND"] = ",".join(bind_configs)
 

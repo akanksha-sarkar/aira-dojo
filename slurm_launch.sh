@@ -45,12 +45,12 @@ fi
 # Experiment config
 # -------------------------
 DOMAIN="inat"
-K_SEED="k10seed42"
+K_SEED="k5seed42"
 AGENT="aide"
-EXP_NUM="2"
+EXP_NUM="1"
 DATA_DIR="/share/j_sun/as2637/inat"
 CACHE_DIR="/share/j_sun/as2637"
-SUBSET="k10"
+SUBSET="k5"
 
 LOG_DIR="/home/eyl45/Sun/aira-dojo/shared/logs"
 EXPERIMENT_DIR="${LOG_DIR}/${DOMAIN}/${K_SEED}/${AGENT}/${EXP_NUM}"

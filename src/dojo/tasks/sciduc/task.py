@@ -86,7 +86,6 @@ class SciDucTask(Task):
         self.program_path = Path(self.task_dir).resolve() / "program.py"
         eval_script_path = Path(self.task_dir).resolve() / "evaluate.py"
         self.eval_script = set_system_path_code() + "\n" + eval_script_path.read_text()
-        print("EVAL SCRIPT: ", self.eval_script)
 
     def prepare(self, **task_args):
         state = task_args
@@ -124,7 +123,6 @@ class SciDucTask(Task):
         interpreter = state["solver_interpreter"]
         exec_output: ExecutionResult = interpreter.run(executable)
         eval_result = {EXECUTION_OUTPUT: exec_output}
-        
         # Log the full execution output (stdout/stderr) for debugging
         self.logger.info("=" * 80)
         self.logger.info("Evaluation Script Output:")
