@@ -179,8 +179,9 @@ class WandBLogger(BaseLogger):
 
     def __init__(self, cfg: LoggerConfig, unique_token: str) -> None:
         tags = list(cfg.logger.tags)
-        project = cfg.logger.wandb_project_name
-        entity = cfg.logger.wandb_entity
+        # Env vars override config so you can log to your own entity/project without write access to aira-dojo
+        project = os.environ.get("WANDB_PROJECT") or cfg.logger.wandb_project_name
+        entity = os.environ.get("WANDB_ENTITY") or cfg.logger.wandb_entity
 
         wandb.init(entity=entity, project=project, tags=tags, config=cfg)
 
