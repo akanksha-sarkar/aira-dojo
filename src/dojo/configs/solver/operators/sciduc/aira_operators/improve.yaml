@@ -37,9 +37,7 @@ improve:
         - Be aware of the running time of the solution, it should complete within {{execution_timeout}}
         - Prefer vectorized operations over Python loops when processing large datasets.  
         - Use `torch.optim.AdamW` (the recommended optimizer) instead of the deprecated `AdamW` from `transformers`.  
-        - **IMPORTANT**: If you are using a YOLO model and call "model.train(data={yaml_path})", ALWAYS add the data={yaml_path}.
         - As much as possible, keep the stdout clean.
-        - ONLY USE 10 EPOCHS OR LESS FOR TRAINING TO GET A QUICK PROOF OF CONCEPT OF YOUR SOLUTION.
       
       **COMPUTE**: You have access to a Python environemnt with 1 NVIDIA H200 GPU(s) and 8 CPUs available, and the following packages installed: {{packages}}. DO NOT DOWNLOAD NEW PACKAGES.
 
@@ -47,11 +45,11 @@ improve:
       Brainstorm about possible improvements and WHY THEY ARE LIKELY TO BE EFFECTIVE AND INCREASE THE PERFORMANCE for the given task, and the available data and compute resources.
       {% if improve_complexity == 'simple' %}
       In this iteration, suggest a *minimal, low-risk* tweak that keeps the current solution's core intact—no architecture overhauls or fundamental methodology changes.  
-      Think: a feature-engineering twist, a lightweight data-augmentation trick, or hyperparameter changes.  
+      Think: a feature-engineering twist, a lightweight data-augmentation trick, or hyperparameter changes. Try to keep the training time short (less than 10 epochs).
       Check the MEMORY section first and avoid duplicating earlier ideas. 
       {% elif improve_complexity == 'normal' %}
       In this iteration, propose a *moderate upgrade* that builds on the baseline without deviating dramatically.  
-      Options include (but not limited to) hyper-parameter tuning, a small ensemble of similar models, a sturdier preprocessing pipeline, feature engineering improvements, and data augmentation.  
+      Options include (but not limited to) hyper-parameter tuning, a small ensemble of similar models, a sturdier preprocessing pipeline, feature engineering improvements, and data augmentation. Can increase the training time a bit more than before. 
       Check the MEMORY section first and avoid duplicating earlier ideas.
       {% elif improve_complexity == 'complex' %}
       In this iteration, recommend a *substantial extension* that pushes the method's boundaries while preserving its core logic.  

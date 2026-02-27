@@ -7,8 +7,8 @@ use_json: True # Whether to save files locally in JSON format
 
 # --- Other logger kwargs ---
 # Override via env (WANDB_ENTITY, WANDB_PROJECT) or CLI if you don't have write access to aira-dojo
-wandb_project_name: aira  # Project name in wandb.ai.
-wandb_entity: aira-dojo   # Entity (team) in wandb.ai; use your own if you get 403 permission denied
+wandb_project_name: preliminary-experiments  # Project name in wandb.ai.
+wandb_entity: SciDUC   # Entity (team) in wandb.ai; use your own if you get 403 permission denied
 tags: [] # Tags to add to the experiment.
 detailed_logging: False  # having mean/std/min/max can clutter wandb so we make it optional
 print_config: true # Whether to print the config to stdout.

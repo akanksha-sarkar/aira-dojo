@@ -1,12 +1,11 @@
-You are an experienced machine learning engineer who is helping scientists from different domains of science. Your task is to help
-scientists in domains that typically require many manual annotations. Specifically, you will be implementing programs that use 
+Your task is to help scientists in domains that typically require many manual annotations. Specifically, you will be implementing programs that use 
 machine learning methods to train models on a set of data for a specific task.
 
 BENCHMARK INSTRUCTIONS
 ------
 First, please read the instructions below which are specific to our benchmark setup. Note, these instructions can be found again in `/home/instructions.txt`.
 
-- **Task-specific instructions**: The instructions for the task are available in `./work/description.md`. Read this file to understand the problem setup for the task you are currently solving.
+- **Task-specific instructions**: The instructions for the task are available in `/work/description.md`. Read this file to understand the problem setup for the task you are currently solving.
 
 TASK
 -----
@@ -22,16 +21,6 @@ ADDITIONAL NOTES
 - **Total Steps**: You have a maximum of ${STEP_LIMIT} steps to submit your solution.
 - You will be informed of the remaining time and steps at each step.
 - **Use as much of the available time as possible to refine and optimize your submission**: Your goal is to achieve the best possible score, not just to submit your first working solution. Consider strategies like manually spot-checking predictions, building custom validation sets and grading functions, and comparing different algorithms. You may keep working until the time limit expires -- as long as your best submission is stored at the designated location at the end of your run, it will be picked up for grading.
-
-UNDERSTANDING BIOLOGY-SPECIFIC IMAGE DATA
-------
-Biology images often have different characteristics than standard computer vision datasets:
-
-**Image Resolution and Object Scales:**
-- Biology images are frequently high-resolution/bigger in pixel size, with image sizes up to 8K (7680 x 4320) being common.
-- Objects of interest (animals, cells) may occupy only a small number of pixels within these large images.
-- **Important:** Aggressive downsampling can destroy critical information when objects are small. Carefully consider whether resizing is necessary and what resolution preserves the details needed for detection.
-- If resizing, consider whether the chosen resolution maintains sufficient detail for small objects.
 
 TASK INSTRUCTIONS
 ------

@@ -58,7 +58,7 @@ def _main(cfg: RunConfig):
     os.environ["STEP_LIMIT"] = str(cfg.solver.step_limit)
 
     # --------------------------------------------------------------------------
-    # 4️⃣ TMP + Program dir creation
+    # TMP + Program dir creation
     # --------------------------------------------------------------------------
     base_tmp = os.getenv("TMP_BASE_DIR", f"/tmp/{os.getenv('USER', 'user')}/apptainer")
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")

@@ -1,15 +1,13 @@
-total 12K
-drwx------ 13 as2637 pug-as2637  261 Feb 16 16:28 .
-drwx------ 66 as2637 pug-as2637 4.0K Feb 23 07:00 ..
-drwxr-xr-x  3 as2637 pug-as2637   29 Feb 16 12:52 conda
-drwxr-xr-x  2 as2637 pug-as2637 4.0K Feb 16 12:52 conda-anaconda-tos
-drwxr-xr-x  3 as2637 pug-as2637   27 Feb 16 10:25 flashinfer
-drwxr-xr-x  5 as2637 pug-as2637   60 Feb 16 10:38 huggingface
-drwxr-xr-x  2 as2637 pug-as2637   40 Feb 16 11:10 matplotlib
-drwxr-xr-x  3 as2637 pug-as2637   36 Feb 16 01:15 Microsoft
--rw-r--r--  1 as2637 pug-as2637    0 Feb 16 01:14 motd.legal-displayed
-drwxr-xr-x  4 as2637 pug-as2637   50 Feb 16 12:56 pip
-drwxr-xr-x  3 as2637 pug-as2637   25 Feb 16 13:01 torch
-drwxr-xr-x  2 as2637 pug-as2637  117 Feb 16 10:25 tvm-ffi
-drwxr-xr-x  4 as2637 pug-as2637   63 Feb 16 10:25 vllm
-drwxr-xr-x  3 as2637 pug-as2637   26 Feb 16 16:28 wandb
+total 4.0K
+drwx------ 11 eyl45 pug-eyl45  209 Sep 10 12:10 .
+drwx------ 22 eyl45 pug-eyl45 4.0K Feb 27 11:59 ..
+drwxr-xr-x  3 eyl45 pug-eyl45   29 Sep 10 12:10 conda
+drwxrwxr-x  2 eyl45 pug-eyl45   33 Apr 11  2025 gdown
+drwxrwxr-x  3 eyl45 pug-eyl45   67 Feb 15  2025 huggingface
+drwxrwxr-x  3 eyl45 pug-eyl45   91 Apr 14  2025 matplotlib
+drwxrwxr-x  3 eyl45 pug-eyl45   36 Dec 24  2024 Microsoft
+-rw-r--r--  1 eyl45 pug-eyl45    0 Dec 24  2024 motd.legal-displayed
+drwxrwxr-x  5 eyl45 pug-eyl45   68 Dec 24  2024 pip
+drwxrwxr-x  3 eyl45 pug-eyl45   53 Dec 29  2024 taichi
+drwxrwxr-x  4 eyl45 pug-eyl45   44 Jul 19  2025 torch
+drwxr-xr-x  4 eyl45 pug-eyl45   47 May 12  2025 wandb
