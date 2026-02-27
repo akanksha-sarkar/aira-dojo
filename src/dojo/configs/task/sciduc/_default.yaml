@@ -9,7 +9,9 @@ subset: ???
 cache_dir: ${get_sciduc_data_dir:}
 
 # ~~~ Workspace preparation ~~~
-domain_dir: ${task.cache_dir}/${task.name}
+# domain_dir = where subset dirs (k10, k5, ...) live. With cache_dir as base: .../sciduc_data/<name>
+# If cache_dir already contains domain folders (e.g. .../sciduc_data), override: task.domain_dir=${task.cache_dir}/${task.name}
+domain_dir: ${task.cache_dir}/sciduc_data/${task.name}
 
 # ~~~ Evaluation and results ~~~
 submission_fname: submission.json

@@ -1,0 +1,15 @@
+total 12K
+drwx------ 13 as2637 pug-as2637  261 Feb 16 16:28 .
+drwx------ 66 as2637 pug-as2637 4.0K Feb 23 07:00 ..
+drwxr-xr-x  3 as2637 pug-as2637   29 Feb 16 12:52 conda
+drwxr-xr-x  2 as2637 pug-as2637 4.0K Feb 16 12:52 conda-anaconda-tos
+drwxr-xr-x  3 as2637 pug-as2637   27 Feb 16 10:25 flashinfer
+drwxr-xr-x  5 as2637 pug-as2637   60 Feb 16 10:38 huggingface
+drwxr-xr-x  2 as2637 pug-as2637   40 Feb 16 11:10 matplotlib
+drwxr-xr-x  3 as2637 pug-as2637   36 Feb 16 01:15 Microsoft
+-rw-r--r--  1 as2637 pug-as2637    0 Feb 16 01:14 motd.legal-displayed
+drwxr-xr-x  4 as2637 pug-as2637   50 Feb 16 12:56 pip
+drwxr-xr-x  3 as2637 pug-as2637   25 Feb 16 13:01 torch
+drwxr-xr-x  2 as2637 pug-as2637  117 Feb 16 10:25 tvm-ffi
+drwxr-xr-x  4 as2637 pug-as2637   63 Feb 16 10:25 vllm
+drwxr-xr-x  3 as2637 pug-as2637   26 Feb 16 16:28 wandb

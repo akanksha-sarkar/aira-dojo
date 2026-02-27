@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Run this script on the cluster (on the same node where Streamlit is or will be running).
+# It prints the SSH command to run from your LAPTOP to forward port 8501.
+
+THIS_HOST="${HOSTNAME:-$(hostname)}"
+echo "=============================================="
+echo "Streamlit dashboard – SSH tunnel from laptop"
+echo "=============================================="
+echo ""
+echo "You are on host: $THIS_HOST"
+echo ""
+echo "1. Start Streamlit on THIS machine (if not already):"
+echo "   streamlit run src/dojo/ui/lightweight_dashboard.py"
+echo ""
+echo "2. On your LAPTOP, open a new terminal and run:"
+echo "   ssh -L 8501:${THIS_HOST}:8501 as2637@<LOGIN_HOST>"
+echo ""
+echo "   Replace <LOGIN_HOST> with the host you use to ssh into the cluster"
+echo "   (e.g. unicorn-login-01 or your-cluster.edu)."
+echo ""
+echo "3. In your laptop browser open: http://localhost:8501"
+echo ""
+echo "If that fails, run Streamlit on the LOGIN NODE instead (no srun),"
+echo "then use:  ssh -L 8501:localhost:8501 as2637@<LOGIN_HOST>"
+echo "=============================================="

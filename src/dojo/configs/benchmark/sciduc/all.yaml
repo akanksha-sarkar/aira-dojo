@@ -8,6 +8,9 @@ tasks:
     - cell-seg
     - chimpact
     - inat
+    - cub
+    - cub_ssl
+    - cub_sett1
 
 # Overrides for all tasks
 overrides: {}

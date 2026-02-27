@@ -1,13 +1,14 @@
 #!/bin/bash
 #SBATCH --job-name=run_1
-#SBATCH --partition=jjs533-interactive
+#SBATCH --partition=jjs533,gpu-interactive
 #SBATCH --gres=gpu:1
+#SBATCH --constraint=h100|a6000
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=8
+#SBATCH --cpus-per-task=16
 #SBATCH --mem=256G
 #SBATCH --time=48:00:00
-#SBATCH --output=/home/eyl45/Sun/aira-dojo/shared/logs/%j.out
-#SBATCH --chdir=/home/eyl45/Sun/aira-dojo
+#SBATCH --output=/share/j_sun/as2637/logs/%j.out
+#SBATCH --chdir=/home/as2637/sciduc/aira-dojo
 
 set -e
 
@@ -44,15 +45,16 @@ fi
 # -------------------------
 # Experiment config
 # -------------------------
-DOMAIN="inat"
-K_SEED="k5seed42"
+DOMAIN="cub_ssl"
+K_SEED="k30seed42"
 AGENT="aide"
-EXP_NUM="1"
-DATA_DIR="/share/j_sun/as2637/inat"
+EXP_NUM="23"
+DATA_DIR="/share/j_sun/as2637/sciduc_data/cub_ssl"
 CACHE_DIR="/share/j_sun/as2637"
-SUBSET="k5"
+SUBSET="k30"
 
-LOG_DIR="/home/eyl45/Sun/aira-dojo/shared/logs"
+
+LOG_DIR="/share/j_sun/as2637/logs"
 EXPERIMENT_DIR="${LOG_DIR}/${DOMAIN}/${K_SEED}/${AGENT}/${EXP_NUM}"
 
 if [ -d "$EXPERIMENT_DIR" ]; then
@@ -71,16 +73,22 @@ fi
 
 export EXPERIMENT_DIR
 
+export WANDB_ENTITY=as2637-cornell-university
+export WANDB_PROJECT=sciduc
+nvidia-smi
+
 echo "✅ Running job ${SLURM_JOB_ID}"
 echo "Logging to: $JOB_OUT"
 
 # -------------------------
 # Run experiment
 # -------------------------
+# solver.time_limit_secs = max wall time for the agent/search (this run stops when hit).
+# solver.execution_timeout = max time per single program execution (unchanged from run_example: 2h).
 python -m dojo.main_run \
   +_exp=run_example \
   task=sciduc/${DOMAIN} \
   task.subset=${SUBSET} \
   +task.data_dir=${DATA_DIR} \
   task.cache_dir=${CACHE_DIR} \
-  logger.use_wandb=False
+  logger.use_wandb=True

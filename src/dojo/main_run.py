@@ -144,14 +144,14 @@ def _main(cfg: RunConfig):
     solver_interpreter = build(cfg.interpreter, INTERPRETER_MAP, data_dir=cfg.task.data_dir)
     solver_interpreter.instance.create_process()
     print("✅ Apptainer environment initialized.")
-    try:
-        import time
-        while True:
-            time.sleep(60)
-    except KeyboardInterrupt:
-        log.info("Stopping instance...")
-        solver_interpreter.close()
-    return
+    # try:
+    #     import time
+    #     while True:
+    #         time.sleep(60)
+    # except KeyboardInterrupt:
+    #     log.info("Stopping instance...")
+    #     solver_interpreter.close()
+    # return
 
     eval_interpreter = None
 
