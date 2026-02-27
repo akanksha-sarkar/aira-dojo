@@ -52,6 +52,7 @@ EXP_NUM="2"
 DATA_DIR="/share/j_sun/as2637/sciduc_data/cub_ssl"
 CACHE_DIR="/share/j_sun/as2637"
 SUBSET="k5"
+SUBSET="k5"
 
 LOG_DIR="/share/j_sun/as2637/logs"
 EXPERIMENT_DIR="${LOG_DIR}/${DOMAIN}/${K_SEED}/${AGENT}/${EXP_NUM}"
