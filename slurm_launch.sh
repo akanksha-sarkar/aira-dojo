@@ -46,13 +46,13 @@ fi
 # Experiment config
 # -------------------------
 DOMAIN="cub_ssl"
-K_SEED="k5seed42"
+K_SEED="k30seed42"
 AGENT="aide"
-EXP_NUM="2"
+EXP_NUM="23"
 DATA_DIR="/share/j_sun/as2637/sciduc_data/cub_ssl"
 CACHE_DIR="/share/j_sun/as2637"
-SUBSET="k5"
-SUBSET="k5"
+SUBSET="k30"
+
 
 LOG_DIR="/share/j_sun/as2637/logs"
 EXPERIMENT_DIR="${LOG_DIR}/${DOMAIN}/${K_SEED}/${AGENT}/${EXP_NUM}"
@@ -83,6 +83,8 @@ echo "Logging to: $JOB_OUT"
 # -------------------------
 # Run experiment
 # -------------------------
+# solver.time_limit_secs = max wall time for the agent/search (this run stops when hit).
+# solver.execution_timeout = max time per single program execution (unchanged from run_example: 2h).
 python -m dojo.main_run \
   +_exp=run_example \
   task=sciduc/${DOMAIN} \

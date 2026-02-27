@@ -22,7 +22,6 @@ from dojo.core.tasks.constants import (
 from dojo.utils.code_parsing import extract_code, format_code, write_code_to_file
 from dojo.utils.output_parsing import extract_metrics
 from dojo.config_dataclasses.task.sciduc import SciDucConfig
-from dojo.tasks.sciduc.utils.environment import set_system_path_code
 
 def validate_submission(submission: Path) -> tuple[bool, str]:
     """
@@ -85,7 +84,7 @@ class SciDucTask(Task):
         self.task_description = self.instructions + "\n" + task_description_path.read_text()
         self.program_path = Path(self.task_dir).resolve() / "program.py"
         eval_script_path = Path(self.task_dir).resolve() / "evaluate.py"
-        self.eval_script = set_system_path_code() + "\n" + eval_script_path.read_text()
+        self.eval_script = eval_script_path.read_text()
 
     def prepare(self, **task_args):
         state = task_args

@@ -1,6 +1,6 @@
 total 12K
 drwx------ 13 as2637 pug-as2637  261 Feb 16 16:28 .
-drwx------ 66 as2637 pug-as2637 4.0K Feb 21 01:04 ..
+drwx------ 66 as2637 pug-as2637 4.0K Feb 23 07:00 ..
 drwxr-xr-x  3 as2637 pug-as2637   29 Feb 16 12:52 conda
 drwxr-xr-x  2 as2637 pug-as2637 4.0K Feb 16 12:52 conda-anaconda-tos
 drwxr-xr-x  3 as2637 pug-as2637   27 Feb 16 10:25 flashinfer
