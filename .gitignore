@@ -231,4 +231,9 @@ src/dojo/outputs
 outputs
 tmp
 archive
+<<<<<<< HEAD
 classification
+=======
+shared
+output.txt
+>>>>>>> 5318d5c528bb49a6f11b019ac09fee269411f07c
