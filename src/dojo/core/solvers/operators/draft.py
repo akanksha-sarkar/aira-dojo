@@ -32,7 +32,6 @@ def draft_op(
     pkgs = cfg.available_packages
     random.shuffle(pkgs)
     pkg_str = ", ".join([f"`{p}`" for p in pkgs])
-
     if memory_op is not None:
         memory = memory_op(journal, parent_node)
     else:
@@ -52,16 +51,12 @@ def draft_op(
         "memory": None,
         "data_overview": None,
     }
-
     if memory:
-        draft_data["memory"] = memory
-
+        draft_data["memory"] = memory   
     if cfg.data_preview and data_preview is not None:
         draft_data["data_overview"] = data_preview
     else:
         draft_data["data_overview"] = "(No data preview available)"
-
     if complexity is not None:
         draft_data["draft_complexity"] = complexity.value
-
     return draft_llm(query_data=draft_data, no_user_message=True)

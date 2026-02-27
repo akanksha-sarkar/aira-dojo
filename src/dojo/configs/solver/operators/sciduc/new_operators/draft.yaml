@@ -28,12 +28,20 @@ draft:
         - Be aware of the running time of the solution, it should complete within {{execution_timeout}}
         - Prefer vectorized operations over Python loops when processing large datasets.  
         - Use `torch.optim.AdamW` (the recommended optimizer) instead of the deprecated `AdamW` from `transformers`.  
+        - **IMPORTANT**: If you are using a YOLO model and call "model.train(data={yaml_path})", ALWAYS add the data={yaml_path}.
         - As much as possible, keep the stdout clean.
         - As this is the initial draft, prioritize speed and simplicity in your solution.
+        - PLEASE SAMPLE A SUBSET OF THE PROVIDED TRAINING DATASET TO SPEED UP THE DRAFTING PROCESS.
       
       **DATA**: The training and validation data is already prepared and available in the read-only `/data` directory. You should not unzip any files.
       
       **COMPUTE**: You have access to a Python environemnt with 1 NVIDIA H200 GPU(s) and 8 CPUs available, and the following packages installed: {{packages}}. DO NOT DOWNLOAD NEW PACKAGES.
+
+      **MODEL SELECTION**: Consider which model architecture and framework would work best for this iteration. Different detection approaches may perform better depending on the dataset characteristics:
+        - torchvision provides various detection models (e.g., Faster R-CNN, RetinaNet, FCOS)
+        - timm offers a collection of image models with various backbones
+        - ultralytics provides YOLO-based models (including newer versions like YOLO11, YOLO12) as well as RT-DETR
+      Across iterations, explore different frameworks rather than always defaulting to the same one.
 
       Consider the previously explored ideas, and make sure the idea you propose considers a DIFFERENT ASPECT OF THE SOLUTION. 
       For example, you could try changing the model architecture. Brainstorm about possible approaches and WHY THEY ARE LIKELY TO BE EFFECTIVE AND INCREASE THE PERFORMANCE for the given task, and the available data and compute resources.
@@ -50,7 +58,7 @@ draft:
       **RESPONSE FORMAT FOR IMPLEMENTATION**: 
       Provide a **SINGLE** Markdown code block (wrapped in ```) for the implementation containing a **SELF-CONTAINED** Python script that:
       1. Implements the idea **END-TO-END**.
-      
+
       Start by making sure you understand the task, the data and compute resources and the idea. Then generate a detailed
       implementation plan that will structure and guide you step-by-step through the implementation process. Make sure to reflect on the plan to ensure that the implementation 
       is efficient and faithful to the idea, and that all the requirements (e.g., the evaluation score is printed) are satisfied.
@@ -63,7 +71,7 @@ draft:
       ```python
       <the implementation of the proposed idea/plan>
       ```
-
+      REMEMBER THIS REQUIRED CONSTRAINT: YOU SHOULD SUBSAMPLE A SUBSET OF THE PROVIDED TRAINING DATASET TO SPEED UP THE DEBUGGING PROCESS. THIS IS REALLY REALLY IMPORTANT!!!
     input_variables:
       - task_desc
       - execution_timeout

@@ -109,29 +109,14 @@ def _main(cfg: RunConfig):
 
     log.info("Instantiating the task...")
     task = build(cfg.task, TASK_MAP)
-    
-    # Dynamically find certifi path for SSL certificates
-    try:
-        import certifi
-        certifi_path = Path(certifi.__file__).parent.resolve()
-    except ImportError:
-        log.warning("certifi not found, SSL verification may fail")
-        certifi_path = None
-    
-    read_only_binds = {
+    cfg.interpreter.read_only_binds = {
+        # Certs for SSL verification
+        "/groups/branson/home/line2/conda/envs/aira-dojo/lib/python3.12/site-packages/certifi": "/certs",
         # Main working directory
         f"{cfg.task.domain_dir}/{cfg.task.subset}": "/work",
         # Program directory
         os.environ["PROGRAM_DIR"]: "/run_tmp",
     }
-    
-    # Only add certifi bind if it exists
-    if certifi_path and certifi_path.exists():
-        read_only_binds[str(certifi_path)] = "/certs"
-    else:
-        log.warning(f"certifi path not found: {certifi_path}, skipping SSL cert bind mount")
-    
-    cfg.interpreter.read_only_binds = read_only_binds
 
 
     # Allocate resources for the agent's workspace and instantiate an object that lets you reference and use them

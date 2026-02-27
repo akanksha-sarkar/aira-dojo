@@ -15,7 +15,7 @@ improve:
       Carefully consider the task description, the size and format of the available data, as well as the available compute resources.
       Your goal is to provide EXACTLY ONE IDEA AND ONE CODE IMPLEMENTATION of the idea, **different from those previously explored**, that improves upon an existing solution to the task.
       Be specific about each step of the proposed improvement, including data processing and feature engineering and the modeling and optimization method
-      You MUST PROVIDE an improvement IDEA/PLAN in natural language and CODE in python. 
+      You MUST PROVIDE an improvement IDEA/PLAN in natural language and CODE in python that DOES NOT INVOLVE any exploratory data analysis.   
        
       # TASK DESCRIPTION
       ````
@@ -37,6 +37,7 @@ improve:
         - Be aware of the running time of the solution, it should complete within {{execution_timeout}}
         - Prefer vectorized operations over Python loops when processing large datasets.  
         - Use `torch.optim.AdamW` (the recommended optimizer) instead of the deprecated `AdamW` from `transformers`.  
+        - **IMPORTANT**: If you are using a YOLO model and call "model.train(data={yaml_path})", ALWAYS add the data={yaml_path}.
         - As much as possible, keep the stdout clean.
       
       **COMPUTE**: You have access to a Python environemnt with 1 NVIDIA H200 GPU(s) and 8 CPUs available, and the following packages installed: {{packages}}. DO NOT DOWNLOAD NEW PACKAGES.
@@ -45,17 +46,19 @@ improve:
       Brainstorm about possible improvements and WHY THEY ARE LIKELY TO BE EFFECTIVE AND INCREASE THE PERFORMANCE for the given task, and the available data and compute resources.
       {% if improve_complexity == 'simple' %}
       In this iteration, suggest a *minimal, low-risk* tweak that keeps the current solution's core intact—no architecture overhauls or fundamental methodology changes.  
-      Think: a feature-engineering twist, a lightweight data-augmentation trick, or hyperparameter changes. Try to keep training very short and avoid using large number of epochs.
+      Think: a feature-engineering twist, a lightweight data-augmentation trick, or hyperparameter changes.  
       Check the MEMORY section first and avoid duplicating earlier ideas. 
+      IMPORTANT CONSTRAINT: SAMPLE A SMALL SUBSET OF THE TRAINING DATASET TO SPEED UP THE IMPROVEMENT PROCESS THROUGH QUICK ITERATION OF IDEAS.
       {% elif improve_complexity == 'normal' %}
       In this iteration, propose a *moderate upgrade* that builds on the baseline without deviating dramatically.  
-      Options include (but not limited to) hyper-parameter tuning, a small ensemble of similar models, a sturdier preprocessing pipeline, feature engineering improvements, and data augmentation. 
-      Using slightly longer training times to try and boost performance is also a good idea.
+      Options include (but not limited to) hyper-parameter tuning, a small ensemble of similar models, a sturdier preprocessing pipeline, feature engineering improvements, and data augmentation.  
       Check the MEMORY section first and avoid duplicating earlier ideas.
+      IMPORTANT CONSTRAINT: TRY SAMPLING MORE TRAINING DATA TO SEE IF IT IMPROVES PERFORMANCE.
       {% elif improve_complexity == 'complex' %}
       In this iteration, recommend a *substantial extension* that pushes the method's boundaries while preserving its core logic.  
       Consider advanced ensembling/stacking, fine-tuning specialized pre-trained models, or exhaustive hyper-parameter searches.  
       Check the MEMORY section first and avoid duplicating earlier ideas.
+      IMPORTANT CONSTRAINT: UTILIZE THE FULL TRAINING DATASET TO MAXIMIZE PERFORMANCE GAINS.
       {% endif %}
 
       **RESPONSE FORMAT FOR IMPLEMENTATION**: 

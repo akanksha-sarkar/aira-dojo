@@ -9,7 +9,7 @@ export_search_results: true # Whether to export search results after execution
 
 # --- Search Configuration ---
 improvement_steps: 5      # Number of improvement iterations to perform
-step_limit: 500           # Maximum number of steps allowed in the search process
+step_limit: 100           # Maximum number of steps allowed in the search process
 data_preview: false       # Whether to provide the agent with a preview of the data before execution
 execution_timeout: 14400  # Specifies the timeout for the interpreter (decreased from 32400)
 time_limit_secs: 43200

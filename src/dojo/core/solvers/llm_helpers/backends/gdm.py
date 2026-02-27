@@ -168,7 +168,11 @@ class GDMClient:
         )
         # Calculate latency
         latency = time.monotonic() - start_time
-
+        if response.text is None:
+            raise RuntimeError(
+                f"Gemini returned None for response.text. "
+                f"Raw response: {response}"
+            )
         # Parse the response
         if tools is None:
             # No function calling was used

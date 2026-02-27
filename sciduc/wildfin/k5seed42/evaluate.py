@@ -4,10 +4,10 @@ Evaluator for object detection programs using the new ObjectDetectionDataset.
 import sys
 import os
 # Add the Apptainer bind mount path to Python's module search
-sys.path.insert(0, "/work")
+# sys.path.insert(0, "/work")
 
-print("✅ Added /work to sys.path")
-print("Working dir:", os.getcwd())
+# print("✅ Added /work to sys.path")
+# print("Working dir:", os.getcwd())
 
 import time
 import json
@@ -86,11 +86,14 @@ def evaluate(program_path, data_dir, ann_dir, seed=42):
 if __name__ == "__main__":
     # Default paths are Apptainer-friendly
     ultralytics.utils.LOGGER.setLevel("ERROR")  # only errors will print
-    root_dir = os.environ.get("ROOT_DIR", "/work")
+    # root_dir = os.environ.get("ROOT_DIR", "/work")
+    root_dir = "k5seed42"  # for local testing
     program_path = os.environ.get("PROGRAM_PATH", os.path.join(root_dir, "program.py"))
-    data_dir = "/data"
+    # data_dir = "/data"
+    data_dir = "data"
     ann_dir = os.environ.get("ANN_DIR", os.path.join(root_dir, "annotations"))
 
+    
     logging.info(f"ROOT_DIR={root_dir}")
     logging.info(f"DATA_DIR={data_dir}")
     logging.info(f"ANN_DIR={ann_dir}")

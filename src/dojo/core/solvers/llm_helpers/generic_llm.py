@@ -36,7 +36,6 @@ class GenericLLM:
         self.cfg = cfg
 
         # Initialize the LLM client using the provided client configuration
-        print("LLM CLIENT", self.cfg.llm.client)
         self.client = get_client(self.cfg.llm.client)
 
         # LLM Generation Arguments
@@ -95,7 +94,6 @@ class GenericLLM:
         assert not (query_data is None and messages is None), (
             "Neither the query_data nor the messages object were specified."
         )
-
         # If query_data is not provided, directly query the client with the provided messages
         if query_data is None:
             output, usage_stats = self.client.query(
@@ -116,7 +114,7 @@ class GenericLLM:
                     self.client.client_content_key: self.system_message_prompt_template.format(**query_data),
                 }
             ]
-
+        
         # If no_user_message is True, directly query the client without adding a user message
         if no_user_message:
             output, usage_stats = self.client.query(
@@ -127,7 +125,6 @@ class GenericLLM:
                 **self.generation_kwargs,
             )
             usage_stats["cumulative_num_llm_calls"] = self.call_tracker
-
             return output, {"usage": usage_stats, "prompt_messages": messages, "completion_text": str(output)}
 
         # Append a user message based on whether it's the first message or a subsequent one
@@ -154,6 +151,5 @@ class GenericLLM:
             **self.generation_kwargs,
         )
         usage_stats["cumulative_num_llm_calls"] = self.call_tracker
-
         log.warning("got response from llm")
         return output, {"usage": usage_stats, "prompt_messages": messages, "completion_text": str(output)}

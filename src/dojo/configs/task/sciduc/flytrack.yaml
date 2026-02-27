@@ -3,5 +3,5 @@
 defaults:
   - sciduc/_default
 
-name: wildfin
+name: flytrack
 subset: k100
