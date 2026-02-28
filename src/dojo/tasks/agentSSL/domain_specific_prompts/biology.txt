@@ -1,0 +1,9 @@
+UNDERSTANDING BIOLOGY-SPECIFIC IMAGE DATA
+------
+Biology images often have different characteristics than standard computer vision datasets:
+
+**Image Resolution and Object Scales:**
+- Biology images are frequently high-resolution/bigger in pixel size, with image sizes up to 8K (7680 x 4320) being common.
+- Objects of interest (animals, cells) may occupy only a small number of pixels within these large images.
+- **Important:** Aggressive downsampling can destroy critical information when objects are small. Carefully consider whether resizing is necessary and what resolution preserves the details needed for detection.
+- If resizing, consider whether the chosen resolution maintains sufficient detail for small objects.

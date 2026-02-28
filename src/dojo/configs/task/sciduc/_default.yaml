@@ -1,4 +1,3 @@
-
 # @package task
 
 _target_: dojo.config_dataclasses.task.sciduc.SciDucConfig

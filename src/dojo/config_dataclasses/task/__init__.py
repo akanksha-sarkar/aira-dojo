@@ -9,11 +9,11 @@ def _get_task_map():
     # from dojo.tasks.mlebench.task import MLEBenchTask
     # from dojo.tasks.detection.task import DetectionTask
     from dojo.tasks.sciduc.task import SciDucTask
-    
+    from dojo.tasks.agentSSL.task import AgentSSLTask
     return {
         # "MLEBenchTaskConfig": MLEBenchTask,
-        # "DetectionConfig": DetectionTask,
-        "SciDucConfig": SciDucTask
+        "SciDucConfig": SciDucTask,
+        "AgentSSLConfig": AgentSSLTask
     }
 
 # Use a property to make TASK_MAP lazy

@@ -10,22 +10,34 @@ This structure allows testing how well an agent performs under varying levels of
 
 ```
 SciDUC/
-├── WildFin/
-│ ├── data/ # Raw data (unannotated)
-│ ├── k1/ # 1% of annotations
-│ │ ├── annotations/ # Annotation files
-│ │ ├── src/ # API & dataset setup functions
-│ │ ├── evaluate.py # Evaluation function
-│ │ └── description.md # Task description and notes
-│ ├── k2/ # 2% of annotations
-│ ├── k5/ # 5% of annotations
-│ ├── k10/ # 10% of annotations
-│ ├── k20/ # 20% of annotations
-│ └── k100/ # 100% of annotations
-├── Bucktales/
-├── Cell_Tracking/
-├── ChimpACT/
-└── Other tasks...
+├── domain1/ # Ex. CUB or RESIC
+│ ├── data/ # Raw training data (unannotated) (train + val split is probably easiest at this point)
+│ ├── test/ # Test data and annotations
+| ├── setA/ (setting)
+│ │ ├── build/ # folder to build the shot and seed folders
+│ │ │ ├── evaluate.py # Setting specific evaluation function
+│ │ │ ├── description.md # Setting specific task description
+│ | │ └── build.py # File to build the rest of the folders
+│ │ ├── k1/ # 1 shot 
+│ │ │ ├── seed0/ # Random seed
+│ │ │ │ ├── annotations/ # Annotation files
+│ │ │ │ │ ├── train.json # train labels
+│ │ │ │ │ ├── unlabeled.json # index unlabeled data
+│ │ │ │ ├── src/ # API & dataset setup functions
+│ │ │ │ ├── evaluate.py # Evaluation function
+│ | │ │ └── description.md # Task description and notes
+│ │ │ ├── seed26/ # Random seed
+│ │ │ └── seed42/ # Random seed
+│ │ ├── k2/ # 2 shot 
+│ │ ├── k5/ # 5 shot 
+│ │ ├── k10/ # 10 shot 
+│ │ └── k20/ # 20 shot 
+| ├── setB/ (setting)
+| └── setC/ (setting)
+├── domain2
+├── domain3
+├── domain4
+└── Other domains...
 ```
 
 ---

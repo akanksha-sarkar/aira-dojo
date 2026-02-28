@@ -85,12 +85,12 @@ def get_mlebench_data_dir():
         raise ValueError(ENV_VAR_NOT_FOUND_ERR.format(env_var_name="MLE_BENCH_DATA_DIR"))
     return mlebench_data_dir
 
-def get_detection_data_dir():
-    """Get the Detection data directory, creating it if it doesn't exist."""
-    detection_data_dir = os.getenv("DETECTION_DATA_DIR", "")
-    if not detection_data_dir:
-        raise ValueError(ENV_VAR_NOT_FOUND_ERR.format(env_var_name="DETECTION_DATA_DIR"))
-    return detection_data_dir
+def get_agentSSL_data_dir():
+    """Get the agentSSL data directory, creating it if it doesn't exist."""
+    agentSSL_data_dir = os.getenv("AGENTSSL_DATA_DIR", "")
+    if not agentSSL_data_dir:
+        raise ValueError(ENV_VAR_NOT_FOUND_ERR.format(env_var_name="AGENTSSL_DATA_DIR"))
+    return agentSSL_data_dir
 
 def get_sciduc_data_dir():
     """Get the SciDUC data directory, creating it if it doesn't exist."""
