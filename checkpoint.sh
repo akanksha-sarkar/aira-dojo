@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=resisc45-agentSL
+#SBATCH --job-name=kitti
 #SBATCH --partition=jjs533,gpu-interactive
 #SBATCH --gres=gpu:1
 #SBATCH --constraint="h100|6000ada"
@@ -7,7 +7,7 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=256G
 #SBATCH --time=48:00:00
-#SBATCH --output=/share/j_sun/as2637/logs/resisc45/%j.out
+#SBATCH --output=/share/j_sun/as2637/logs/%j.out
 #SBATCH --chdir=/home/as2637/sciduc/aira-dojo
 #SBATCH --requeue
 
@@ -43,22 +43,22 @@ fi
 # -------------------------
 # Experiment config
 # -------------------------
-DOMAIN="resisc45"
-K="k1"
-SEED="seed42"
+# Original defaults (can be changed if you want to re-use the script)
+DOMAIN="cub"
+K="k5"
+SEED="seed0"
 AGENT="aide"
-# Fixed run id: every sbatch uses this same directory so checkpoint always resumes.
-# Change this when you intentionally want a brand-new experiment.
-EXP_NUM="1000"
-#DATA_DIR="/share/j_sun/agentSSL/resisc45"
-CACHE_DIR="/share/j_sun/as2637"
-SETTING="agentSL"
+SETTING="setC"
 
+# Directory of the previous run whose checkpoint you want to resume from.
+# For your current case:
+#   /share/j_sun/as2637/logs/cub/k5/seed0/aide/30
+RESUME_EXPERIMENT_DIR="/share/j_sun/as2637/logs/cub/k5/seed0/aide/30"
 
-LOG_DIR="/share/j_sun/as2637/logs"
-EXPERIMENT_DIR="${LOG_DIR}/${DOMAIN}/${SETTING}/${K}/${SEED}/${AGENT}/${EXP_NUM}"
+# Use the resume directory as the experiment dir (so dojo finds checkpoint/)
+EXPERIMENT_DIR="${RESUME_EXPERIMENT_DIR}"
 
-echo "Experiment dir (always same path → resume from checkpoint if present): ${EXPERIMENT_DIR}"
+echo "Resuming from experiment dir: $EXPERIMENT_DIR"
 mkdir -p "$EXPERIMENT_DIR"
 
 JOB_OUT="${EXPERIMENT_DIR}/${SLURM_JOB_ID}.out"

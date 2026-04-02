@@ -1,0 +1,7 @@
+# @package task
+
+defaults:
+  - agentSSL/_default
+
+name: cub
+subset: k1

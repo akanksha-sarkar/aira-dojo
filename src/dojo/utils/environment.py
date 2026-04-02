@@ -92,6 +92,13 @@ def get_agentSSL_data_dir():
         raise ValueError(ENV_VAR_NOT_FOUND_ERR.format(env_var_name="AGENTSSL_DATA_DIR"))
     return agentSSL_data_dir
 
+def get_agentSSL_task_dir():
+    """Get the agentSSL data directory, creating it if it doesn't exist."""
+    agentSSL_task_dir = os.getenv("AGENTSSL_TASK_DIR", "")
+    if not agentSSL_task_dir:
+        raise ValueError(ENV_VAR_NOT_FOUND_ERR.format(env_var_name="AGENTSSL_TASK_DIR"))
+    return agentSSL_task_dir
+
 def get_sciduc_data_dir():
     """Get the SciDUC data directory, creating it if it doesn't exist."""
     sciduc_data_dir = os.getenv("SCIDUC_DATA_DIR", "")

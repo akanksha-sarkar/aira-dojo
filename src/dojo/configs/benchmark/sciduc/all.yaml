@@ -11,6 +11,7 @@ tasks:
     - cub
     - cub_ssl
     - cub_sett1
+    - resisc45
 
 # Overrides for all tasks
 overrides: {}

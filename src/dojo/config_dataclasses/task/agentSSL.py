@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 from omegaconf import SI, MISSING
 
 from dojo.config_dataclasses.task.base import TaskConfig
-from dojo.utils.environment import get_agentSSL_data_dir
+from dojo.utils.environment import get_agentSSL_data_dir, get_agentSSL_task_dir
 
 agentSSL_operator_prompts: dict[str, str] = {
     "draft_intro": """TBD""",
@@ -98,7 +98,7 @@ class AgentSSLConfig(TaskConfig):
         },
     )
     task_dir: str = field(
-        default=SI("${task.cache_dir}/${task.name}/${task.setting}/${task.subset}/${task.seed}"),
+        default=SI(f"{get_agentSSL_task_dir()}/${{task.name}}/${{task.setting}}/${{task.subset}}/${{task.seed}}"),
         metadata={
             "help": "The directory where the task information is stored.",
             "exclude_from_hash": True,

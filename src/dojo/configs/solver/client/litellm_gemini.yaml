@@ -1,0 +1,7 @@
+_target_: dojo.config_dataclasses.client.base.ClientConfig
+api: litellm
+# Use a current model (gemini-2.0-flash no longer available for new users)
+model_id: "gemini-2.5-flash"
+base_url: ""
+use_azure_client: False
+provider: gemini

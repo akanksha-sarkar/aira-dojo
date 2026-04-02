@@ -261,6 +261,14 @@ In general, you should print out any relevant information because the agent can 
 # print("Working dir:", os.getcwd())
 In order to ensure that the src files can be accessed using "src."
 
+## Task directory setup 
+
+In .env file, need to add another variable:
+  AGENTSSL_TASK_DIR="/home/as2637/agentSSL"  
+
+This separates the data directory from the task directory. 
+
+
 ### Description.md
 
 This file is really important, it describes what the task is and any relevant information.

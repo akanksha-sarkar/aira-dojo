@@ -22,6 +22,9 @@ agentSSL/
 ├── domain1/ # Ex. CUB or RESIC
 │ ├── data/ # Raw training data (unannotated) (train + val split is probably easiest at this point)
 │ ├── test/ # Test data and annotations
+│ ├── metadata/ 
+│ │ │ ├── annotations/
+│ │ │ │ ├── train.json
 | ├── setA/ (setting)
 │ │ ├── build/ # folder to build the shot and seed folders
 │ │ │ ├── evaluate.py # Setting specific evaluation function

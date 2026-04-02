@@ -15,4 +15,7 @@ solver:
   step_limit: 500              # Maximum number of steps in the search process
   improvement_steps: 5          # Number of improvement iterations to perform
   execution_timeout: 7200      # Timeout for each code execution (seconds) - default: 2 hours
-  time_limit_secs: 14400        # Total time limit for the entire task (seconds) - default: 10 hours
+  time_limit_secs: 36000       # Total time limit for the entire task (seconds) - default: 10 hours
+
+
+  # litellm_gpt5-2

@@ -144,6 +144,7 @@ def _main(cfg: RunConfig):
     solver_interpreter = build(cfg.interpreter, INTERPRETER_MAP, data_dir=cfg.task.data_dir)
     solver_interpreter.instance.create_process()
     print("✅ Apptainer environment initialized.")
+    # UNCOMMENT
     try:
         import time
         while True:
@@ -163,7 +164,7 @@ def _main(cfg: RunConfig):
 
     # Load checkpoint state if it exists
     # log.info("Loading checkpoints, if any...")
-    # solver.load_checkpoint()
+    solver.load_checkpoint()
 
     log.info("Starting the solver...")
     state, solution, best_node = solver(task, state)

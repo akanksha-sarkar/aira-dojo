@@ -1,0 +1,11 @@
+# @package _global_
+# Same as run_example but with Gemini as the LLM client (set GOOGLE_API_KEY or GEMINI_API_KEY in .env).
+defaults:
+  - run_example
+  - override /solver/client@solver.operators.analyze.llm.client: litellm_gemini
+  - override /solver/client@solver.operators.debug.llm.client: litellm_gemini
+  - override /solver/client@solver.operators.draft.llm.client: litellm_gemini
+  - override /solver/client@solver.operators.improve.llm.client: litellm_gemini
+
+metadata:
+  git_issue_id: example
