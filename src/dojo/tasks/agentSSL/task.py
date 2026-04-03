@@ -76,9 +76,9 @@ class AgentSSLTask(Task):
         self.instructions_path = self.task_src_path / "instructions.txt"
         self.instructions = self.instructions_path.read_text()
         self.instructions = os.path.expandvars(self.instructions)
-        self.domain_dir = Path(self.cfg.domain_dir).resolve()
         self.subset = self.cfg.subset
         self.task_dir = Path(self.cfg.task_dir).resolve()
+        self.ssl_dir = Path(self.cfg.ssl_dir).resolve()
         # Read task description.
         task_description_path = Path(self.task_dir).resolve() / "description.md"
         self.task_description = self.instructions + "\n" + task_description_path.read_text()

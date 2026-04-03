@@ -127,6 +127,8 @@ def _main(cfg: RunConfig):
         f"{task.task_dir}": "/work",
         # Program directory
         os.environ["PROGRAM_DIR"]: "/run_tmp",
+        f"{task.ssl_dir}/metrics": "/work/metrics",
+        f"{task.ssl_dir}/pytorch_adapt": "/work/pytorch_adapt",
     }
     read_write_binds = {
         os.environ["PSEUDOLABEL_DIR"]: "/pseudolabels",

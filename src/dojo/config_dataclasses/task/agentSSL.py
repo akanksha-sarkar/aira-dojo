@@ -83,10 +83,17 @@ class AgentSSLConfig(TaskConfig):
             "help": "Seed of the task.",
         },
     )
-    domain_dir: str = field(
-        default=SI("${task.cache_dir}/${task.name}"),
+    ssl_dir: str = field(
+        default=get_agentSSL_task_dir(),
         metadata={
-            "help": "The directory where the domain is located.",
+            "help": "The directory where the SSL repository is located.",
+            "exclude_from_hash": True,
+        },
+    )
+    cache_dir: str = field(
+        default=get_agentSSL_data_dir(),
+        metadata={
+            "help": "The directory where the task data is cached.",
             "exclude_from_hash": True,
         },
     )
@@ -98,16 +105,9 @@ class AgentSSLConfig(TaskConfig):
         },
     )
     task_dir: str = field(
-        default=SI(f"{get_agentSSL_task_dir()}/${{task.name}}/${{task.setting}}/${{task.subset}}/${{task.seed}}"),
+        default=SI("${task.ssl_dir}/${task.name}/${task.setting}/${task.subset}/${task.seed}"),
         metadata={
             "help": "The directory where the task information is stored.",
-            "exclude_from_hash": True,
-        },
-    )
-    cache_dir: str = field(
-        default=get_agentSSL_data_dir(),
-        metadata={
-            "help": "The directory where the task data is cached.",
             "exclude_from_hash": True,
         },
     )
