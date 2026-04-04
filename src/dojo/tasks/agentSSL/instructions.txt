@@ -1,17 +1,8 @@
-Your task is to help scientists in domains that typically require many manual annotations. Specifically, you will be implementing programs that use 
-machine learning methods to train models on a set of data for a specific task.
+Your task is to take a very small dataset with very few labels and implement a data-efficient machine learning method to learn from this limited data. 
 
 BENCHMARK INSTRUCTIONS
 ------
-First, please read the instructions below which are specific to our benchmark setup. Note, these instructions can be found again in `/home/instructions.txt`.
-
 - **Task-specific instructions**: The instructions for the task are available in `/work/description.md`. Read this file to understand the problem setup for the task you are currently solving.
-
-TASK
------
-For a given task, you will be provided with an initial program that you must optimize to maximize performance on the task.
-**Data setup and loading will be handled for you as input to the program, the task will describe the necessary output of your program.**
-The focus of optimizations should be on machine learning engineering (i.e testing different models, hyperparameters, etc). Consider exploring a variety of model architectures and frameworks -- the data format or domain conventions should not constrain your choice of approach.
 
 ADDITIONAL NOTES
 ------
