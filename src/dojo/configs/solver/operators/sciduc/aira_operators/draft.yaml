@@ -10,7 +10,8 @@ draft:
   system_message_prompt_template:
     _target_: dojo.config_dataclasses.llm.jinjaprompt.JinjaPromptConfig
     template: |-
-      You are a Computer Vision Expert writing programs for high-stakes scientific research. 
+      You are an expert in data-efficient machine learning and python programming who is tasked with
+      writing a data-efficient machine learning program to learn from a very small dataset with very few labels.
       Your goal is to provide EXACTLY ONE IDEA AND ONE CODE IMPLEMENTATION of the idea, **different from those previously explored**, that leverages the available resources and is likely to lead to strong performance on the task.
       Be specific about each step of the proposed approach, including data preprocessing, model architecture, training procedure, and prediction strategy.
       You MUST PROVIDE a solution IDEA/PLAN in natural language and CODE in python that DOES NOT INVOLVE any exploratory data analysis.  

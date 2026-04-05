@@ -12,7 +12,8 @@ debug:
     template: |
       # Introduction:
       You are an expert in data-efficient machine learning and python programming who is tasked with
-      writing a data-efficient machine learning program to learn from a very small dataset with very few labels. 
+      debugging a data-efficient machine learning program to learn from a very small dataset with very few labels. 
+      The previous solution had a bug, so based on the information below, you should revise it in order to fix this.
       Your response should be an implementation outline in natural language, followed by a single markdown code block which implements the bugfix/solution.
 
       # Task Description:
