@@ -1,10 +1,10 @@
 defaults:
   - mcts
   - /solver/operators@operators:
-    - mlebench/aira_operators/debug    # Enables debugging mode for operator prompts
-    - mlebench/aira_operators/draft    # Enables draft mode for generating initial outputs
-    - mlebench/aira_operators/improve  # Enables improvement mode for refining outputs
-    - mlebench/aide_operators/analyze  # Enables evaluation mode for assessing outputs
+    - sciduc/aira_operators/debug    # Enables debugging mode for operator prompts
+    - sciduc/aira_operators/draft    # Enables draft mode for generating initial outputs
+    - sciduc/aira_operators/improve  # Enables improvement mode for refining outputs
+    - sciduc/aide_operators/analyze  # Enables evaluation mode for assessing outputs
   - override memory: simple_memory  # Enables Memory operator
   - override memory@debug_memory: debug_memory # Enables Debug Memory operator
     

@@ -3,11 +3,11 @@ defaults:
   - evo
   # Load Operators
   - /solver/operators@operators:
-    - mlebench/aira_operators/debug
-    - mlebench/aira_operators/draft
-    - mlebench/aira_operators/improve
-    - mlebench/aide_operators/analyze
-    - mlebench/aira_operators/crossover
+    - sciduc/aira_operators/debug
+    - sciduc/aira_operators/draft
+    - sciduc/aira_operators/improve
+    - sciduc/aide_operators/analyze
+    - sciduc/aira_operators/crossover
   - override memory: simple_memory  # Enables Memory operator
   - override memory@debug_memory: debug_memory # Enables Debug Memory operator
 
