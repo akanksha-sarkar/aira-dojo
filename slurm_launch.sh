@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=resisc45-agentSL
+#SBATCH --job-name=resisc45-5.4
 #SBATCH --partition=jjs533,gpu-interactive
 #SBATCH --gres=gpu:1
 #SBATCH --constraint="h100|6000ada"
@@ -44,15 +44,15 @@ fi
 # Experiment config
 # -------------------------
 DOMAIN="resisc45"
-K="k1"
-SEED="seed42"
-AGENT="aide"
+K="k2"
+SEED="seed0"
+AGENT="aira"
 # Fixed run id: every sbatch uses this same directory so checkpoint always resumes.
 # Change this when you intentionally want a brand-new experiment.
-EXP_NUM="1000"
+EXP_NUM="1111"
 #DATA_DIR="/share/j_sun/agentSSL/resisc45"
 CACHE_DIR="/share/j_sun/as2637"
-SETTING="agentSL"
+SETTING="aSSL_0_1_metric_prior_5.4"
 
 
 LOG_DIR="/share/j_sun/as2637/logs"
@@ -85,7 +85,7 @@ echo "Logging to: $JOB_OUT"
 
 
 python -m dojo.main_run \
-    +_exp=run_example \
+    +_exp=run_example_5.4 \
     task=agentSSL/_default \
     task.name=${DOMAIN} \
     task.setting=${SETTING} \
