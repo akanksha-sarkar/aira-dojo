@@ -24,6 +24,23 @@ logging.getLogger("openai").setLevel(logging.DEBUG)
 logging.getLogger("httpx").setLevel(logging.DEBUG)
 
 
+def _ensure_user_turn_if_system_only(
+    messages: List[Dict[str, str]], content_key: str
+) -> List[Dict[str, str]]:
+    """
+    Anthropic (via LiteLLM) requires a non-empty conversation after separating the system prompt.
+    A single OpenAI-style system message becomes messages=[] and raises AnthropicException.
+    """
+    if len(messages) == 1 and messages[0].get("role") == "system":
+        return messages + [
+            {
+                "role": "user",
+                content_key: "Follow the system instructions and respond with the requested output.",
+            }
+        ]
+    return messages
+
+
 class GenericLLM:
     def __init__(self, cfg: OperatorConfig) -> None:
         """
@@ -98,6 +115,8 @@ class GenericLLM:
 
         # If query_data is not provided, directly query the client with the provided messages
         if query_data is None:
+            assert messages is not None
+            messages = _ensure_user_turn_if_system_only(messages, self.client.client_content_key)
             output, usage_stats = self.client.query(
                 messages,
                 json_schema=json_schema,
@@ -119,6 +138,7 @@ class GenericLLM:
 
         # If no_user_message is True, directly query the client without adding a user message
         if no_user_message:
+            messages = _ensure_user_turn_if_system_only(messages, self.client.client_content_key)
             output, usage_stats = self.client.query(
                 messages,
                 json_schema=json_schema,

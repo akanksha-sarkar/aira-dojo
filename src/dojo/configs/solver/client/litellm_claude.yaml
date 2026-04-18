@@ -1,0 +1,12 @@
+# Claude via LiteLLM (uses OpenAI-style tools; LiteLLM translates for Anthropic).
+# Set PRIMARY_KEY in .env to your Anthropic API key (sk-ant-...), or set ANTHROPIC_API_KEY
+# and rely on LiteLLM's env fallback when PRIMARY_KEY is unset.
+# Model id must include the provider prefix so LiteLLM routes to Anthropic (see LiteLLM docs).
+# Older IDs (e.g. claude-3-5-sonnet-20241022) are retired — Anthropic returns not_found / HTTP 404.
+_target_: dojo.config_dataclasses.client.base.ClientConfig
+api: litellm
+# Current IDs: https://docs.anthropic.com/en/docs/about-claude/models
+model_id: "anthropic/claude-sonnet-4-6"
+base_url: ""
+use_azure_client: False
+provider: anthropic

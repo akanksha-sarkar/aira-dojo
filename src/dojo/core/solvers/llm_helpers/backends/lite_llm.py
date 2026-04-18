@@ -88,21 +88,31 @@ class LiteLLMClient:
         """
         Initialize the OpenAI client with any desired default arguments or configuration.
         """
-        self.model = client_cfg.model_id
-        self.base_url = client_cfg.base_url
-        api_key = os.getenv("PRIMARY_KEY_" + self.model.replace("-", "_").upper(), "")
+        mid = client_cfg.model_id
+        self.model = mid
+        self.base_url = client_cfg.base_url or None  # avoid "" → LiteLLM defaults to OpenAI host
+        api_key = os.getenv("PRIMARY_KEY_" + mid.replace("-", "_").replace("/", "_").upper(), "")
         if api_key:
             self.api_key = api_key
         else:
             self.api_key = os.getenv("PRIMARY_KEY", "")
+        # Anthropic keys are sk-ant-...; LiteLLM expects ANTHROPIC_API_KEY for native routing
+        if not self.api_key and (
+            mid.startswith("anthropic/")
+            or str(client_cfg.provider).lower() == "anthropic"
+        ):
+            self.api_key = os.getenv("ANTHROPIC_API_KEY", "")
         self.use_azure_client = client_cfg.use_azure_client
         self.provider = client_cfg.provider
         if self.use_azure_client:
             self.model_prefix = "azure/"
+        elif "/" in mid:
+            # LiteLLM provider ids: anthropic/claude-..., google/gemini-... — do not use openai/ prefix
+            self.model_prefix = ""
         else:
             self.model_prefix = "openai/"
 
-        self.model = self.model_prefix + self.model
+        self.model = self.model_prefix + mid
 
         logging.getLogger("httpx").setLevel(logging.WARNING)
 
@@ -165,9 +175,11 @@ class LiteLLMClient:
 
         # Always include necessary model parameters
         model_kwargs["model"] = self.model
-        model_kwargs["base_url"] = self.base_url
-        model_kwargs["api_key"] = self.api_key
-        filtered_kwargs = {k: v for k, v in model_kwargs.items() if v is not None}
+        if self.base_url:
+            model_kwargs["base_url"] = self.base_url
+        if self.api_key:
+            model_kwargs["api_key"] = self.api_key
+        filtered_kwargs = {k: v for k, v in model_kwargs.items() if v is not None and v != ""}
 
         # Attach function specifications if provided
         if func_spec is not None:

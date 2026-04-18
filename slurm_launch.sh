@@ -49,7 +49,7 @@ SEED="seed42"
 AGENT="aira"
 # Fixed run id: every sbatch uses this same directory so checkpoint always resumes.
 # Change this when you intentionally want a brand-new experiment.
-EXP_NUM="1604"
+EXP_NUM="1704"
 #DATA_DIR="/share/j_sun/agentSSL/resisc45"
 CACHE_DIR="/share/j_sun/as2637"
 SETTING="aSSL_0_1_metric_priorlora2"
@@ -85,7 +85,7 @@ echo "Logging to: $JOB_OUT"
 
 
 python -m dojo.main_run \
-    +_exp=run_example_5.4 \
+    +_exp=run_example_claude \
     task=agentSSL/_default \
     task.name=${DOMAIN} \
     task.setting=${SETTING} \
