@@ -129,6 +129,8 @@ def _main(cfg: RunConfig):
         os.environ["PROGRAM_DIR"]: "/run_tmp",
         f"{task.ssl_dir}/metrics": "/work/metrics",
         f"{task.ssl_dir}/pytorch_adapt": "/work/pytorch_adapt",
+        f"{task.ssl_dir}/pretrain_weight": "/work/pretrain_weight",
+        f"{task.ssl_dir}/nets": "/work/nets",
     }
     read_write_binds = {
         os.environ["PSEUDOLABEL_DIR"]: "/pseudolabels",
@@ -146,15 +148,15 @@ def _main(cfg: RunConfig):
     solver_interpreter = build(cfg.interpreter, INTERPRETER_MAP, data_dir=cfg.task.data_dir)
     solver_interpreter.instance.create_process()
     print("✅ Apptainer environment initialized.")
-    # UNCOMMENT
-    # try:
-    #     import time
-    #     while True:
-    #         time.sleep(60)
-    # except KeyboardInterrupt:
-    #     log.info("Stopping instance...")
-    #     solver_interpreter.close()
-    # return
+    #UNCOMMENT
+    try:
+        import time
+        while True:
+            time.sleep(60)
+    except KeyboardInterrupt:
+        log.info("Stopping instance...")
+        solver_interpreter.close()
+    return
 
     eval_interpreter = None
 

@@ -1,13 +1,13 @@
 #!/bin/bash
-#SBATCH --job-name=resisc45-5.4
-#SBATCH --partition=jjs533,gpu-interactive
+#SBATCH --job-name=dtd
+#SBATCH --partition=jjs533,gpu
 #SBATCH --gres=gpu:1
-#SBATCH --constraint="h100|6000ada"
+#SBATCH --constraint=h100
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=256G
+#SBATCH --mem=64G
 #SBATCH --time=48:00:00
-#SBATCH --output=/share/j_sun/as2637/logs/resisc45/%j.out
+#SBATCH --output=/share/j_sun/as2637/logs/dtd/%j.out
 #SBATCH --chdir=/home/as2637/sciduc/aira-dojo
 #SBATCH --requeue
 
@@ -43,16 +43,16 @@ fi
 # -------------------------
 # Experiment config
 # -------------------------
-DOMAIN="resisc45"
-K="k2"
-SEED="seed0"
+DOMAIN="dtd"
+K="k6"
+SEED="seed42"
 AGENT="aira"
 # Fixed run id: every sbatch uses this same directory so checkpoint always resumes.
 # Change this when you intentionally want a brand-new experiment.
-EXP_NUM="1111"
+EXP_NUM="1604"
 #DATA_DIR="/share/j_sun/agentSSL/resisc45"
 CACHE_DIR="/share/j_sun/as2637"
-SETTING="aSSL_0_1_metric_prior_5.4"
+SETTING="aSSL_0_1_metric_priorlora2"
 
 
 LOG_DIR="/share/j_sun/as2637/logs"

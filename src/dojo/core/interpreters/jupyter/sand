@@ -260,7 +260,7 @@ echo "After starting"
 
 echo "[DEBUG] Installing pytorch_metric_learning inside container..." >&2
 apptainer exec instance://$INSTANCE_NAME bash -c '
-    pip install pytorch_metric_learning
+    pip install pytorch_metric_learning peft
 '>&2
 
 # to pipe the output of the instance
