@@ -30,16 +30,16 @@ draft:
         - Prefer vectorized operations over Python loops when processing large datasets.  
         - Use `torch.optim.AdamW` (the recommended optimizer) instead of the deprecated `AdamW` from `transformers`.  
         - As much as possible, keep the stdout clean.
+        - Make sure to print relevant training related information like the loss, accuracy, etc. 
         - As this is the initial draft, prioritize speed in your solution.
       
       **DATA**: The training and validation data is already prepared and available in the read-only `/data` directory. You should not unzip any files.
       
-      **COMPUTE**: You have access to a Python environemnt with 1 NVIDIA H200 GPU(s) and 8 CPUs available, and the following packages installed: {{packages}}. DO NOT DOWNLOAD NEW PACKAGES.
+      **COMPUTE**: You have access to a Python environemnt and the following packages installed: {{packages}}. DO NOT DOWNLOAD NEW PACKAGES.
 
       Consider the previously explored ideas, and make sure the idea you propose considers a DIFFERENT ASPECT OF THE SOLUTION. 
       For example, you could try changing the model architecture. Brainstorm about possible approaches and WHY THEY ARE LIKELY TO BE EFFECTIVE AND INCREASE THE PERFORMANCE for the given task, and the available data and compute resources.
       Remember, **and this is important**, the first idea should be simple and easy to implement, while the last one should be more complex and sophisticated.
-      Your initial draft solution should prioritize speed and simplicity, for example, use less than 10 epochs for training to get a quick proof of concept of your solution.
       {% if draft_complexity == 'simple' %}
       In this iteration **focus on PROPOSING A SIMPLE IDEA:** one that can serve as a SIMPLE YET EFFECTIVE BASELINE for the task. For example, consider battle-tested methods or (potentially pre-trained) models that are known to work well for the task at hand.
       {% elif draft_complexity == 'normal' %}
@@ -55,7 +55,7 @@ draft:
       Start by making sure you understand the task, the data and compute resources and the idea. Then generate a detailed
       implementation plan that will structure and guide you step-by-step through the implementation process. Make sure to reflect on the plan to ensure that the implementation 
       is efficient and faithful to the idea, and that all the requirements (e.g., the evaluation score is printed) are satisfied.
-      For large datasets, avoid for loops and aim for efficient and fast data loading and feature engineering.
+      For large datasets, avoid for loops and aim for efficient and fast data loading.
       Format the proposed solution as follows:
       
       # Idea to implement

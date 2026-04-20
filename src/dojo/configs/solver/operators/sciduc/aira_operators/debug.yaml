@@ -35,8 +35,6 @@ debug:
       {{execution_output}}
 
       # Compute Environment:
-      - GPU: 1 NVIDIA H200
-      - CPUs: 8
       - Available Packages: {{packages}}
       - DO NOT DOWNLOAD NEW PACKAGES (You have access to pycocotools, torch, torchvision, ultralytics, etc.).
 
@@ -49,6 +47,7 @@ debug:
 
       - **Important Reminders:**
         - Absolutely do **NOT** skip any part of the code.
+        - Make sure to print relevant training related information like the loss, accuracy, etc. 
         - Try to make the code run quickly and efficiently to get a quick proof of concept of your solution to the bug.
 
       Brainstorm about possible ways to fix the bug and WHY THEY ARE LIKELY TO FIX THE BUG for the given implementation. Additionally, if any other bugs further down the line are observed, please fix them as well.

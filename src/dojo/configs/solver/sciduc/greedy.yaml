@@ -13,7 +13,7 @@ improvement_steps: 5                   # Number of improvement iterations to per
 data_preview: true        # Whether to provide the agent with a preview of the data before execution
 
 # --- Debugging Configuration ---
-max_debug_depth: 20         # Maximum depth of debugging analysis
+max_debug_depth: 5         # Maximum depth of debugging analysis
 debug_prob: 1.0            # Probability of running a debug step in the process
 
 # --- Drafting Configuration ---

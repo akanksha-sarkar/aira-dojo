@@ -129,7 +129,7 @@ def _main(cfg: RunConfig):
         os.environ["PROGRAM_DIR"]: "/run_tmp",
         f"{task.ssl_dir}/metrics": "/work/metrics",
         f"{task.ssl_dir}/pytorch_adapt": "/work/pytorch_adapt",
-        f"{task.ssl_dir}/pretrain_weight": "/work/pretrain_weight",
+        f"{task.ssl_dir}/pretrain_weight": "/pretrain_weight",
         f"{task.ssl_dir}/nets": "/work/nets",
     }
     read_write_binds = {

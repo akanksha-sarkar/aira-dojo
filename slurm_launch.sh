@@ -1,13 +1,13 @@
 #!/bin/bash
-#SBATCH --job-name=dtd
-#SBATCH --partition=jjs533,gpu
+#SBATCH --job-name=dtd6
+#SBATCH --partition=jjs533
 #SBATCH --gres=gpu:1
-#SBATCH --constraint=h100
+#SBATCH --constraint=6000ada|a6000|h100|6000maxq
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=64G
 #SBATCH --time=48:00:00
-#SBATCH --output=/share/j_sun/as2637/logs/dtd/%j.out
+#SBATCH --output=/share/j_sun/as2637/logs/1804/dtd/%j.out
 #SBATCH --chdir=/home/as2637/sciduc/aira-dojo
 #SBATCH --requeue
 
@@ -49,10 +49,10 @@ SEED="seed42"
 AGENT="aira"
 # Fixed run id: every sbatch uses this same directory so checkpoint always resumes.
 # Change this when you intentionally want a brand-new experiment.
-EXP_NUM="1704"
+EXP_NUM="1"
 #DATA_DIR="/share/j_sun/agentSSL/resisc45"
 CACHE_DIR="/share/j_sun/as2637"
-SETTING="aSSL_0_1_metric_priorlora2"
+SETTING="aSSL_backbone_1804"
 
 
 LOG_DIR="/share/j_sun/as2637/logs"
@@ -85,7 +85,7 @@ echo "Logging to: $JOB_OUT"
 
 
 python -m dojo.main_run \
-    +_exp=run_example_claude \
+    +_exp=run_example_5.4 \
     task=agentSSL/_default \
     task.name=${DOMAIN} \
     task.setting=${SETTING} \

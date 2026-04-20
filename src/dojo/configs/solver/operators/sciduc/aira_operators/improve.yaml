@@ -38,6 +38,7 @@ improve:
         - Be aware of the running time of the solution, it should complete within {{execution_timeout}}
         - Prefer vectorized operations over Python loops when processing large datasets.  
         - Use `torch.optim.AdamW` (the recommended optimizer) instead of the deprecated `AdamW` from `transformers`.  
+        - Make sure to print relevant training related information like the loss, accuracy, etc. 
         - As much as possible, keep the stdout clean.
       
       **COMPUTE**: You have access to a Python environemnt with the following packages installed: {{packages}}. DO NOT DOWNLOAD NEW PACKAGES.
