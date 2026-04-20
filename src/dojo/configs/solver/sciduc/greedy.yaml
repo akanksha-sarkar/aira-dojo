@@ -7,7 +7,7 @@ defaults:
     - aide_operators/analyze  # Enables evaluation mode for assessing outputs
   - override memory: simple_memory
   - override memory@debug_memory: debug_memory # Enables Debug Memory operator
-
+  - override memory@draft_memory: simple_memory_only_plans # Enables Draft Memory operator
 # --- Search Configuration ---
 improvement_steps: 5                   # Number of improvement iterations to perform
 data_preview: true        # Whether to provide the agent with a preview of the data before execution

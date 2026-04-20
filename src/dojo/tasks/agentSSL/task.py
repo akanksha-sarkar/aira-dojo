@@ -13,6 +13,7 @@ from dojo.core.tasks.base import Task
 from dojo.core.tasks.constants import (
     EXECUTION_OUTPUT,
     TASK_DESCRIPTION,
+    WARM_START_PROGRAM,
     TEST_FITNESS,
     VALID_SOLUTION_FEEDBACK,
     VALIDATION_FITNESS,
@@ -79,6 +80,7 @@ class AgentSSLTask(Task):
         self.subset = self.cfg.subset
         self.task_dir = Path(self.cfg.task_dir).resolve()
         self.ssl_dir = Path(self.cfg.ssl_dir).resolve()
+        self.warm_start_program = Path(self.task_dir).resolve() / "warm_start_program.py"
         # Read task description.
         task_description_path = Path(self.task_dir).resolve() / "description.md"
         self.task_description = self.instructions + "\n" + task_description_path.read_text()
@@ -92,6 +94,7 @@ class AgentSSLTask(Task):
         task_info = {
             TASK_DESCRIPTION: self.task_description,
             "lower_is_better": False,
+            WARM_START_PROGRAM: self.warm_start_program.read_text(),
         }
 
         return state, task_info

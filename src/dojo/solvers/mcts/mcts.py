@@ -32,6 +32,7 @@ from dojo.core.solvers.utils.search_exporter import (
 from dojo.core.tasks.constants import (
     EXECUTION_OUTPUT,
     TASK_DESCRIPTION,
+    WARM_START_PROGRAM,
     VALID_SOLUTION_FEEDBACK,
     VALIDATION_FITNESS,
     AUX_EVAL_INFO,
@@ -119,6 +120,7 @@ class MCTS(Solver):
         self.data_preview: str | None = None
 
         self.task_desc = task_info[TASK_DESCRIPTION]
+        self.warm_start_program = task_info.get(WARM_START_PROGRAM, "")
         self.lower_is_better = task_info.get("lower_is_better", None)
 
         assert self.lower_is_better is not None
@@ -173,10 +175,11 @@ class MCTS(Solver):
 
         # Create the memory for operators
         self.memory_op = create_memory_op(self.cfg.memory)
+        self.draft_memory_op = create_memory_op(self.cfg.draft_memory or self.cfg.memory)
         self.debug_memory_op = create_memory_op(self.cfg.debug_memory)
 
         # Then we create the operators
-        self.draft_fn = partial(draft_op, draft_llm, self.cfg, self.memory_op)
+        self.draft_fn = partial(draft_op, draft_llm, self.cfg, self.draft_memory_op)
         self.improve_fn = partial(improve_op, improve_llm, self.cfg, self.memory_op)
         self.debug_fn = partial(debug_op, debug_llm, self.cfg, self.debug_memory_op)
         self.analyze_fn = partial(analyze_op, analyze_llm, self.cfg)
@@ -293,6 +296,7 @@ class MCTS(Solver):
         plan, code, metrics = execute_op_plan_code(
             self.draft_fn,
             self.task_desc,
+            self.warm_start_program,
             self.journal,
             self.state.current_step,
             self.cfg.time_limit_secs - self.state.running_time,

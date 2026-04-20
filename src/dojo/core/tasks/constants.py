@@ -16,4 +16,6 @@ EXECUTION_OUTPUT = "execution_output"
 
 TASK_DESCRIPTION = "task_description"
 
+WARM_START_PROGRAM = "warm_start_program"
+
 VALID_SOLUTION_FEEDBACK = "valid_solution_feedback"
