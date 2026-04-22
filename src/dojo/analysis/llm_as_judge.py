@@ -11,21 +11,23 @@ Given a program, extract concise and accurate descriptors of:
 1. Models used: backbone architectures (e.g., ResNet50, ViT, CLIP, DINOv2)
 2. Methods used: training strategies, learning paradigms, regularization schemes,
    pseudo-labeling approaches, consistency objectives, augmentation schemes,
-   parameter-efficient finetuning methods, or other notable learning or unsupervisedmethods.
+   parameter-efficient finetuning methods, or other notable learning or unsupervised methods.
+3. Add a one word binary label on whether the program uses any training of models or adapter heads.
 
 Return ONLY valid JSON in this format:
 
 {
     "models": ["model1", "model2"],
     "methods": ["method1", "method2"],
-    "summary": "A concise summary of the program's purpose and main features."
+    "uses training": "yes" or "no",
+    "summary": "A concise summary of the program's purpose and main features (1-5 sentences)."
 }
 
 Guidelines:
 - Include backbone or model family names when identifiable.
 - Keep the descriptions concise (a few words) but accurate.
 - Include a descriptive summary of the program's purpose and main features (1-5 sentences).
- Focus on the features and methods used.
+- Focus on the features and methods used.
 """
 
 
@@ -78,11 +80,15 @@ class LLMJudge:
             return {
                 "models": data.get("models", []),
                 "methods": data.get("methods", []),
+                "uses training": data.get("uses training", "no"),
+                "summary": data.get("summary", ""),
             }
         except json.JSONDecodeError:
             return {
                 "models": [],
                 "methods": [],
+                "uses training": "no",
+                "summary": "",
                 "parse_error": True,
                 "raw": output,
             }

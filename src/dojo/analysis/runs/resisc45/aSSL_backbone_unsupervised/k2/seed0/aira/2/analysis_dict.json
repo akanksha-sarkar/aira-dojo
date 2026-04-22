@@ -1,0 +1,1186 @@
+{
+    "0001_dbaa5712": {
+        "program_name": "program_step0001_dbaa5712.py",
+        "eval_name": "eval_step0001_dbaa5712.json",
+        "test_accuracy": 0.5232466509062254,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "prototype refinement",
+                "data augmentation",
+                "feature extraction",
+                "cross-entropy loss"
+            ],
+            "uses training": "yes",
+            "summary": "The program implements a semi-supervised learning approach using a Vision Transformer (ViT) backbone for image classification. It utilizes labeled and unlabeled data to refine class prototypes through feature extraction and consistency objectives. Data augmentation techniques are applied to enhance the labeled dataset, and the model is trained using cross-entropy loss. The program is designed to predict categories for new images based on the learned prototypes.",
+            "used_dinov2": true,
+            "used_clip": false
+        },
+        "prompt_tokens": 2549,
+        "completion_tokens": 129,
+        "total_tokens": 2678
+    },
+    "0002_620d283a": {
+        "program_name": "program_step0002_620d283a.py",
+        "eval_name": "eval_step0002_620d283a.json",
+        "test_accuracy": 0.7256107171000789,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "supervised contrastive loss",
+                "data augmentation",
+                "parameter-efficient finetuning",
+                "cross-entropy loss",
+                "cosine annealing scheduler"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a classification agent using a Vision Transformer (ViT) backbone with a focus on semi-supervised learning. It employs a two-view labeled dataset for training, utilizing data augmentation techniques and a combination of supervised contrastive loss and cross-entropy loss for optimization. The model is trained using a parameter-efficient finetuning method, allowing for effective learning with limited labeled data.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 2453,
+        "completion_tokens": 134,
+        "total_tokens": 2587
+    },
+    "0003_a24ebc24": {
+        "program_name": "program_step0003_a24ebc24.py",
+        "eval_name": "eval_step0003_a24ebc24.json",
+        "test_accuracy": 0.5051221434200157,
+        "program_analysis": {
+            "models": [
+                "ViT",
+                "DINOv2"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "label propagation",
+                "data augmentation",
+                "linear head training",
+                "feature extraction",
+                "KNN graph construction"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework for image classification using a Vision Transformer (ViT) backbone with DINOv2 features. It extracts features from labeled and unlabeled images, applies label propagation to generate pseudo-labels, and trains a linear head on both labeled and pseudo-labeled data. The program includes data augmentation techniques to enhance the training process and utilizes a KNN graph for effective label propagation.",
+            "used_dinov2": true,
+            "used_clip": false
+        },
+        "prompt_tokens": 3678,
+        "completion_tokens": 145,
+        "total_tokens": 3823
+    },
+    "0004_e9414938": {
+        "program_name": "program_step0004_e9414938.py",
+        "eval_name": "eval_step0004_e9414938.json",
+        "test_accuracy": 0.621591804570528,
+        "program_analysis": {
+            "models": [
+                "ViT",
+                "DINOv2"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "multi-view augmentation",
+                "linear classification head",
+                "feature extraction",
+                "memory bank",
+                "local mixing probabilities",
+                "data augmentation"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework for image classification using a Vision Transformer (ViT) backbone with DINOv2 features. It combines labeled and unlabeled data through multi-view augmentations and builds a memory bank for unlabeled samples. A linear classification head is trained on the extracted features, and predictions are made by fusing global and local probabilities. The program emphasizes data-efficient training strategies and robust feature extraction.",
+            "used_dinov2": true,
+            "used_clip": false
+        },
+        "prompt_tokens": 3657,
+        "completion_tokens": 151,
+        "total_tokens": 3808
+    },
+    "0006_48e56c00": {
+        "program_name": "program_step0006_48e56c00.py",
+        "eval_name": "eval_step0006_48e56c00.json",
+        "test_accuracy": 0.7561859732072498,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "data augmentation",
+                "weighted sampling",
+                "label smoothing",
+                "consistency loss",
+                "teacher-student framework",
+                "feature normalization"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) backbone for image classification. It employs a teacher-student model approach, where a teacher model provides pseudo-labels for unlabeled data. The training process includes data augmentation techniques, weighted sampling for class balance, and consistency loss to improve model robustness. The program also normalizes features to enhance performance during training and evaluation.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 4489,
+        "completion_tokens": 140,
+        "total_tokens": 4629
+    },
+    "0007_ad1222cf": {
+        "program_name": "program_step0007_ad1222cf.py",
+        "eval_name": "eval_step0007_ad1222cf.json",
+        "test_accuracy": 0.696769109535067,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "supervised contrastive loss",
+                "data augmentation",
+                "pseudo-labeling",
+                "exponential moving average",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model for image classification. It employs a combination of labeled and unlabeled data, utilizing supervised contrastive loss and pseudo-labeling to enhance learning. The program includes various data augmentation techniques and employs an exponential moving average for model updates. It is designed to efficiently train on limited labeled data while leveraging a larger pool of unlabeled images.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 3502,
+        "completion_tokens": 145,
+        "total_tokens": 3647
+    },
+    "0008_9ba994bd": {
+        "program_name": "program_step0008_9ba994bd.py",
+        "eval_name": "eval_step0008_9ba994bd.json",
+        "test_accuracy": 0.711899133175729,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "supervised contrastive loss",
+                "cross entropy",
+                "mixup",
+                "data augmentation",
+                "cosine classifier",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a classification agent using a Vision Transformer (ViT) backbone with a cosine classifier for image classification tasks. It employs a combination of supervised contrastive loss, cross-entropy loss, and mixup techniques for training. The program also includes data augmentation strategies to enhance model robustness and utilizes parameter-efficient finetuning methods. The agent is designed to handle both labeled and unlabeled data for improved performance.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 3342,
+        "completion_tokens": 140,
+        "total_tokens": 3482
+    },
+    "0009_ac10f823": {
+        "program_name": "program_step0009_ac10f823.py",
+        "eval_name": "eval_step0009_ac10f823.json",
+        "test_accuracy": 0.7755713159968479,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "data augmentation",
+                "pseudo-labeling",
+                "distribution alignment",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs a combination of labeled and unlabeled data, utilizing contrastive loss and pseudo-labeling techniques to improve classification performance. The program includes various data augmentation strategies and a parameter-efficient finetuning method to adapt the model for specific tasks. It is designed to handle COCO dataset annotations for training and evaluation.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 3677,
+        "completion_tokens": 139,
+        "total_tokens": 3816
+    },
+    "0010_49e53ab7": {
+        "program_name": "program_step0010_49e53ab7.py",
+        "eval_name": "eval_step0010_49e53ab7.json",
+        "test_accuracy": 0.7774625689519307,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "data augmentation",
+                "pseudo-labeling",
+                "confidence weighting",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs a combination of labeled and unlabeled data, utilizing contrastive loss and confidence weighting for improved performance. The training process includes data augmentation techniques and a parameter-efficient finetuning method. The model is designed to classify images based on COCO dataset annotations.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 3870,
+        "completion_tokens": 129,
+        "total_tokens": 3999
+    },
+    "0011_d078ff28": {
+        "program_name": "program_step0011_d078ff28.py",
+        "eval_name": "eval_step0011_d078ff28.json",
+        "test_accuracy": 0.7779353821907014,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "data augmentation",
+                "pseudo-labeling",
+                "teacher-student model",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs a two-view labeled dataset and a weak-strong unlabeled dataset for training. The training strategy includes supervised contrastive loss, pseudo-labeling, and a teacher-student model for improved performance. Data augmentation techniques are utilized to enhance the model's robustness, and parameter-efficient finetuning methods are applied to adapt the model effectively.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 4349,
+        "completion_tokens": 147,
+        "total_tokens": 4496
+    },
+    "0012_d0bc4ae7": {
+        "program_name": "program_step0012_d0bc4ae7.py",
+        "eval_name": "eval_step0012_d0bc4ae7.json",
+        "test_accuracy": 0.7620173364854216,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "data augmentation",
+                "pseudo-labeling",
+                "teacher-student training",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs a two-view labeled dataset and a weak-strong unlabeled dataset for training. The training strategy includes supervised contrastive loss, pseudo-labeling, and a teacher-student model approach to enhance performance with limited labeled data. Data augmentation techniques are utilized to improve model robustness.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 4872,
+        "completion_tokens": 135,
+        "total_tokens": 5007
+    },
+    "0013_f327c7bf": {
+        "program_name": "program_step0013_f327c7bf.py",
+        "eval_name": "eval_step0013_f327c7bf.json",
+        "test_accuracy": 0.742789598108747,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "pseudo-labeling",
+                "data augmentation",
+                "teacher-student training",
+                "logit adjustment",
+                "distribution alignment"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs a combination of labeled and unlabeled data to improve classification performance through techniques such as supervised contrastive loss and pseudo-labeling. The model is trained with various data augmentation strategies and utilizes a teacher-student approach for enhanced learning. The program also includes logit adjustment and distribution alignment methods to refine predictions.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 5584,
+        "completion_tokens": 143,
+        "total_tokens": 5727
+    },
+    "0014_d3c408b4": {
+        "program_name": "program_step0014_d3c408b4.py",
+        "eval_name": "eval_step0014_d3c408b4.json",
+        "test_accuracy": 0.780929866036249,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "data augmentation",
+                "pseudo-labeling",
+                "teacher-student model",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs a two-view labeled dataset and a weak-strong unlabeled dataset for training. The training strategy includes supervised contrastive loss, pseudo-labeling, and a teacher-student model for improved performance. Data augmentation techniques are utilized to enhance the model's robustness, and parameter-efficient finetuning methods are applied to adapt the model effectively.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 5325,
+        "completion_tokens": 147,
+        "total_tokens": 5472
+    },
+    "0015_52abc619": {
+        "program_name": "program_step0015_52abc619.py",
+        "eval_name": "eval_step0015_52abc619.json",
+        "test_accuracy": 0.7840819542947203,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "pseudo-labeling",
+                "data augmentation",
+                "teacher-student training",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs a combination of labeled and unlabeled data, utilizing contrastive loss and pseudo-labeling techniques to improve model performance. The training process includes data augmentation strategies and a teacher-student model approach to enhance learning from unlabeled data. The program is designed to efficiently train the model while managing various loss components and hyperparameters.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 5545,
+        "completion_tokens": 144,
+        "total_tokens": 5689
+    },
+    "0016_fc2abbda": {
+        "program_name": "program_step0016_fc2abbda.py",
+        "eval_name": "eval_step0016_fc2abbda.json",
+        "test_accuracy": 0.7908589440504334,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "supervised contrastive loss",
+                "data augmentation",
+                "pseudo-labeling",
+                "teacher-student model",
+                "confidence weighting",
+                "distribution alignment",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs a combination of labeled and unlabeled data, utilizing strong and weak augmentations for training. The model is trained with a supervised contrastive loss and incorporates a teacher-student mechanism for improved performance. Additionally, it includes techniques for confidence weighting and distribution alignment to enhance the learning process.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 5115,
+        "completion_tokens": 147,
+        "total_tokens": 5262
+    },
+    "0017_ffb44ce7": {
+        "program_name": "program_step0017_ffb44ce7.py",
+        "eval_name": "eval_step0017_ffb44ce7.json",
+        "test_accuracy": 0.8156028368794326,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "pseudo-labeling",
+                "data augmentation",
+                "teacher-student training",
+                "logit adjustment",
+                "distribution alignment"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs a combination of labeled and unlabeled data, utilizing contrastive loss and pseudo-labeling techniques to enhance model performance. The training process includes data augmentation strategies and a teacher-student model approach for improved generalization. The program is designed to handle COCO dataset annotations for image classification tasks.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 5441,
+        "completion_tokens": 140,
+        "total_tokens": 5581
+    },
+    "0019_d0b8589d": {
+        "program_name": "program_step0019_d0b8589d.py",
+        "eval_name": "eval_step0019_d0b8589d.json",
+        "test_accuracy": 0.7925925925925926,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "data augmentation",
+                "pseudo-labeling",
+                "teacher-student training",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) backbone. It employs a combination of supervised contrastive loss and pseudo-labeling strategies to leverage both labeled and unlabeled data. The model is trained with various data augmentation techniques and includes a teacher-student mechanism for improved performance. Additionally, it utilizes parameter-efficient finetuning methods to adapt the model effectively.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 7896,
+        "completion_tokens": 138,
+        "total_tokens": 8034
+    },
+    "0020_035dc2bd": {
+        "program_name": "program_step0020_035dc2bd.py",
+        "eval_name": "eval_step0020_035dc2bd.json",
+        "test_accuracy": 0.5959022852639874,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "vicreg loss",
+                "data augmentation",
+                "pseudo-labeling",
+                "teacher-student training",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs a combination of labeled and unlabeled data, utilizing contrastive and VICReg losses to enhance feature learning. The training process includes data augmentation strategies and a teacher-student model approach for improved performance. The model is designed for classification tasks with a focus on efficient training and adaptation.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 5783,
+        "completion_tokens": 141,
+        "total_tokens": 5924
+    },
+    "0021_b2530b00": {
+        "program_name": "program_step0021_b2530b00.py",
+        "eval_name": "eval_step0021_b2530b00.json",
+        "test_accuracy": 0.7763593380614657,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "pseudo-labeling",
+                "data augmentation",
+                "teacher-student training",
+                "prototype learning",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs a combination of labeled and unlabeled data to improve classification performance through techniques such as supervised contrastive loss, pseudo-labeling, and prototype learning. The model is trained with various data augmentation strategies and utilizes a teacher-student approach to enhance learning from unlabeled samples.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 6635,
+        "completion_tokens": 138,
+        "total_tokens": 6773
+    },
+    "0022_dbfcf1bf": {
+        "program_name": "program_step0022_dbfcf1bf.py",
+        "eval_name": "eval_step0022_dbfcf1bf.json",
+        "test_accuracy": 0.7739952718676123,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "pseudo-labeling",
+                "data augmentation",
+                "teacher-student training",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) backbone. It employs a combination of supervised contrastive loss and unsupervised methods like SWAV for effective training on labeled and unlabeled data. The model is enhanced with a teacher-student setup to improve performance, and various data augmentation techniques are utilized to increase robustness. The program is designed to handle COCO dataset annotations for image classification tasks.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 6293,
+        "completion_tokens": 146,
+        "total_tokens": 6439
+    },
+    "0023_aef29c64": {
+        "program_name": "program_step0023_aef29c64.py",
+        "eval_name": "eval_step0023_aef29c64.json",
+        "test_accuracy": 0.7869188337273444,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "BYOL",
+                "data augmentation",
+                "pseudo-labeling",
+                "teacher-student model",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "The program implements a semi-supervised learning framework using a Vision Transformer (ViT) backbone for image classification. It employs a combination of labeled and unlabeled data, utilizing contrastive loss and BYOL for feature learning. The model is trained with various data augmentation techniques and includes a teacher-student model setup for improved performance. Additionally, it incorporates parameter-efficient finetuning methods to adapt the model effectively.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 5533,
+        "completion_tokens": 145,
+        "total_tokens": 5678
+    },
+    "0024_d8bc08ee": {
+        "program_name": "program_step0024_d8bc08ee.py",
+        "eval_name": "eval_step0024_d8bc08ee.json",
+        "test_accuracy": 0.7922773837667455,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "data augmentation",
+                "pseudo-labeling",
+                "teacher-student training",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs a combination of labeled and unlabeled data, utilizing contrastive loss and various data augmentation techniques to improve model performance. The training strategy includes a teacher-student setup for knowledge distillation, along with pseudo-labeling for unlabeled samples. The program is designed to efficiently train the model while leveraging limited labeled data.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 5854,
+        "completion_tokens": 143,
+        "total_tokens": 5997
+    },
+    "0025_4a6fb44b": {
+        "program_name": "program_step0025_4a6fb44b.py",
+        "eval_name": "eval_step0025_4a6fb44b.json",
+        "test_accuracy": 0.7743104806934594,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "data augmentation",
+                "memory bank",
+                "pseudo-labeling",
+                "teacher-student training",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "The program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs a combination of labeled and unlabeled data, utilizing contrastive loss and a memory bank for improved feature learning. The training strategy includes teacher-student training, where a teacher model is updated based on the student's performance. Data augmentation techniques are applied to enhance the model's robustness, and parameter-efficient finetuning methods are used to adapt the model effectively.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 6817,
+        "completion_tokens": 155,
+        "total_tokens": 6972
+    },
+    "0026_8d7b7d9c": {
+        "program_name": "program_step0026_8d7b7d9c.py",
+        "eval_name": "eval_step0026_8d7b7d9c.json",
+        "test_accuracy": 0.8063041765169425,
+        "program_analysis": {
+            "models": [
+                "CLIP ViT"
+            ],
+            "methods": [
+                "LoRA",
+                "semi-supervised learning",
+                "masked-image consistency",
+                "supervised contrastive loss",
+                "pseudo-labeling",
+                "consistency regularization",
+                "data augmentation"
+            ],
+            "uses training": "yes",
+            "summary": "The program implements a semi-supervised learning pipeline using a CLIP ViT backbone with LoRA for parameter-efficient fine-tuning. It introduces a masked-image consistency branch to enhance the model's robustness to missing local evidence in aerial scene recognition. The training strategy includes labeled and unlabeled data with various consistency objectives and augmentation techniques, aiming to improve performance with limited labeled samples.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 6354,
+        "completion_tokens": 140,
+        "total_tokens": 6494
+    },
+    "0027_d3ed6b5f": {
+        "program_name": "program_step0027_d3ed6b5f.py",
+        "eval_name": "eval_step0027_d3ed6b5f.json",
+        "test_accuracy": 0.7271867612293145,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "data augmentation",
+                "pseudo-labeling",
+                "temporal consistency",
+                "teacher-student model",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs a combination of labeled and unlabeled data, utilizing contrastive loss and pseudo-labeling techniques to enhance model performance. The training process includes data augmentation strategies and a teacher-student model approach to improve predictions on unlabeled data. The program is designed to efficiently train the model while managing various hyperparameters for optimal learning.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 5686,
+        "completion_tokens": 149,
+        "total_tokens": 5835
+    },
+    "0028_12b39c88": {
+        "program_name": "program_step0028_12b39c88.py",
+        "eval_name": "eval_step0028_12b39c88.json",
+        "test_accuracy": 0.7656422379826635,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "data augmentation",
+                "pseudo-labeling",
+                "teacher-student training",
+                "logit adjustment",
+                "masking"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs a combination of labeled and unlabeled data, utilizing contrastive loss and various data augmentation techniques. The training strategy includes a teacher-student model setup for improved performance, along with logit adjustment and masking techniques to enhance the learning process. The program is designed to handle both labeled and unlabeled datasets effectively.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 5801,
+        "completion_tokens": 144,
+        "total_tokens": 5945
+    },
+    "0030_1cbb8e41": {
+        "program_name": "program_step0030_1cbb8e41.py",
+        "eval_name": "eval_step0030_1cbb8e41.json",
+        "test_accuracy": 0.7779353821907014,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "data augmentation",
+                "pseudo-labeling",
+                "teacher-student training",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) backbone. It employs a combination of labeled and unlabeled data, utilizing contrastive loss and pseudo-labeling strategies to enhance model performance. The training process includes data augmentation techniques and a teacher-student model approach to improve generalization. The program is designed to handle both labeled and unlabeled datasets effectively, optimizing the learning process through various regularization and consistency objectives.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 6979,
+        "completion_tokens": 149,
+        "total_tokens": 7128
+    },
+    "0031_4124dff5": {
+        "program_name": "program_step0031_4124dff5.py",
+        "eval_name": "eval_step0031_4124dff5.json",
+        "test_accuracy": 0.7763593380614657,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "covariance alignment",
+                "data augmentation",
+                "pseudo-labeling",
+                "teacher-student training",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs a combination of supervised contrastive loss and covariance alignment loss to enhance feature learning from both labeled and unlabeled data. The training process includes data augmentation techniques and a teacher-student model approach to improve performance. The model is designed for image classification tasks, leveraging labeled and unlabeled datasets effectively.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 5754,
+        "completion_tokens": 144,
+        "total_tokens": 5898
+    },
+    "0032_205fdfdc": {
+        "program_name": "program_step0032_205fdfdc.py",
+        "eval_name": "eval_step0032_205fdfdc.json",
+        "test_accuracy": 0.8045705279747833,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "covariance alignment",
+                "data augmentation",
+                "pseudo-labeling",
+                "teacher-student training",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs a combination of supervised contrastive loss and covariance alignment loss to enhance feature learning from both labeled and unlabeled data. The training process includes data augmentation strategies and a teacher-student model approach to improve performance. The model is designed for image classification tasks, leveraging labeled and unlabeled datasets effectively.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 6249,
+        "completion_tokens": 144,
+        "total_tokens": 6393
+    },
+    "0034_6dd54743": {
+        "program_name": "program_step0034_6dd54743.py",
+        "eval_name": "eval_step0034_6dd54743.json",
+        "test_accuracy": 0.7021276595744681,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "covariance alignment",
+                "data augmentation",
+                "pseudo-labeling",
+                "teacher-student training",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs a combination of labeled and unlabeled data to improve classification performance through various training strategies, including contrastive loss and covariance alignment. The model is fine-tuned using a teacher-student approach, where a teacher model is updated based on the student's predictions. Data augmentation techniques are applied to enhance the robustness of the model.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 6757,
+        "completion_tokens": 149,
+        "total_tokens": 6906
+    },
+    "0036_142ff464": {
+        "program_name": "program_step0036_142ff464.py",
+        "eval_name": "eval_step0036_142ff464.json",
+        "test_accuracy": 0.802521670606777,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "covariance alignment",
+                "pseudo-labeling",
+                "data augmentation",
+                "teacher-student training",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs various training strategies including supervised contrastive loss, hard negative margin loss, and covariance alignment loss. The model is trained on both labeled and unlabeled data, utilizing pseudo-labeling and teacher-student training techniques to enhance performance. Data augmentation is applied through weak and strong transformations to improve model robustness.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 6515,
+        "completion_tokens": 145,
+        "total_tokens": 6660
+    },
+    "0038_3bddc3b9": {
+        "program_name": "program_step0038_3bddc3b9.py",
+        "eval_name": "eval_step0038_3bddc3b9.json",
+        "test_accuracy": 0.7922773837667455,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "covariance alignment",
+                "pseudo-labeling",
+                "data augmentation",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs various training strategies including supervised contrastive loss, covariance alignment loss, and pseudo-labeling to enhance performance with limited labeled data. The model is trained with both labeled and unlabeled datasets, utilizing data augmentation techniques to improve generalization. Additionally, it incorporates a teacher-student model approach for better predictions.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 6703,
+        "completion_tokens": 140,
+        "total_tokens": 6843
+    },
+    "0039_7f0b7ad9": {
+        "program_name": "program_step0039_7f0b7ad9.py",
+        "eval_name": "eval_step0039_7f0b7ad9.json",
+        "test_accuracy": 0.7943262411347518,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "covariance alignment",
+                "pseudo-labeling",
+                "data augmentation",
+                "teacher-student training",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs various training strategies including supervised contrastive loss, covariance alignment, and pseudo-labeling to enhance performance with limited labeled data. The model is trained with both labeled and unlabeled datasets, utilizing data augmentation techniques to improve generalization. Additionally, it incorporates a teacher-student paradigm for knowledge distillation, allowing for improved predictions on unlabeled samples.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 7104,
+        "completion_tokens": 154,
+        "total_tokens": 7258
+    },
+    "0040_43dc8ca7": {
+        "program_name": "program_step0040_43dc8ca7.py",
+        "eval_name": "eval_step0040_43dc8ca7.json",
+        "test_accuracy": 0.7963750985027581,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "cutmix",
+                "pseudo-labeling",
+                "covariance alignment",
+                "data augmentation",
+                "teacher-student training",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs various training strategies including supervised contrastive loss, cutmix augmentation, and a teacher-student model approach for improved performance. The framework is designed to handle both labeled and unlabeled data, leveraging pseudo-labeling and consistency objectives to enhance learning efficiency. Additionally, it incorporates parameter-efficient finetuning techniques to adapt the model for specific classification tasks.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 7173,
+        "completion_tokens": 158,
+        "total_tokens": 7331
+    },
+    "0041_584139ab": {
+        "program_name": "program_step0041_584139ab.py",
+        "eval_name": "eval_step0041_584139ab.json",
+        "test_accuracy": 0.7653270291568164,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "covariance alignment",
+                "pseudo-labeling",
+                "data augmentation",
+                "teacher-student training",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) backbone. It employs various training strategies including supervised contrastive loss, covariance alignment, and pseudo-labeling to enhance model performance with limited labeled data. The model is trained with a combination of labeled and unlabeled datasets, utilizing data augmentation techniques to improve generalization. Additionally, it incorporates a teacher-student paradigm for knowledge distillation.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 7694,
+        "completion_tokens": 148,
+        "total_tokens": 7842
+    },
+    "0042_d43b77c5": {
+        "program_name": "program_step0042_d43b77c5.py",
+        "eval_name": "eval_step0042_d43b77c5.json",
+        "test_accuracy": 0.7862884160756501,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "covariance alignment",
+                "pseudo-labeling",
+                "data augmentation",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) backbone. It employs various training strategies including supervised contrastive loss, covariance alignment, and pseudo-labeling to enhance model performance with limited labeled data. The model is trained with a combination of labeled and unlabeled datasets, utilizing data augmentation techniques to improve generalization. Additionally, it incorporates parameter-efficient finetuning methods to adapt the model effectively.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 7819,
+        "completion_tokens": 144,
+        "total_tokens": 7963
+    },
+    "0043_f2a49360": {
+        "program_name": "program_step0043_f2a49360.py",
+        "eval_name": "eval_step0043_f2a49360.json",
+        "test_accuracy": 0.8119779353821907,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "covariance alignment",
+                "pseudo-labeling",
+                "data augmentation",
+                "teacher-student training",
+                "logit adjustment",
+                "virtual adversarial training"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs various training strategies including supervised contrastive loss, covariance alignment, and virtual adversarial training. The model is trained on both labeled and unlabeled data, utilizing pseudo-labeling and teacher-student mechanisms to enhance performance. Data augmentation techniques are applied to improve model robustness.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 7157,
+        "completion_tokens": 143,
+        "total_tokens": 7300
+    },
+    "0044_30ee444d": {
+        "program_name": "program_step0044_30ee444d.py",
+        "eval_name": "eval_step0044_30ee444d.json",
+        "test_accuracy": 0.7913317572892041,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "covariance alignment",
+                "pseudo-labeling",
+                "data augmentation",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "The program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs various training strategies including supervised contrastive loss, covariance alignment loss, and pseudo-labeling to enhance performance with limited labeled data. The model is trained with a combination of labeled and unlabeled samples, utilizing data augmentation techniques to improve generalization. Additionally, it incorporates a teacher-student model approach for better feature learning.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 7382,
+        "completion_tokens": 143,
+        "total_tokens": 7525
+    },
+    "0045_943b1750": {
+        "program_name": "program_step0045_943b1750.py",
+        "eval_name": "eval_step0045_943b1750.json",
+        "test_accuracy": 0.7922773837667455,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "covariance alignment",
+                "cluster consistency",
+                "data augmentation",
+                "pseudo-labeling",
+                "teacher-student training",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) backbone. It employs various training strategies including supervised contrastive loss, covariance alignment, and cluster consistency to enhance model performance with limited labeled data. The model is trained with both labeled and unlabeled samples, utilizing data augmentation techniques and a teacher-student paradigm for improved generalization. The program is designed to efficiently handle the training process while adapting to the number of classes dynamically.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 7465,
+        "completion_tokens": 160,
+        "total_tokens": 7625
+    },
+    "0048_f3d81560": {
+        "program_name": "program_step0048_f3d81560.py",
+        "eval_name": "eval_step0048_f3d81560.json",
+        "test_accuracy": 0.698187549251379,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "covariance alignment",
+                "pseudo-labeling",
+                "data augmentation",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs various training strategies including supervised contrastive loss, covariance alignment loss, and pseudo-labeling to enhance performance with limited labeled data. The program also incorporates multiple data augmentation techniques and parameter-efficient finetuning methods to optimize the model's learning process.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 7651,
+        "completion_tokens": 128,
+        "total_tokens": 7779
+    },
+    "0049_44facf72": {
+        "program_name": "program_step0049_44facf72.py",
+        "eval_name": "eval_step0049_44facf72.json",
+        "test_accuracy": 0.8086682427107958,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "covariance alignment",
+                "data augmentation",
+                "pseudo-labeling",
+                "teacher-student training",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) backbone. It employs various training strategies including supervised contrastive loss, covariance alignment loss, and a teacher-student model approach. The program utilizes data augmentation techniques and pseudo-labeling to enhance learning from unlabeled data. Additionally, it incorporates parameter-efficient finetuning methods to adapt the model for classification tasks.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 6422,
+        "completion_tokens": 143,
+        "total_tokens": 6565
+    },
+    "0050_36420ebb": {
+        "program_name": "program_step0050_36420ebb.py",
+        "eval_name": "eval_step0050_36420ebb.json",
+        "test_accuracy": 0.7977935382190702,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "covariance alignment",
+                "data augmentation",
+                "pseudo-labeling",
+                "teacher-student training",
+                "frequency perturbation"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs various training strategies including supervised contrastive loss, covariance alignment loss, and a teacher-student model approach. The program also utilizes data augmentation techniques and pseudo-labeling to enhance performance on labeled and unlabeled datasets. The model is designed to adaptively adjust its predictions based on the distribution of class probabilities.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 7120,
+        "completion_tokens": 144,
+        "total_tokens": 7264
+    },
+    "0051_cec7e169": {
+        "program_name": "program_step0051_cec7e169.py",
+        "eval_name": "eval_step0051_cec7e169.json",
+        "test_accuracy": 0.8001576044129236,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "covariance alignment",
+                "style transfer",
+                "data augmentation",
+                "pseudo-labeling",
+                "teacher-student training",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) model. It employs various training strategies including supervised contrastive loss, covariance alignment, and style transfer to enhance feature learning. The model is trained on both labeled and unlabeled data, utilizing pseudo-labeling and a teacher-student approach for improved performance. Data augmentation techniques are applied to strengthen the model's robustness.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 6833,
+        "completion_tokens": 148,
+        "total_tokens": 6981
+    },
+    "0054_8ecec0b1": {
+        "program_name": "program_step0054_8ecec0b1.py",
+        "eval_name": "eval_step0054_8ecec0b1.json",
+        "test_accuracy": 0.8217494089834515,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "covariance alignment",
+                "pseudo-labeling",
+                "data augmentation",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) backbone. It employs various training strategies including supervised contrastive loss, covariance alignment, and pseudo-labeling to enhance model performance with limited labeled data. The program also incorporates data augmentation techniques and parameter-efficient finetuning methods to optimize the learning process.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 7817,
+        "completion_tokens": 134,
+        "total_tokens": 7951
+    },
+    "0055_21a22c00": {
+        "program_name": "program_step0055_21a22c00.py",
+        "eval_name": "eval_step0055_21a22c00.json",
+        "test_accuracy": 0.808983451536643,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "covariance alignment",
+                "pseudo-labeling",
+                "mixup",
+                "data augmentation",
+                "parameter-efficient finetuning"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) backbone. It employs various training strategies including supervised contrastive loss, covariance alignment, and pseudo-labeling to enhance model performance with limited labeled data. The program also incorporates data augmentation techniques and parameter-efficient finetuning methods to optimize the model's learning process. The model is designed to handle both labeled and unlabeled datasets effectively.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 7225,
+        "completion_tokens": 145,
+        "total_tokens": 7370
+    },
+    "0056_e7b63570": {
+        "program_name": "program_step0056_e7b63570.py",
+        "eval_name": "eval_step0056_e7b63570.json",
+        "test_accuracy": 0.6996059889676911,
+        "program_analysis": {
+            "models": [
+                "ViT"
+            ],
+            "methods": [
+                "semi-supervised learning",
+                "contrastive loss",
+                "covariance alignment",
+                "mixup",
+                "data augmentation",
+                "teacher-student training",
+                "logit adjustment",
+                "pseudo-labeling"
+            ],
+            "uses training": "yes",
+            "summary": "This program implements a semi-supervised learning framework using a Vision Transformer (ViT) backbone. It employs various training strategies including contrastive loss, covariance alignment, and mixup techniques to enhance model performance with limited labeled data. The framework also incorporates a teacher-student model approach for improved predictions and utilizes data augmentation techniques to increase robustness. The model is designed to handle both labeled and unlabeled datasets effectively.",
+            "used_dinov2": false,
+            "used_clip": true
+        },
+        "prompt_tokens": 7550,
+        "completion_tokens": 148,
+        "total_tokens": 7698
+    },
+    "total_programs": 46,
+    "experiment_path": "/share/j_sun/as2637/logs/resisc45/aSSL_backbone_unsupervised/k2/seed0/aira/2/all_test_programs"
+}
