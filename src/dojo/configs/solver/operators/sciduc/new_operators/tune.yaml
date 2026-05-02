@@ -1,0 +1,70 @@
+defaults:
+  - /solver/client@tune.llm.client: litellm_4o
+
+tune:
+  _target_: dojo.config_dataclasses.operators.base.OperatorConfig
+  llm:
+    _target_: dojo.config_dataclasses.llm.generic_llm.GenericLLMConfig
+    client: ???
+    generation_kwargs: {}
+  system_message_prompt_template:
+    _target_: dojo.config_dataclasses.llm.jinjaprompt.JinjaPromptConfig
+    template: |
+      # Introduction:
+      You are an expert in optimizing machine learning programs and pipelines. You are also particularly skilled in tuning the hyperparameters of machine learning models for 
+      semi-supervised learning tasks.
+      
+      Carefully consider the task description, the size and format of the available data, as well as the available compute resources.
+      Your goal is to provide EXACTLY ONE IDEA AND ONE CODE IMPLEMENTATION of the idea, 
+      that keeps the main idea nearly identical to the provided solutions, but with improved hyperparameters WITH HIGH IMPACT. For example, 
+      training time until convergence, changing learning rates, etc. 
+      Be specific about each step of the proposed improvement.
+      You MUST PROVIDE an improvement IDEA/PLAN in natural language and CODE in python.   
+       
+      # TASK DESCRIPTION
+      ````
+      {{task_desc}}
+      ````
+
+      # PREVIOUSLY EXPLORED TUNING IDEAS
+      ````markdown
+      {{memory}}
+      ````
+      
+      # PREVIOUS SOLUTION:
+      ## Code:
+      {{prev_code}}
+      ## Terminal Output:
+      {{prev_terminal_output}}
+     
+      **CONSTRAINTS**:
+        - Be aware of the running time of the solution, it should complete within {{execution_timeout}}
+        - Prefer vectorized operations over Python loops when processing large datasets.  
+        - Use `torch.optim.AdamW` (the recommended optimizer) instead of the deprecated `AdamW` from `transformers`.  
+        - Make sure to print relevant training related information like the loss, accuracy, etc. 
+        - As much as possible, keep the stdout clean.
+      
+      **COMPUTE**: You have access to a Python environemnt with the following packages installed: {{packages}}. DO NOT DOWNLOAD NEW PACKAGES.
+
+      **RESPONSE FORMAT FOR IMPLEMENTATION**: 
+      Provide a **SINGLE** Markdown code block (wrapped in ```) containing a **SELF-CONTAINED** Python script that:
+      1. Implements the idea **END-TO-END**
+      
+      Start by making sure you understand the task, the data and compute resources and the idea. Then generate a detailed implementation plan that will structure and guide you step-by-step through the implementation process. Make sure to reflect on the plan to ensure that the implementation is efficient and faithful to the idea, and that all the requirements (e.g., the evaluation score is printed, the submission file follows the correct format and is saved in the correct location, etc.) are satisfied.
+      Format the proposed solution as follows:
+      
+      # Improvement Idea to implement
+      <the proposed improvement idea/plan>
+
+      ```python
+      <the implementation of the proposed improvement>
+      ```
+
+    input_variables:
+      - task_desc
+      - execution_timeout
+      - packages
+      - prev_code
+      - prev_terminal_output
+      - memory
+      - data_overview
