@@ -1,13 +1,15 @@
 #!/bin/bash
-#SBATCH --job-name=dtd6
-#SBATCH --partition=jjs533
+#SBATCH --job-name=dtd_claude
+#SBATCH --partition=jjs533,gpu
 #SBATCH --gres=gpu:1
-#SBATCH --constraint=6000ada|a6000|h100|6000maxq
+#SBATCH --constraint="6000ada"
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=64G
+#SBATCH --mem=128G
 #SBATCH --time=48:00:00
-#SBATCH --output=/share/j_sun/as2637/logs/1804/dtd/%j.out
+#SBATCH --exclude=bhattacharjee-compute-02,snavely-compute-09,genai-large-01,lil-compute-05,unicorn-compute-01,lancer-compute-01,abdelfattah-compute-02,portal-compute-02,ma-compute-02,kuleshov-compute-02,unicorn-compute-04
+#SBATCH --output=/share/j_sun/as2637/logs/%j.out
+#SBATCH --error=/share/j_sun/as2637/logs/%j.err
 #SBATCH --chdir=/home/as2637/sciduc/aira-dojo
 #SBATCH --requeue
 
@@ -44,15 +46,15 @@ fi
 # Experiment config
 # -------------------------
 DOMAIN="dtd"
-K="k6"
-SEED="seed42"
+K="k3"
+SEED="seed0"
 AGENT="aira"
 # Fixed run id: every sbatch uses this same directory so checkpoint always resumes.
 # Change this when you intentionally want a brand-new experiment.
-EXP_NUM="1"
+EXP_NUM="110"
 #DATA_DIR="/share/j_sun/agentSSL/resisc45"
 CACHE_DIR="/share/j_sun/as2637"
-SETTING="aSSL_backbone_1804"
+SETTING="aSSL_backbone_unsupervised_debug"
 
 
 LOG_DIR="/share/j_sun/as2637/logs"
@@ -62,10 +64,19 @@ echo "Experiment dir (always same path → resume from checkpoint if present): $
 mkdir -p "$EXPERIMENT_DIR"
 
 JOB_OUT="${EXPERIMENT_DIR}/${SLURM_JOB_ID}.out"
+JOB_ERR="${EXPERIMENT_DIR}/${SLURM_JOB_ID}.err"
 
-# Move Slurm's default output log if present (but only if real file)
-if [ -f "${LOG_DIR}/${SLURM_JOB_ID}.out" ]; then
-    mv "${LOG_DIR}/${SLURM_JOB_ID}.out" "$JOB_OUT"
+# Slurm writes stdout to the fixed path from #SBATCH --output at submit time.
+# Once we know the full EXPERIMENT_DIR, move that file into the experiment folder.
+SLURM_STDOUT_STAGING="/share/j_sun/as2637/logs/${SLURM_JOB_ID}.out"
+if [ -f "$SLURM_STDOUT_STAGING" ] && [ "$SLURM_STDOUT_STAGING" != "$JOB_OUT" ]; then
+    mv "$SLURM_STDOUT_STAGING" "$JOB_OUT"
+fi
+
+# Same idea for stderr (separate stream/file from stdout in Slurm).
+SLURM_STDERR_STAGING="/share/j_sun/as2637/logs/${SLURM_JOB_ID}.err"
+if [ -f "$SLURM_STDERR_STAGING" ] && [ "$SLURM_STDERR_STAGING" != "$JOB_ERR" ]; then
+    mv "$SLURM_STDERR_STAGING" "$JOB_ERR"
 fi
 
 export EXPERIMENT_DIR
@@ -78,6 +89,22 @@ echo "✅ Running job ${SLURM_JOB_ID}"
 echo "Logging to: $JOB_OUT"
 
 # -------------------------
+# Environment for Dojo (before main_run)
+# -------------------------
+# Repo root is #SBATCH --chdir. `set -a` exports every KEY=value from the file. These override
+# the same names from Python `load_dotenv()` (dotenv defaults to override=False).
+# ENV_CLAUDE_FILE="${ENV_CLAUDE_FILE:-.env_claude}"
+# if [ -f "$ENV_CLAUDE_FILE" ]; then
+#     set -a
+#     # shellcheck disable=SC1090
+#     . "$ENV_CLAUDE_FILE"
+#     set +a
+#     echo "Loaded environment file: $ENV_CLAUDE_FILE"
+# else
+#     echo "WARNING: $ENV_CLAUDE_FILE not found (cwd=$(pwd)); continuing without it." >&2
+# fi
+
+# -------------------------
 # Run experiment
 # -------------------------
 # solver.time_limit_secs = max wall time for the agent/search (this run stops when hit).
@@ -85,7 +112,7 @@ echo "Logging to: $JOB_OUT"
 
 
 python -m dojo.main_run \
-    +_exp=run_example_5.4 \
+    +_exp=warm_draft_run_example_5.4\
     task=agentSSL/_default \
     task.name=${DOMAIN} \
     task.setting=${SETTING} \

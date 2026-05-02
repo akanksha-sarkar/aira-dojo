@@ -46,12 +46,14 @@ class FunctionSpec(DataClassJsonMixin):
 
     @property
     def as_openai_tool_dict(self) -> Dict[str, Any]:
-        """Convert to OpenAI's function format."""
+        """One entry for Chat Completions ``tools=`` (nested ``function`` object; required for LiteLLM→Anthropic)."""
         return {
             "type": "function",
-            "name": self.name,
-            "description": self.description,
-            "parameters": self.json_schema,
+            "function": {
+                "name": self.name,
+                "description": self.description,
+                "parameters": self.json_schema,
+            },
         }
 
     @property
@@ -120,6 +122,12 @@ class LiteLLMClient:
     def client_content_key(self):
         return "content"
 
+    def _is_anthropic_route(self) -> bool:
+        """True when this client targets Anthropic (Claude) via LiteLLM."""
+        mid = (self.model or "").lower()
+        prov = (getattr(self, "provider", None) or "").lower()
+        return prov == "anthropic" or "anthropic/" in mid
+
     def _calculate_cost(self, prompt_tokens, completion_tokens):
         """Calculate the API cost for a request based on token usage and provider-specific pricing."""
         cost = 0.0
@@ -181,10 +189,17 @@ class LiteLLMClient:
             model_kwargs["api_key"] = self.api_key
         filtered_kwargs = {k: v for k, v in model_kwargs.items() if v is not None and v != ""}
 
-        # Attach function specifications if provided
+        # Attach tool specifications (Chat Completions ``tools``; not legacy ``functions``).
         if func_spec is not None:
-            filtered_kwargs["functions"] = [func_spec.as_openai_tool_dict]
-            filtered_kwargs["function_call"] = "auto"
+            filtered_kwargs["tools"] = [func_spec.as_openai_tool_dict]
+            # Claude often answers in prose when tools are optional; require the review tool.
+            if "tool_choice" not in filtered_kwargs and self._is_anthropic_route():
+                filtered_kwargs["tool_choice"] = {
+                    "type": "function",
+                    "function": {"name": func_spec.name},
+                }
+            elif "tool_choice" not in filtered_kwargs:
+                filtered_kwargs["tool_choice"] = "auto"
 
         filtered_kwargs["max_retries"] = NUM_RETRIES
         filtered_kwargs["num_retries"] = NUM_RETRIES
@@ -198,14 +213,27 @@ class LiteLLMClient:
         try:
             completion = completion_fn(messages=messages, **filtered_kwargs)
         except litellm.BadRequestError as e:
-            if "function calling" in str(e).lower() or "functions" in str(e).lower():
+            err = str(e).lower()
+            # Forced Anthropic tool_choice can be rejected (proxy/router, LiteLLM version, or
+            # tools+choice mismatch). Retry with optional tools like before.
+            if "tool_choice" in filtered_kwargs and self._is_anthropic_route():
+                logger.warning(
+                    "Anthropic tool_choice request failed (%s); retrying with tool_choice=auto.",
+                    e,
+                )
+                filtered_kwargs.pop("tool_choice", None)
+                filtered_kwargs["tool_choice"] = "auto"
+                completion = completion_fn(messages=messages, **filtered_kwargs)
+            elif "function calling" in err or "functions" in err or "tools" in err:
                 logger.warning(
                     "Function calling was attempted but is not supported by this model. "
                     "Falling back to plain text generation."
                 )
                 # Remove function calling parameters and retry
                 filtered_kwargs.pop("functions", None)
+                filtered_kwargs.pop("tools", None)
                 filtered_kwargs.pop("function_call", None)
+                filtered_kwargs.pop("tool_choice", None)
                 completion = completion_fn(messages=messages, **filtered_kwargs)
             else:
                 raise
@@ -229,39 +257,55 @@ class LiteLLMClient:
             prompt_text = " ".join([m.get("content", "") for m in messages])
             usage_stats["prompt_tokens"] = self.count_tokens(prompt_text)
         if "completion_tokens" not in usage_stats:
-            usage_stats["completion_tokens"] = self.count_tokens(choice.message.content)
+            usage_stats["completion_tokens"] = self.count_tokens(choice.message.content or "")
         usage_stats["total_tokens"] = usage_stats["prompt_tokens"] + usage_stats["completion_tokens"]
 
         # Calculate cost using a helper (this method can adjust for different backends)
         usage_stats["cost"] = self._calculate_cost(usage_stats["prompt_tokens"], usage_stats["completion_tokens"])
 
         # Parse the response as before
-        if func_spec is None or "functions" not in filtered_kwargs:
+        _has_tools = "tools" in filtered_kwargs or "functions" in filtered_kwargs
+        if func_spec is None or not _has_tools:
             output = choice.message.content
         else:
-            try:
-                function_call = choice.message.function_call
-            except:
-                function_call = None
-            if not function_call:
+            output = None
+            expected_name = str(func_spec.name).strip()
+
+            function_call = getattr(choice.message, "function_call", None)
+            if function_call and str(function_call.name).strip() == expected_name:
+                try:
+                    output = json.loads(function_call.arguments)
+                except json.JSONDecodeError as ex:
+                    logger.error(f"Error decoding function arguments:\n{function_call.arguments}")
+                    raise ex
+
+            # Anthropic / newer OpenAI-style completions expose tool_calls instead of function_call.
+            if output is None:
+                for tc in getattr(choice.message, "tool_calls", None) or []:
+                    fn = getattr(tc, "function", None)
+                    if fn is None:
+                        continue
+                    if str(getattr(fn, "name", "")).strip() != expected_name:
+                        continue
+                    args = getattr(fn, "arguments", None)
+                    if args is None:
+                        continue
+                    if isinstance(args, dict):
+                        output = args
+                    else:
+                        try:
+                            output = json.loads(args)
+                        except json.JSONDecodeError as ex:
+                            logger.error(f"Error decoding tool call arguments:\n{args}")
+                            raise ex
+                    break
+
+            if output is None:
                 logger.warning(
-                    "No function call was used despite function spec. Fallback to text.\n"
+                    "No function_call / tool_calls matched the function spec. Fallback to text.\n"
                     f"Message content: {choice.message.content}"
                 )
                 output = choice.message.content
-            else:
-                if not str(function_call.name).strip() == str(func_spec.name).strip():
-                    logger.warning(
-                        f"Function name mismatch: expected {func_spec.name}, "
-                        f"got {function_call.name}. Fallback to text."
-                    )
-                    output = choice.message.content
-                else:
-                    try:
-                        output = json.loads(function_call.arguments)
-                    except json.JSONDecodeError as ex:
-                        logger.error(f"Error decoding function arguments:\n{function_call.arguments}")
-                        raise ex
 
         return output, usage_stats
 

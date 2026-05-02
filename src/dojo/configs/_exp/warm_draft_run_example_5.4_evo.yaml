@@ -1,13 +1,14 @@
 # @package _global_
 defaults:
   - override /interpreter: jupyter
-  - override /solver: sciduc/greedy
+  - override /solver: sciduc/evo
   - override /task: sciduc/bucktales
-  - override /solver/operators/sciduc@solver.operators:
-    - aira_operators/debug
-    - aira_operators/warm_draft
-    - aira_operators/improve
-    - aide_operators/analyze
+  - override /solver/operators@solver.operators:
+    - sciduc/aira_operators/debug
+    - sciduc/aira_operators/warm_draft
+    - sciduc/aira_operators/improve
+    - sciduc/aide_operators/analyze
+    - sciduc/aira_operators/crossover
   - override /solver/client@solver.operators.analyze.llm.client: litellm_gpt5-4
   - override /solver/client@solver.operators.debug.llm.client: litellm_gpt5-4
   - override /solver/client@solver.operators.draft.llm.client: litellm_gpt5-4
@@ -17,10 +18,10 @@ metadata:
   git_issue_id: example # Ideally, this should be a number fetched from github issue when running an actual experiment.
 
 solver:
-  step_limit: 10          # Maximum number of steps in the search process
-  improvement_steps: 5          # Number of improvement iterations to perform
+  step_limit: 500          # Maximum number of steps in the search process
+  #improvement_steps: 5          # Number of improvement iterations to perform
   execution_timeout: 7200      # Timeout for each code execution (seconds) - default: 2 hours
-  time_limit_secs: 54000  # Total time limit for the entire task (seconds) - default: 15 hours
+  time_limit_secs: 28800  # Total time limit for the entire task (seconds) - default: 10 hours
 
 
   # litellm_gpt5-2
