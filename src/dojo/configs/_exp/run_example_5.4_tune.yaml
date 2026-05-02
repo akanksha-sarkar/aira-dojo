@@ -15,6 +15,6 @@ metadata:
 solver:
   step_limit: 10             # Maximum number of steps in the search process
   improvement_steps: 5          # Number of improvement iterations to perform
-  tune_prob: 1.0            # On valid nodes: probability of tune vs improve (see TuneGreedy.step)
+  tune_prob: 0.3            # On valid nodes: probability of tune vs improve (see TuneGreedy.step)
   execution_timeout: 7200      # Timeout for each code execution (seconds) - default: 2 hours
   time_limit_secs: 36000    # Total time limit for the entire task (seconds) - default: 10 hours

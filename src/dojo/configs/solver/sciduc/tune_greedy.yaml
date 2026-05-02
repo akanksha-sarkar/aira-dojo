@@ -19,5 +19,5 @@ max_debug_depth: 5         # Maximum depth of debugging analysis
 debug_prob: 1.0            # Probability of running a debug step in the process
 
 # --- Drafting Configuration ---
-num_drafts: 1           # Number of draft outputs to generate for selection
+num_drafts: 5           # Number of draft outputs to generate for selection
 max_llm_call_retries: 3    # Maximum number of retries for failed LLM API calls
